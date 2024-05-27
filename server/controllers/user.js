@@ -38,10 +38,10 @@ const updateUser = async (req, res) => {
     res.json(user);
   };
 
-  const deleteArticle = async (req, res) => {
-    const article = await articleService.deleteArticle(req.params.id);
-    if (!article) {
-      return res.status(404).json({ errors: ['Article not found'] });
+  const deleteUser = async (req, res) => {
+    const user = await userService.deleteUser(req.params.id);
+    if (!user) {
+      return res.status(404).json({ errors: ['User not found'] });
     }
   
     res.send();
@@ -52,5 +52,5 @@ const updateUser = async (req, res) => {
     getUsers,
     getUser,
     updateUser,
-    deleteArticle
+    deleteUser
   };

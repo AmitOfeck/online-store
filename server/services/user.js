@@ -40,13 +40,13 @@ const updateUser = async (id, email, password, type, firstName, lastName, street
     return user;
 };
 
-const deleteArticle = async (id) => {
-    const article = await getArticleById(id);
-    if (!article)
+const deleteUser = async (id) => {
+    const user = await getUserById(id);
+    if (!user)
         return null;
 
-    await article.remove();
-    return article;
+    await user.remove();
+    return user;
 };
 
 module.exports = {
@@ -54,5 +54,5 @@ module.exports = {
     getUserById,
     getUsers,
     updateUser,
-    deleteArticle
+    deleteUser
 }
