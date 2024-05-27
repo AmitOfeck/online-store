@@ -23,14 +23,21 @@ const getUsers = async () => {
     return await User.find({});
 };
 
-const updateArticle = async (id, title) => {
-    const article = await getArticleById(id);
-    if (!article)
+const updateUser = async (id, email, password, type, firstName, lastName, streetAddress, city) => {
+    const user = await getUserById(id);
+     if (!user)
         return null;
 
-    article.title = title;
-    await article.save();
-    return article;
+        user.email = email;
+        user.password = password;
+        user.type = type;
+        user.firstName = firstName;
+        user.lastName = lastName;
+        user.streetAddress = streetAddress;
+        user.city = city;
+
+    await user.save();
+    return user;
 };
 
 const deleteArticle = async (id) => {
@@ -46,6 +53,6 @@ module.exports = {
     createUser,
     getUserById,
     getUsers,
-    updateArticle,
+    updateUser,
     deleteArticle
 }

@@ -8,7 +8,7 @@ router.route('/')
 
 router.route('/:id')
     .get(usersController.getUser)
-    .patch(usersController.updateArticle)
+    .patch(usersController.updateUser)
     .delete(usersController.deleteArticle);
 
 module.exports = router;

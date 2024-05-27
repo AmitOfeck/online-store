@@ -20,19 +20,22 @@ const getUser = async (req, res) => {
     res.json(user);
 };
 
-const updateArticle = async (req, res) => {
-    if (!req.body.title) {
-      res.status(400).json({
-        message: "title is required",
-      });
+const updateUser = async (req, res) => {
+
+    if (!req.body.email) {  res.status(400).json({  message: "Email is required", }); }
+    if (!req.body.password) {  res.status(400).json({  message: "Password is required", }); }
+    if (!req.body.type) {  res.status(400).json({  message: "Type is required", }); }
+    if (!req.body.firstName) {  res.status(400).json({  message: "First name is required", }); }
+    if (!req.body.lastName) {  res.status(400).json({  message: "Last name is required", }); }
+    if (!req.body.streetAddress) {  res.status(400).json({  message: "Street address is required", }); }
+    if (!req.body.city) {  res.status(400).json({  message: "City is required", }); }
+    
+    const user = await userService.updateUser(req.params.id, req.body.email, req.body.password, req.body.type, req.body.firstName, req.body.lastName, req.body.streetAddress, req.body.city);
+    if (!user) {
+      return res.status(404).json({ errors: ['User not found'] });
     }
   
-    const article = await articleService.updateArticle(req.params.id, req.body.title);
-    if (!article) {
-      return res.status(404).json({ errors: ['Article not found'] });
-    }
-  
-    res.json(article);
+    res.json(user);
   };
 
   const deleteArticle = async (req, res) => {
@@ -48,6 +51,6 @@ const updateArticle = async (req, res) => {
     createUser,
     getUsers,
     getUser,
-    updateArticle,
+    updateUser,
     deleteArticle
   };
