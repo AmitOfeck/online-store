@@ -1,4 +1,3 @@
-const articleService = require('../services/article');
 const userService = require('../services/user');
 
 const createUser = async (req, res) => {

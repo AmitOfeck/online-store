@@ -1,4 +1,3 @@
-const Article = require('../models/article');
 const User = require('../models/user');
 
 const createUser = async (email, password, type, firstName, lastName, streetAddress, city) => {
