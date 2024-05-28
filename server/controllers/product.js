@@ -39,6 +39,22 @@ const getProducts = async (req, res) => {
 };
 
 const getProduct = async (req, res) => {
+    try {
+      const product = await productService.getProductById(req.params.id);
+      
+      if (!product) {
+        return res.status(404).json({ errors: ['Product not found'] });
+      }
+  
+      res.json(product);
+    } catch (error) {
+      //console.error('Error fetching product:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
+
+  /*
+const getProduct = async (req, res) => {
     const product = await productService.getProductById(req.params.id);
     if (!product) {
         return res.status(404).json({ errors: ['Product not found'] });
@@ -46,6 +62,7 @@ const getProduct = async (req, res) => {
 
     res.json(product);
 };
+*/
 
 const updateProduct = async (req, res) => {
     try {
