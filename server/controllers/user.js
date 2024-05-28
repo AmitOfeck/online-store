@@ -44,12 +44,18 @@ const updateUser = async (req, res) => {
   };
 
   const deleteUser = async (req, res) => {
-    const user = await userService.deleteUser(req.params.id);
-    if (!user) {
-      return res.status(404).json({ errors: ['User not found'] });
+    try {
+      const user = await userService.deleteUser(req.params.id);
+      
+      if (!user) {
+        return res.status(404).json({ errors: ['User not found'] });
+      }
+      
+      res.send();
+    } catch (error) {
+      //console.error('Error deleting user:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-  
-    res.send();
   };
 
   module.exports = {
