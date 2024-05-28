@@ -81,14 +81,19 @@ const updateProduct = async (req, res) => {
     }
   };
 
-
   const deleteProduct = async (req, res) => {
-    const product = await productService.deleteProduct(req.params.id);
-    if (!product) {
-      return res.status(404).json({ errors: ['Product not found'] });
+    try {
+      const product = await productService.deleteProduct(req.params.id);
+      
+      if (!product) {
+        return res.status(404).json({ errors: ['Product not found'] });
+      }
+      
+      res.send();
+    } catch (error) {
+      //console.error('Error deleting product:', error);
+      res.status(500).json({ message: 'Internal server error' });
     }
-  
-    res.send();
   };
 
   module.exports = {
