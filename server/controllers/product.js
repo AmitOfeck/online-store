@@ -1,9 +1,37 @@
 const productService = require('../services/product');
 
+const isValid = (req, res, fields) => {
+    for (let field of fields) {
+      if (!req.body[field]) {
+        res.status(400).json({ message: `${field} is required` });
+        return false;
+      }
+    }
+    return true;
+  };
+
 const createProduct = async (req, res) => {
-    const newProduct = await productService.createProduct(req.body.category, req.body.name, req.body.supplierId, req.body.manufacturer, req.body.price, req.body.currentStock, req.body.image);
-    res.json(newProduct);
-};
+    try {
+      const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
+  
+      if (!isValid(req, res, requiredFields)) return;
+  
+      const newProduct = await productService.createProduct(
+        req.body.category,
+        req.body.name,
+        req.body.supplierId,
+        req.body.manufacturer,
+        req.body.price,
+        req.body.currentStock,
+        req.body.image
+      );
+  
+      res.json(newProduct);
+    } catch (error) {
+      console.error('Error creating product:', error);
+      res.status(500).json({ message: 'Internal server error' });
+    }
+  };
 
 const getProducts = async (req, res) => {
     const products = await productService.getProducts();
@@ -21,27 +49,9 @@ const getProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-      if (!req.body.category) {
-        return res.status(400).json({ message: "Category is required" });
-      }
-      if (!req.body.name) {
-        return res.status(400).json({ message: "Name is required" });
-      }
-      if (!req.body.supplierId) {
-        return res.status(400).json({ message: "Supplier Id is required" });
-      }
-      if (!req.body.manufacturer) {
-        return res.status(400).json({ message: "Manufacturer is required" });
-      }
-      if (!req.body.price) {
-        return res.status(400).json({ message: "Price is required" });
-      }
-      if (!req.body.currentStock) {
-        return res.status(400).json({ message: "CurrentStock is required" });
-      }
-      // if (!req.body.image) {
-      //   return res.status(400).json({ message: "Image is required" });
-      // } // Maybe we will do it required
+      const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
+  
+      if (!isValid(req, res, requiredFields)) return;
   
       const product = await productService.updateProduct(
         req.params.id,
