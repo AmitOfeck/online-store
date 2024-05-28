@@ -6,8 +6,8 @@ const createUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
-    const articles = await userService.getUsers();
-    res.json(articles);
+    const users = await userService.getUsers();
+    res.json(users);
 };
 
 const getUser = async (req, res) => {
