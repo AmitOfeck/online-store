@@ -1,4 +1,5 @@
 const userService = require('../services/user');
+const bcrypt = require('bcrypt');
 
 const isValid = (req, res, fields) => {
   for (let field of fields) {
@@ -59,10 +60,12 @@ const updateUser = async (req, res) => {
 
     if (!isValid(req, res, requiredFields)) return;
 
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+
     const user = await userService.updateUser(
       req.params.id,
       req.body.email,
-      req.body.password,
+      hashedPassword,
       req.body.type,
       req.body.firstName,
       req.body.lastName,
@@ -76,7 +79,7 @@ const updateUser = async (req, res) => {
 
     res.json(user);
   } catch (error) {
-    //console.error('Error updating user:', error);
+    console.error('Error updating user:', error);
     res.status(500).json({ message: 'Internal server error' });
   }
 };
