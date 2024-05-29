@@ -10,7 +10,7 @@ router.route('/')
 
 router.route('/:id')
     .get(usersController.getUser)
-    .patch(verifyToken, validateType(['admin']), usersController.updateUser)
+    .patch(verifyToken, validateType(['admin' , 'customer']), usersController.updateUser)
     .delete(usersController.deleteUser);
 
 module.exports = router;
