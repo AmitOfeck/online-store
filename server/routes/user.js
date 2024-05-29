@@ -5,12 +5,12 @@ const verifyToken = require('../middleware/authMiddleware');
 const validateType = require('../middleware/validateType');
 
 router.route('/')
-    .get(usersController.getUsers)
-    .post(usersController.createUser);
+    .get(verifyToken, validateType(['admin']), usersController.getUsers)
+    .post(verifyToken, validateType(['admin' , 'customer']), usersController.createUser);
 
 router.route('/:id')
-    .get(usersController.getUser)
+    .get(verifyToken, validateType(['admin' , 'customer']), usersController.getUser)
     .patch(verifyToken, validateType(['admin' , 'customer']), usersController.updateUser)
-    .delete(usersController.deleteUser);
+    .delete(verifyToken, validateType(['admin']), usersController.deleteUser);
 
 module.exports = router;
