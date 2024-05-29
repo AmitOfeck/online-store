@@ -1,20 +1,12 @@
 const productService = require('../services/product');
+const hasAllFields = require('../middleware/hasAllFiels'); 
 
-const isValid = (req, res, fields) => {
-    for (let field of fields) {
-      if (!req.body[field]) {
-        res.status(400).json({ message: `${field} is required` });
-        return false;
-      }
-    }
-    return true;
-  };
 
 const createProduct = async (req, res) => {
     try {
       const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
   
-      if (!isValid(req, res, requiredFields)) return;
+      if (!hasAllFields(req, res, requiredFields)) return;
   
       const newProduct = await productService.createProduct(
         req.body.category,
@@ -57,7 +49,7 @@ const updateProduct = async (req, res) => {
     try {
       const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
   
-      if (!isValid(req, res, requiredFields)) return;
+      if (!hasAllFields(req, res, requiredFields)) return;
   
       const product = await productService.updateProduct(
         req.params.id,

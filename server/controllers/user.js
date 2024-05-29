@@ -1,21 +1,13 @@
 const userService = require('../services/user');
 const bcrypt = require('bcrypt');
+const hasAllFields = require('../middleware/hasAllFiels'); 
 
-const isValid = (req, res, fields) => {
-  for (let field of fields) {
-    if (!req.body[field]) {
-      res.status(400).json({ message: `${field} is required` });
-      return false;
-    }
-  }
-  return true;
-};
 
 const createUser = async (req, res) => {
   try {
     const requiredFields = ['email', 'password', 'type', 'firstName', 'lastName', 'streetAddress', 'city'];
 
-    if (!isValid(req, res, requiredFields)) return;
+    if (!hasAllFields(req, res, requiredFields)) return;
 
     const newUser = await userService.createUser(
       req.body.email,
@@ -58,7 +50,7 @@ const updateUser = async (req, res) => {
   try {
     const requiredFields = ['email', 'password', 'type', 'firstName', 'lastName', 'streetAddress', 'city'];
 
-    if (!isValid(req, res, requiredFields)) return;
+    if (!hasAllFields(req, res, requiredFields)) return;
 
     const hashedPassword = await bcrypt.hash(req.body.password, 10);
 
