@@ -7,6 +7,7 @@ const authRoutes = require('./routes/auth');
 const protectedRoute = require('./routes/protectedRoute');
 const users = require('./routes/user');
 const products = require('./routes/product');
+const orders = require('./routes/order');
 
 
 require('custom-env').env(process.env.NODE_ENV, './config');
@@ -25,5 +26,6 @@ app.use('/auth', authRoutes);
 app.use('/protected', protectedRoute);
 app.use('/products', products);
 app.use('/users', users);
+app.use('/orders', orders);
 
 app.listen(process.env.PORT);
