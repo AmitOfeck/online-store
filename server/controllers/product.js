@@ -88,10 +88,80 @@ const updateProduct = async (req, res) => {
     }
   };
 
+  const searchProducts = async (req, res) => {
+    try {
+        const { category, price, manufacturer, name, currentStock } = req.query;
+        const query = {};
+
+        if (category) {
+            query.category = category;
+        }
+
+        if (price) {
+            const operatorMatch = price.match(/(<=|>=|<|>|=)/);
+            if (operatorMatch) {
+                const operator = operatorMatch[0];
+                const value = parseFloat(price.slice(operator.length).trim());
+
+                if (operator === '<=') {
+                    query.price = { $lte: value };
+                } else if (operator === '>=') {
+                    query.price = { $gte: value };
+                } else if (operator === '<') {
+                    query.price = { $lt: value };
+                } else if (operator === '>') {
+                    query.price = { $gt: value };
+                } else if (operator === '=') {
+                    query.price = value;
+                }
+            } else {
+                query.price = parseFloat(price);
+            }
+        }
+
+        if (manufacturer) {
+            query.manufacturer = manufacturer;
+        }
+
+        if (name) {
+            query.name = { $regex: name, $options: 'i' }; 
+        }
+
+        if (currentStock) {
+            const operatorMatch = currentStock.match(/(<=|>=|<|>|=)/);
+            if (operatorMatch) {
+                const operator = operatorMatch[0];
+                const value = parseInt(currentStock.slice(operator.length).trim(), 10);
+
+                if (operator === '<=') {
+                    query.currentStock = { $lte: value };
+                } else if (operator === '>=') {
+                    query.currentStock = { $gte: value };
+                } else if (operator === '<') {
+                    query.currentStock = { $lt: value };
+                } else if (operator === '>') {
+                    query.currentStock = { $gt: value };
+                } else if (operator === '=') {
+                    query.currentStock = value;
+                }
+            } else {
+                query.currentStock = parseInt(currentStock, 10);
+            }
+        }
+
+        const products = await productService.searchProducts(query);
+        res.json(products);
+    } catch (error) {
+        console.error('Error searching products:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
   module.exports = {
     createProduct,
     getProducts,
     getProduct,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
   };

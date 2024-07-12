@@ -8,6 +8,10 @@ router.route('/')
     .get(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.getProducts)
     .post(verifyToken, validateType(['admin' , 'supplier']), productsController.createProduct);
 
+router.route('/search')
+    .get(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.searchProducts);  
+
+
 router.route('/:id')
     .get(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.getProduct)
     .patch(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.updateProduct)

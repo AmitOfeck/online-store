@@ -48,10 +48,15 @@ const deleteProduct = async (id) => {
     return product;
 };
 
+const searchProducts = async (query) => {
+    return await Product.find(query);
+};
+
 module.exports = {
     createProduct,
     getProductById,
     getProducts,
     updateProduct,
-    deleteProduct
+    deleteProduct,
+    searchProducts
 }
