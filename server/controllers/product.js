@@ -4,18 +4,21 @@ const hasAllFields = require('../middleware/hasAllFiels');
 
 const createProduct = async (req, res) => {
     try {
-      const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
+      const requiredFields = ['category', 'subCategory' , 'name', 'supplierId', 'manufacturer', 'price', 'currentStock' , 'weight' , 'weightUnit'];
   
       if (!hasAllFields(req, res, requiredFields)) return;
   
       const newProduct = await productService.createProduct(
         req.body.category,
+        req.body.subCategory,
         req.body.name,
         req.body.supplierId,
         req.body.manufacturer,
         req.body.price,
         req.body.currentStock,
-        req.body.image
+        req.body.image,
+        req.body.weight,
+        req.body.weightUnit
       );
   
       res.json(newProduct);
@@ -47,19 +50,22 @@ const getProduct = async (req, res) => {
 
 const updateProduct = async (req, res) => {
     try {
-      const requiredFields = ['category', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock'];
+      const requiredFields = ['category','subCategory', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock' , 'weight' , 'weightUnit'];
   
       if (!hasAllFields(req, res, requiredFields)) return;
   
       const product = await productService.updateProduct(
         req.params.id,
         req.body.category,
+        req.body.subCategory,
         req.body.name,
         req.body.supplierId,
         req.body.manufacturer,
         req.body.price,
         req.body.currentStock,
-        req.body.image
+        req.body.image,
+        req.body.weight,
+        req.body.weightUnit
       );
   
       if (!product) {
@@ -90,12 +96,16 @@ const updateProduct = async (req, res) => {
 
   const searchProducts = async (req, res) => {
     try {
-        const { category, price, manufacturer, name, currentStock } = req.query;
+        const { category, subCategory ,price, manufacturer, name, currentStock } = req.query;
         const query = {};
 
         if (category) {
             query.category = category;
         }
+
+        if (subCategory) {
+          query.subCategory = subCategory;
+      }
 
         if (price) {
             const operatorMatch = price.match(/(<=|>=|<|>|=)/);
