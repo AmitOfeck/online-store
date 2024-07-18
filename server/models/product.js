@@ -2,7 +2,11 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const Product = new Schema({
-    category: {
+      category: {
+        type: String,
+        required: true
+      },
+      subCategory: {
         type: String,
         required: true
       },
@@ -30,7 +34,17 @@ const Product = new Schema({
       },
       image: {
         type: String
-      }
+      },
+      weight: {
+        type: Number,
+        required: true,
+        min: 0
+      },
+      weightUnit: {
+        type: String,
+        enum: ['g', 'kg', 'ml', 'l'],
+        required: true
+    }
 });
 
 module.exports = mongoose.model('Product', Product);
