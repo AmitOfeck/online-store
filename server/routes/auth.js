@@ -3,6 +3,9 @@ const router = express.Router();
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const validEnum = require('../middleware/validEnum'); 
+
+const userTypes = ['customer', 'admin', 'supplier'];
 
 
 // User registration
@@ -12,6 +15,8 @@ router.post('/register', async (req, res) => {
     if (!email || !password || !type || !firstName || !lastName || !streetAddress || !city) {
         return res.status(400).json({ error: 'All fields are required' });
     }
+    if (!validEnum('type', userTypes)(req, res)) return;
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
