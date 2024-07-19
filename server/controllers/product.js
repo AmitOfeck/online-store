@@ -1,12 +1,16 @@
 const productService = require('../services/product');
 const hasAllFields = require('../middleware/hasAllFiels'); 
+const validEnum = require('../middleware/validEnum');
+
+const validWeightUnits = ['g', 'kg', 'ml', 'l'];
 
 
 const createProduct = async (req, res) => {
     try {
       const requiredFields = ['category', 'subCategory' , 'name', 'supplierId', 'manufacturer', 'price', 'currentStock' , 'weight' , 'weightUnit'];
-  
+
       if (!hasAllFields(req, res, requiredFields)) return;
+      if (!validEnum('weightUnit', validWeightUnits)(req, res)) return;
   
       const newProduct = await productService.createProduct(
         req.body.category,
@@ -53,7 +57,8 @@ const updateProduct = async (req, res) => {
       const requiredFields = ['category','subCategory', 'name', 'supplierId', 'manufacturer', 'price', 'currentStock' , 'weight' , 'weightUnit'];
   
       if (!hasAllFields(req, res, requiredFields)) return;
-  
+      if (!validEnum('weightUnit', validWeightUnits)(req, res)) return;
+        
       const product = await productService.updateProduct(
         req.params.id,
         req.body.category,
