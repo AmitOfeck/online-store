@@ -1,0 +1,191 @@
+.navbar-custom {
+    background-color: #46ad7f;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000; /* Ensure the header stays on top */
+  }
+  .navbar-custom .navbar-brand {
+    display: flex;
+    align-items: center;
+    margin-left: auto; /* Move the logo to the right corner */
+  }
+  .navbar-custom .navbar-brand img {
+    max-width: 100px;
+  }
+  .navbar-custom .form-control {
+    border-radius: 25px;
+    width: 600px;
+  }
+  .navbar-custom .input-group {
+    flex-grow: 1;
+    max-width: 600px; /* Set a maximum width for the search bar */
+    height: 50px;
+  }
+  .navbar-custom .navbar-nav {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  .navbar-custom .nav-item {
+    display: flex;
+    align-items: center;
+  }
+  .navbar-custom .nav-right {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Ensure the logo is at the end of the nav-right section */
+  }
+  .navbar-custom .btn-filter, .navbar-custom .btn-address {
+    background-color: #f8f9fa;
+    border: none;
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 25px;
+  }
+  .navbar-custom .btn-filter {
+    margin-right: 10px;
+  }
+  .navbar-custom .btn-catalog {
+    background-color: #e9ecef;
+    border: none;
+    font-size: 16px;
+    padding: 8px 20px;
+    border-radius: 25px;
+    margin-right: 10px;
+  }
+  .category-card {
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(210, 163, 189);
+    margin-bottom: 20px;
+    border-radius: 10px;
+  }
+  .category-card img {
+    max-width: 100px;
+    margin-bottom: 10px;
+  }
+  .cart-section {
+    background-color: whitesmoke;
+    box-shadow: -2px 0 5px rgba(0,0,0,0.1);
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: fixed; /* Make the cart section fixed */
+    top: 150px; /* Adjust based on the header height */
+    right: 0;
+    width: 350px;
+    height: calc(100% - 80px); /* Adjust height based on the header height */
+  }
+  .cart-section h4 {
+    margin-bottom: 20px;
+  }
+  .cart-content {
+    flex-grow: 1;
+    overflow-y: auto;
+  }
+ 
+  .navbar .navbar-brand img {
+    max-width: 100px;
+  }
+  .reg-text {
+    font-size: larger;
+    font-family: Courier, monospace;
+    font-weight: bold;
+  }
+  .main-content {
+    padding: 20px;
+    padding-top: 150px; /* Add padding to avoid content hiding under header */
+  }
+  .dropdown-menu-end {
+    right: 0;
+    left: auto;
+  }
+  .icon{
+    width: 60px;
+    padding: 10px;
+  }
+  .Cat {
+    margin-left: 10px;
+    font-size: x-large;
+    text-decoration: none;
+    color: #46ad7f;
+    font-family: Courier, monospace;
+    font-weight: bold;
+  }
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(200px, 1fr)); /* Create a responsive grid */
+    gap: 10px;
+  }
+  .category-item {
+    background-color: #eaf6ff; /* Match the background color */
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .category-item img {
+    max-width: 80px;
+    margin: 0 auto 10px; /* Center the image and add bottom margin */
+  }
+  .category-item:nth-child(odd):last-child {
+    grid-column: span 2; /* Make the last item span 2 columns if it's alone in the row */
+  }
+  .dropdown-toggle {
+    background-color: whitesmoke;
+    border: none;
+  }
+  .bi-list {
+    color: #46ad7f;
+  }
+  header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    z-index: 1000; /* Ensure the header stays on top */
+  }
+  .purchase-button {
+    margin-top: 20px;
+    align-self: center;
+    background-color: #46ad7f;
+    border: none;
+    width: 200px;
+    height: 60px;
+    font-size: larger;
+    font-family: Courier, monospace;
+    font-weight: bold;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .cart-prod-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 15px;
+    
+  }
+  .cart-prod-text{
+    font-size:medium;
+    font-family: Courier, monospace;
+    font-weight: bold;
+    
+  }
+  .small-input-group {
+    width: 120px; /* Adjust the width as needed */
+  }
+  .small-input-group .form-control {
+    width: 50px; /* Adjust the width of the input field */
+    padding: 5px; /* Adjust padding for the input field */
+    text-align: center; /* Center text in the input field */
+  }
