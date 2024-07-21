@@ -76,7 +76,7 @@
     position: fixed; /* Make the cart section fixed */
     top: 150px; /* Adjust based on the header height */
     right: 0;
-    width: 300px;
+    width: 350px;
     height: calc(100% - 80px); /* Adjust height based on the header height */
   }
   .cart-section h4 {
@@ -159,4 +159,33 @@
     font-size: larger;
     font-family: Courier, monospace;
     font-weight: bold;
+  }
+
+  .cart-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .cart-prod-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    margin-left: 15px;
+    
+  }
+  .cart-prod-text{
+    font-size:medium;
+    font-family: Courier, monospace;
+    font-weight: bold;
+    
+  }
+  .small-input-group {
+    width: 120px; /* Adjust the width as needed */
+  }
+  .small-input-group .form-control {
+    width: 50px; /* Adjust the width of the input field */
+    padding: 5px; /* Adjust padding for the input field */
+    text-align: center; /* Center text in the input field */
   }
