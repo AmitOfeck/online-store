@@ -15,7 +15,7 @@ router.route('/:id')
 
 router.post('/:id/add-to-cart/:productId', verifyToken, validateType(['admin', 'customer']), ordersController.addToCart); 
 router.post('/:id/remove-from-cart/:productId', verifyToken, validateType(['admin', 'customer']), ordersController.removeFromCart); 
-router.post('/:id/clean-cart', verifyToken, validateType(['admin']), ordersController.cleanCart); 
+router.post('/:id/clean-cart', verifyToken, validateType(['admin', 'customer']), ordersController.cleanCart); 
 
 
 module.exports = router;
