@@ -13,5 +13,10 @@ router.route('/:id')
     .patch(verifyToken, validateType(['admin', 'customer']), ordersController.updateOrder)
     .delete(verifyToken, validateType(['admin', 'customer']), ordersController.deleteOrder);
 
+router.post('/:id/add-to-cart/:productId', verifyToken, validateType(['admin', 'customer']), ordersController.addToCart); 
+router.post('/:id/remove-from-cart/:productId', verifyToken, validateType(['admin', 'customer']), ordersController.removeFromCart); 
+router.post('/:id/clean-cart', verifyToken, validateType(['admin']), ordersController.cleanCart); 
+
+
 module.exports = router;
 
