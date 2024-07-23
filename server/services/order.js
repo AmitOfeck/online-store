@@ -148,6 +148,21 @@ const cleanCart = async (id) => {
 };
 
 
+const aggregateTotalBillByCustomer = async (customerId) => {
+    return await Order.aggregate([
+        { $match: { customerId: customerId , ordered: true } },
+        {
+            $group: {
+                _id: "$customerId",
+                totalBill: { $sum: "$bill" }
+            }
+        }
+    ]);
+};
+
+
+
+
 
 module.exports = {
     createOrder,
@@ -157,5 +172,6 @@ module.exports = {
     deleteOrder,
     addToCart,
     removeFromCart,
-    cleanCart
+    cleanCart,
+    aggregateTotalBillByCustomer
 };
