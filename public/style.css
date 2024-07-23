@@ -245,3 +245,7 @@ header {
   padding: 5px; /* Adjust padding for the input field */
   text-align: center; /* Center text in the input field */
 }
+.login_btn {
+  color:black;
+  text-decoration: none;
+}
