@@ -17,6 +17,7 @@ router.post('/:id/add-to-cart/:productId', verifyToken, validateType(['admin', '
 router.post('/:id/remove-from-cart/:productId', verifyToken, validateType(['admin', 'customer']), ordersController.removeFromCart); 
 router.post('/:id/clean-cart', verifyToken, validateType(['admin', 'customer']), ordersController.cleanCart); 
 
+router.get('/aggregate/total-bill-by-customer/:customerId', verifyToken, validateType(['admin', 'customer']), ordersController.aggregateTotalBillByCustomer);
 
 module.exports = router;
 

@@ -143,6 +143,25 @@ const cleanCart = async (req, res) => {
 };
 
 
+
+const aggregateTotalBillByCustomer = async (req, res) => {
+    try {
+        const { customerId } = req.params;
+        const result = await orderService.aggregateTotalBillByCustomer(customerId);
+
+        if (!result || result.length === 0) {
+            return res.status(404).json({ message: 'No orders found for the given customer ID' });
+        }
+
+        res.json(result);
+    } catch (error) {
+        console.error('Error aggregating total bill by customer:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+
+
 module.exports = {
     createOrder,
     getOrders,
@@ -151,5 +170,6 @@ module.exports = {
     deleteOrder,
     addToCart,
     removeFromCart,
-    cleanCart
+    cleanCart,
+    aggregateTotalBillByCustomer
 };
