@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{productName}}</title>
+    <link rel="stylesheet" href="itempage.css">
+</head>
+<body>
+    <div class="container">
+        <nav>
+            <a href="#">Home</a> > 
+            <a href="#">{{productCategory}}</a> > 
+            <a href="#">{{productName}}</a>
+        </nav>
+        <h1>{{productName}}</h1>
+        <div class="content">
+            <div class="image-container">
+                <div class="image-background">
+                    <img src="{{imageSrc}}" alt="{{productName}}">
+                </div>
+            </div>
+            <div class="details">
+                <div class="price">
+                    <span class="current-price">₪{{productPrice}}</span>
+                    <span class="unit-price">{{productUnitPrice}}₪/100g.</span>
+                </div>
+                <button>Add to cart</button>
+                <div class="about">
+                    <h2>ABOUT ITEM</h2>
+                    <p><strong>Brand, manufacturer:</strong> {{productManufacturer}}</p>
+                    <p><strong>Ingredients:</strong> {{productIngredients}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
