@@ -14,26 +14,27 @@ document.getElementById('create-item-form').addEventListener('submit', async fun
         manufacturer: document.getElementById('product-manufacturer').value
     };
 
-    console.log(formData)
-   
+    console.log('Form Data:', formData);
+
     try {
         const response = await fetch('http://localhost:8080/products/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('token')}` // אם אתה משתמש בטוקן
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
             },
             body: JSON.stringify(formData)
         });
 
+        console.log('Response Status:', response.status);
+        const responseData = await response.json();
+        console.log('Response Data:', responseData);
+
         if (response.ok) {
-            const data = await response.json();
             alert('Product created successfully');
-            // Open new window with the product page
-            window.open(`/products/${data._id}`, '_blank');
+            window.open(`/products/${responseData._id}`, '_blank');
         } else {
-            const error = await response.json();
-            alert(`Error: ${error.message}`);
+            alert(`Error: ${responseData.message}`);
         }
     } catch (error) {
         console.error('Error:', error);
@@ -41,4 +42,4 @@ document.getElementById('create-item-form').addEventListener('submit', async fun
     }
 });
 
-localStorage.setItem('token',"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhkYWY3NjlhMzZlZTQ2NDQ4Y2M3M2MiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MjE3NzI4NDUsImV4cCI6MTcyMTc3NjQ0NX0.e37UG3lM6EbI99omliu4L1UlE3sMuH4b7pAZ8bMSU4A")
+localStorage.setItem('token',"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhkYWY3NjlhMzZlZTQ2NDQ4Y2M3M2MiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MjE5MzEzNDAsImV4cCI6MTcyMTkzNDk0MH0.134DnkkQrkrOWdJ4dVzrqafSue82acjmjTrIW_qVot4")

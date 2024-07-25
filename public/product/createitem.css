@@ -1,9 +1,32 @@
+.top-bar {
+    background-color: #46ad7f; /* Green color */
+    color: #fff;
+    display: flex;
+    align-items: center;
+    padding: 20px 30px; /* Increase padding for larger size */
+    width: 100%;
+    box-sizing: border-box;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1000; /* Ensure it stays on top */
+    margin-bottom: 20px; /* Add margin to avoid overlap with the content */
+    border-bottom: 3px solid #fff; /* Optional: Add a border to separate from the content */
+}
+
+.top-bar .icon {
+    width: 50px; /* Increase size as needed */
+    height: 50px; /* Increase size as needed */
+}
+
 body {
     font-family: Arial, sans-serif;
     color: #333;
     display: flex;
-    justify-content: center;
-    padding: 20px;
+    flex-direction: column;
+    padding: 0 20px;
+    margin: 0;
+    padding-top: 100px; /* Add top padding to avoid overlap with the top bar */
 }
 
 .container {
@@ -11,7 +34,9 @@ body {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    margin: 0 auto; /* Center the container */
 }
+
 
 h1 {
     text-align: center;
