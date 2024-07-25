@@ -8,6 +8,8 @@ router.route('/')
     .get(verifyToken, validateType(['admin']), ordersController.getOrders)
     .post(verifyToken, validateType(['admin', 'customer']), ordersController.createOrder);
 
+router.get('/get-my-cart', verifyToken, validateType(['customer']), ordersController.getMyCart);
+
 router.route('/:id')
     .get(verifyToken, validateType(['admin', 'customer']), ordersController.getOrderById)
     .patch(verifyToken, validateType(['admin', 'customer']), ordersController.updateOrder)
@@ -18,6 +20,7 @@ router.post('/:id/remove-from-cart/:productId', verifyToken, validateType(['admi
 router.post('/:id/clean-cart', verifyToken, validateType(['admin', 'customer']), ordersController.cleanCart); 
 
 router.get('/aggregate/total-bill-by-customer/:customerId', verifyToken, validateType(['admin', 'customer']), ordersController.aggregateTotalBillByCustomer);
+
 
 module.exports = router;
 
