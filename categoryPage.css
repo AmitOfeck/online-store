@@ -1,0 +1,204 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif;
+ 
+}
+
+.container {
+    display: flex;
+    height: 100vh; /* גובה כל הדף */
+    width:100vw;
+    box-sizing: border-box;
+}
+
+.sidebar {
+    flex: 0 0 20%; /* קובע את הרוחב ל-30% */
+    background-color: white;
+    padding: 30px;
+    position: relative;
+    left: -60px; 
+    box-sizing: border-box;
+}
+
+.content {
+    flex: 1;/* תופס את שארית הרוחב */
+    background-color: white;
+    padding: 80px;
+    overflow: auto;
+    box-sizing: border-box;
+    padding-right: 20px;
+
+}
+
+
+.product-grid {
+    display: grid;
+    flex-wrap: wrap;
+    justify-content: center;
+
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    max-width: 1000px;
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.product-card {
+    /* background-color: rgb(224, 219, 219); */
+    background-color: #eaf6ff;
+    border: 1px solid #e1e1e1;
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    position: relative;
+    display: inline;
+}
+
+
+
+.product-card img {
+    width: 100%;
+    border-radius: 10px;
+    background-color: #f5f5f5;
+    height: 150px;
+    object-fit: cover;
+}
+
+
+.product-card .discount-tag {
+    background-color: #46ad7f;
+    color: white ;
+    font-size: 1em;
+    padding: 5px 10px;
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    border-radius: 50px;
+}
+
+ .product-card .price {
+    color: #46ad7f;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.product-card .old-price {
+    text-decoration: line-through;
+    color: #888;
+    font-size: 0.9em;
+    
+}
+
+.product-card .product-name {
+    font-size: 1em;
+    margin: 10px 0;
+    min-height: 40px; 
+}
+
+.product-card .product-weight {
+    color: #888;
+    font-size: 0.9em;
+}
+
+.product-card .price-per-100g {
+    color: #888;
+    font-size: 0.9em;
+    margin: 10px 0;
+} 
+
+.product-card button {
+    background-color: #46ad7f;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: auto;
+}
+
+.product-card button:hover {
+    /* animation: ; */
+    background-color: #FFF;
+    color: black;
+    transition: ease-in-out 0.3s;
+}
+
+
+ button{
+
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    color: w;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+ 
+} 
+
+
+
+
+/* Media Queries for Responsiveness */
+
+@media (max-width: 1200px) {
+    .product-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 900px) {
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 600px) {
+    .product-grid {
+        grid-template-columns: 1fr;
+    }
+}  
+
+
+.category-title {
+    font-size: 32px;
+    font-weight: bold;
+    margin: 0 0 20px 0;
+}
+
+.categories {
+    list-style-type: none; /* מסיר את הנקודות מהרשימה */
+    padding: 0; /* מסיר את הריווח הפנימי */
+    margin: 0; /* מסיר את הריווח החיצוני */
+    font-weight: bold;
+}
+
+.category-item {
+   
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.sub-categories {
+    list-style-type: none; /* מסיר את הנקודות מהרשימה */
+    padding-left: 20px; /* רווח לשמאל לתתי קטגוריות */
+    margin: 0; /* מסיר את הריווח החיצוני */
+    display: none; /* תתי קטגוריות מוסתרות כברירת מחדל */
+    font-weight:400;
+    display: none; /* תתי קטגוריות מוסתרות כברירת מחדל */
+}
+
+.categorie{
+
+    font-weight: bold;
+
+
+}

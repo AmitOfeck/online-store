@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Card</title>
+    <link rel="stylesheet" href="categoryPage.css">
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    
+</head>
+
+
+<body>
+
+     <div class="container">
+
+        <aside class="sidebar">
+
+          
+            <h1 class="category-title">CATALOGUE</h1>
+
+            <ul class="categories">
+                <li class="category-item"> <button class="categorie"   onclick="showSubCategories('ice-cream')" type="button">Ice cream</button>
+                    <ul id="ice-cream" class="sub-categories">
+                        <li>Ice Cream Family Pack</li>
+                        <li>Ice Cream Pints</li>
+                        <li>Diet ice creams</li>
+                        <li>Ice Cream Bars</li>
+                    </ul>
+                </li>
+                <li class="category-item"> <button   class="categorie"  onclick="showSubCategories('frozen-desserts')" type="button">Frozen Desserts</button>
+                    <ul id="frozen-desserts" class="sub-categories" >
+                        <li>Desserts</li>
+                        <li>Cakes</li>
+                        <li>Sweet pastry</li>
+                    </ul>
+                </li>
+                <li class="category-item"><button class="categorie" onclick="showSubCategories('pastries')" type="button">Pastries</button>
+                    <ul id="pastries" class="sub-categories" >
+                        <li>Pizza</li>
+                        <li>Bourekas and Pastries</li>
+                        <li>Pastries</li>
+                        <li>Dim Sum and Gyoza</li>
+                        <li>Gluten free pastry</li>
+                    </ul>
+                </li>
+                <li class="category-item"><button class="categorie"  onclick="showSubCategories('meat-poultry')" type="button">Meat & Poultry</button>
+                    <ul id="meat-poultry" class="sub-categories" >
+                        <li>Schnitzels</li>
+                        <li>Baladi's meat shop</li>
+                        <li>Frozen Meat Havat Habokrim</li>
+                        <li>Frozen Chicken</li>
+                        <li>Sliced Meat</li>
+                        <li>Minced Meat</li>
+                    </ul>
+                </li>
+                <li class="category-item"><button class="categorie" onclick="showSubCategories('frozen-fruits')" type="button">Frozen Fruits & Veg</button>
+                    <ul id="frozen-fruits" class="sub-categories" >
+                        <li>Fruits and Berries</li>
+                        <li>Vegetables</li>
+                        <li>Frozen herbs</li>
+                        <li>Chips and Onion rings</li>
+                    </ul>
+                </li>
+                <li class="category-item"><button  class="categorie" onclick="showSubCategories('meat-alternative')" type="button">Meat Alternative</button>
+                    <ul id="meat-alternative" class="sub-categories" >
+                        <li>Vegan</li> 
+                        <li>Vegetarian</li>
+                    </ul>
+                </li>
+
+
+            </ul>
+            
+        </aside>
+
+        
+        <main class="content">
+            
+            <div class="product-grid">
+
+                <div id="content1" class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\b&g-coffee.jpeg" alt="Product Image">
+                    <div class="product-details">
+                        <div class="price">₪20.93 <span class="old-price">₪29.90</span></div>
+                        <div class="product-name">Ben&Jerry's Coffee Ice Cream Pint</div>
+                        <div class="product-weight">427 g</div>
+                        <div class="price-per-100g">₪4.9 per 100g</div>
+                        <button>Add to cart</button>
+                    </div>
+                </div>
+                
+                <div id="content1" class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\b&g-cookies.jpeg" alt="Product Image">
+                    <div class="product-details">
+                        <div class="price">₪20.93 <span class="old-price">₪29.90</span></div>
+                        <div class="product-name">Ben&Jerry's Cookies Ice cream pint</div>
+                        <div class="product-weight">427 g</div>
+                        <div class="price-per-100g">₪4.9 per 100g</div>
+                        <button>Add to cart</button>
+                    </div>
+                </div>
+
+                <div id="content1" class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\DolceDeLeche.png" alt="Product Image">
+                    <div class="product-details">
+                        <div class="price">₪20.93 <span class="old-price">₪29.90</span></div>
+                        <div class="product-name">Ben&Jerry's Dulce de Leche ice cream pint</div>
+                        <div class="product-weight">427 g</div>
+                        <div class="price-per-100g">₪4.9 per 100g</div>
+                        <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div id="content1" class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\NewYorkSuper.png" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪20.93 <span class="old-price">₪29.90</span></div>
+                    <div class="product-name">Ben&Jerry's New York Ice cream pint</div>
+                    <div class="product-weight">427 g</div>
+                    <div class="price-per-100g">₪4.9 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\MagnumMini.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Magnum mini Classic Chocolate</div>
+                    <div class="product-weight">5 × 50 g</div>
+                    <div class="price-per-100g">₪12.01 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\MagnumMiniVanilla.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Magnum mini Classic Vanilla</div>
+                    <div class="product-weight">5 × 50 g</div>
+                    <div class="price-per-100g">₪12.01 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\LoackerIceCreamRed.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Loacker Sandwich Naploitaner Ice cream</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQYYYfv_uShiRfzxMMJ7lKwZ44vjk3I2mPJ3hjrrjwYNPfwmgV7" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Loacker Sandwich Ice cream Alpine Milk</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\milka.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Milka</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\KitKat.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Kit Kat</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\GodisBrown.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Goodiz Ice Cream Brown</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\goodis.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Goodiz Ice Cream Green </div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\GoodisPurple.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Goodiz Ice Cream Purple</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+        
+        
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\Crunch.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Crunch</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+        
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\cornettoPurple.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Cornetto</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div>
+        
+                <div class="product-card">
+                    <div class="discount-tag">-30%</div>
+                    <img src="c:\Users\nir96\Desktop\semester b\apps management\photosProject\CornettoKlik.jpeg" alt="Product Image">
+                    <div class="product-details">
+                    <div class="price">₪30.03 <span class="old-price">₪42.90</span></div>
+                    <div class="product-name">Cornetto</div>
+                    <div class="product-weight">4 × 66 g</div>
+                    <div class="price-per-100g">₪11.38 per 100g</div>
+                    <button>Add to cart</button>
+                    </div>
+                </div> 
+        
+
+
+
+
+
+            </div>
+        
+        </main>
+
+    </div>
+
+
+
+
+</body>
+
+<script src="categoryPage.js"></script>
+</html>
+
+
