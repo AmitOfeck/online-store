@@ -253,3 +253,55 @@ header {
   height: 500px; 
   width: 100%;
 }
+
+
+#pac-input {
+  z-index: 1051; /* Ensures the input is above the modal backdrop */
+}
+.pac-container {
+  z-index: 2052 !important; /* Ensures the suggestions are above the modal */
+}
+
+.product-card {
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  margin-bottom: 20px;
+  background-color: #f9f9f9;
+  width:200px;
+  
+}
+
+.product-card img {
+  max-width: 100px;
+  margin-bottom: 10px;
+}
+
+.product-card h5 {
+  font-size: medium;
+  font-family: Courier, monospace;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.product-card p {
+  margin: 5px 0;
+}
+
+.product-card .btn {
+  background-color: #46ad7f;
+  border: none;
+  color: white;
+}
+
+#product-list {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.cart-item img {
+  max-width: 50px;
+  margin-left: 15px;
+}
