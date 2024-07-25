@@ -161,6 +161,18 @@ const aggregateTotalBillByCustomer = async (req, res) => {
 };
 
 
+const getMyCart = async (req, res) => {
+    try {
+        const userId = req.userId; 
+        const order = await orderService.findOrCreateCart(userId);
+        res.json(order);
+    } catch (error) {
+        console.error('Error retrieving cart:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
 
 module.exports = {
     createOrder,
@@ -171,5 +183,6 @@ module.exports = {
     addToCart,
     removeFromCart,
     cleanCart,
-    aggregateTotalBillByCustomer
+    aggregateTotalBillByCustomer,
+    getMyCart
 };
