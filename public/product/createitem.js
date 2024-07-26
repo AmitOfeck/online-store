@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     // שמירת הטוקן ב-localStorage
-    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhkYWY3NjlhMzZlZTQ2NDQ4Y2M3M2MiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MjE5OTY4ODIsImV4cCI6MTcyMjAwMDQ4Mn0.NAh7TTdzvaTmuLi-i1ow_Lnhm0Of1JxkIgo3-NXkyhw');
+    localStorage.setItem('token', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NjhkYWY3NjlhMzZlZTQ2NDQ4Y2M3M2MiLCJ0eXBlIjoiYWRtaW4iLCJpYXQiOjE3MjIwMTE1MzQsImV4cCI6MTcyMjAxNTEzNH0.XOhWrBP5EYge6Q3x8UrAr3AXztGNGEihx236TcAXkCQ');
     console.log(localStorage.getItem('token'));
 
 
