@@ -89,7 +89,7 @@
   position: fixed; /* Make the cart section fixed */
   top: 150px; /* Adjust based on the header height */
   right: 0;
-  width: 350px;
+  width: 400px;
   height: calc(100% - 80px); /* Adjust height based on the header height */
 }
 
