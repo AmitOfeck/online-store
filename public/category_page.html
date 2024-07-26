@@ -62,7 +62,7 @@
           <!-- Cart items will go here -->
           <div id="cart-items"></div>
           <p class="reg-text">Total Sum: <span id="total-sum">0</span></p>
-          <button class="btn btn-primary btn-block purchase-button">Pay Now <i class="bi bi-cart"></i></button>
+          <button class="btn btn-primary btn-block purchase-button" onclick="payNow()">Pay Now <i class="bi bi-cart"></i></button>
         </div>
       </div>
     </div>
@@ -258,6 +258,51 @@ async function decreaseQuantity(productId) {
     renderCart(); // Re-render the cart
   } catch (error) {
     console.error('Error decreasing quantity:', error);
+  }
+}
+
+async function payNow() {
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+    const token = localStorage.getItem('token');
+
+
+    const res = await fetch('http://localhost:8080/orders/get-my-cart', {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`
+          }
+        });
+
+        if (!res.ok) {
+          console.log('Response Status:', res.status);
+          console.log('Response Status Text:', res.statusText);
+          throw new Error('Failed to fetch cart');
+        }
+
+    const order = await res.json();
+    order.ordered = true;
+
+    const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `${token}`, // Include token for authentication
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order) // Set the `ordered` status to true
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error completing the order: ${response.statusText}`);
+    }
+
+    // Show success alert
+    alert('The order will be sent to your address');
+
+    // Fetch the updated cart
+    await fetchCart();
+  } catch (error) {
+    console.error('Error processing payment:', error);
   }
 }
 
