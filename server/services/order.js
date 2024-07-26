@@ -161,6 +161,18 @@ const aggregateTotalBillByCustomer = async (customerId) => {
 };
 
 
+const findOrCreateCart = async (customerId) => {
+    let order = await Order.findOne({ customerId, ordered: false });
+
+    if (!order) {
+        order = new Order({ bill : 0 , customerId : customerId, items: [], ordered: false });
+        await order.save();
+    }
+
+    return order;
+};
+
+
 
 
 
@@ -173,5 +185,6 @@ module.exports = {
     addToCart,
     removeFromCart,
     cleanCart,
-    aggregateTotalBillByCustomer
+    aggregateTotalBillByCustomer,
+    findOrCreateCart
 };
