@@ -78,11 +78,11 @@
 
     async function fetchProducts() {
       try {
-        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+        const token = localStorage.getItem('token'); 
         const response = await fetch('http://localhost:8080/products/', {
           method: 'GET',
           headers: {
-            'Authorization': `${token}` // Include the token in the Authorization header
+            'Authorization': `${token}` 
           }
         });
 
@@ -116,7 +116,7 @@
         }
 
         const order = await response.json();
-        console.log(order)
+        localStorage.setItem('orderId' , order._id)
         cart = order.items;
         renderCart();
       } catch (error) {
@@ -146,18 +146,13 @@
   cartItems.innerHTML = '';
   let sum = 0;
 
-  //console.log(cart)
 
   cart.forEach(item => {
-    console.log(item.id)
-    console.log(products)
     const product = products.find(p => p._id === item.id)
-    console.log(product)
 
-    // Check if product was found
     if (!product) {
       console.warn(`Product with ID ${item.productId} not found`);
-      return; // Skip this cart item if product not found
+      return; 
     }
 
     const cartItem = document.createElement('div');
@@ -189,45 +184,63 @@
   totalSum.innerText = sum.toFixed(2);
 }
 
-    async function addToCart(productId) {
-      const product = products.find(p => p._id === productId);
-      const cartItem = cart.find(item => item.productId === productId);
-
-      if (product.currentStock === 0) {
-        alert('Out of stock');
-        return;
+async function addToCart(productId) {
+  try {
+    
+    // Retrieve the current order ID (you should store it in a variable or localStorage)
+    const orderId = localStorage.getItem('orderId'); // Adjust as necessary
+    
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
       }
+    });
 
-      if (cartItem) {
-        cartItem.quantity++;
-      } else {
-        cart.push({
-          productId: product._id,
-          quantity: 1
-        });
-      }
-
-      product.currentStock--;
-
-      await updateCart();
-      renderCart();
+    if (!response.ok) {
+      throw new Error(`Error adding to cart: ${response.statusText}`);
     }
 
-    async function increaseQuantity(productId) {
-      const product = products.find(p => p._id === productId);
-      const cartItem = cart.find(item => item.productId === productId);
+    const cartUpdate = await response.json();
 
-      if (product.currentStock === 0) {
-        alert('Out of stock');
-        return;
+    // Assuming cartUpdate contains the updated cart info
+    cart = cartUpdate.items;
+    renderCart();
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+  }
+}
+
+
+async function increaseQuantity(productId) {
+  try {
+    // Retrieve the current order ID (you should store it in a variable or localStorage)
+    const orderId = localStorage.getItem('orderId'); // Adjust as necessary
+    
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
       }
+    });
 
-      cartItem.quantity++;
-      product.currentStock--;
-
-      await updateCart();
-      renderCart();
+    if (!response.ok) {
+      throw new Error(`Error increasing quantity: ${response.statusText}`);
     }
+
+    const cartUpdate = await response.json();
+    console.log(cartUpdate);
+
+    // Assuming cartUpdate contains the updated cart info
+    cart = cartUpdate.items;
+    renderCart();
+  } catch (error) {
+    console.error('Error increasing quantity:', error);
+  }
+}
+
 
     async function decreaseQuantity(productId) {
       const product = products.find(p => p._id === productId);
