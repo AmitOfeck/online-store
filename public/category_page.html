@@ -161,11 +161,11 @@
     cartItem.innerHTML = `
       <div class="input-group small-input-group">
         <div class="input-group-prepend">
-          <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.productId}')">-</button>
+          <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.id}')">-</button>
         </div>
         <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.productId}')">+</button>
+          <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.id}')">+</button>
         </div>
       </div>
       <div class="ml-3 cart-prod-info">
@@ -215,9 +215,7 @@ async function addToCart(productId) {
 
 async function increaseQuantity(productId) {
   try {
-    // Retrieve the current order ID (you should store it in a variable or localStorage)
-    const orderId = localStorage.getItem('orderId'); // Adjust as necessary
-    
+    const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
     const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
       method: 'POST',
       headers: {
@@ -231,32 +229,38 @@ async function increaseQuantity(productId) {
     }
 
     const cartUpdate = await response.json();
-    console.log(cartUpdate);
-
-    // Assuming cartUpdate contains the updated cart info
-    cart = cartUpdate.items;
-    renderCart();
+    cart = cartUpdate.items; // Update cart with the latest items
+    renderCart(); // Re-render the cart
   } catch (error) {
     console.error('Error increasing quantity:', error);
   }
 }
 
 
-    async function decreaseQuantity(productId) {
-      const product = products.find(p => p._id === productId);
-      const cartItem = cart.find(item => item.productId === productId);
 
-      if (cartItem.quantity > 1) {
-        cartItem.quantity--;
-        product.currentStock++;
-      } else {
-        cart.splice(cart.indexOf(cartItem), 1);
-        product.currentStock++;
+async function decreaseQuantity(productId) {
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/remove-from-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
       }
+    });
 
-      await updateCart();
-      renderCart();
+    if (!response.ok) {
+      throw new Error(`Error decreasing quantity: ${response.statusText}`);
     }
+
+    const cartUpdate = await response.json();
+    cart = cartUpdate.items; // Update cart with the latest items
+    renderCart(); // Re-render the cart
+  } catch (error) {
+    console.error('Error decreasing quantity:', error);
+  }
+}
+
 
     async function updateCart() {
       try {
