@@ -1,22 +1,20 @@
 .top-bar {
-    background-color: #46ad7f; /* Green color */
+    background-color: #46ad7f; 
     color: #fff;
     display: flex;
     align-items: center;
-    padding: 20px 30px; /* Increase padding for larger size */
+    padding: 20px 30px; 
     width: 100%;
     box-sizing: border-box;
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 1000; /* Ensure it stays on top */
-    margin-bottom: 20px; /* Add margin to avoid overlap with the content */
-    border-bottom: 3px solid #fff; /* Optional: Add a border to separate from the content */
+    z-index: 1000;
 }
 
 .top-bar .icon {
-    width: 50px; /* Increase size as needed */
-    height: 50px; /* Increase size as needed */
+    width: 60px; 
+    height: 60px; 
 }
 
 body {
@@ -26,7 +24,8 @@ body {
     flex-direction: column;
     padding: 0 20px;
     margin: 0;
-    padding-top: 100px; /* Add top padding to avoid overlap with the top bar */
+    padding-top: 100px; 
+    background-color: #f8f9fa; 
 }
 
 .container {
@@ -34,12 +33,18 @@ body {
     padding: 20px;
     border: 1px solid #ccc;
     border-radius: 10px;
+    background-color: #ffffff; 
+    border: 1px solid #dee2e6; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    font-family: Courier, monospace ;
     margin: 0 auto; /* Center the container */
+    margin-top: 50px; 
 }
 
 
 h1 {
     text-align: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 form {
@@ -108,3 +113,4 @@ button {
 button:hover {
     background-color: #3f9970;
 }
+
