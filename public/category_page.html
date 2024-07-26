@@ -70,146 +70,29 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
-  const products = [
-  {
-    "category": "grocery",
-    "subCategory": "fruits",
-    "name": "Apple",
-    "supplierId": "supplier123",
-    "manufacturer": "FreshFarms",
-    "price": 3,
-    "currentStock": 150,
-    "image": "https://www.collinsdictionary.com/images/full/apple_158989157.jpg",
-    "weight": 200,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "vegetables",
-    "name": "Carrot",
-    "supplierId": "supplier124",
-    "manufacturer": "VeggieDelight",
-    "price": 2,
-    "currentStock": 200,
-    "image": "https://images.unsplash.com/photo-1589923188900-6806cc5cda5e",
-    "weight": 100,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "dairy",
-    "name": "Milk",
-    "supplierId": "supplier125",
-    "manufacturer": "DairyBest",
-    "price": 4,
-    "currentStock": 100,
-    "image": "https://images.unsplash.com/photo-1576158113213-56d37382368d",
-    "weight": 1,
-    "weightUnit": "l",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "meat",
-    "name": "Chicken Breast",
-    "supplierId": "supplier126",
-    "manufacturer": "MeatKing",
-    "price": 12,
-    "currentStock": 75,
-    "image": "https://images.unsplash.com/photo-1562967914-58b8d6e74261",
-    "weight": 500,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "bakery",
-    "name": "Whole Wheat Bread",
-    "supplierId": "supplier127",
-    "manufacturer": "BreadMasters",
-    "price": 5,
-    "currentStock": 50,
-    "image": "https://images.unsplash.com/photo-1571193045395-503a14fc4ef0",
-    "weight": 750,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "beverages",
-    "name": "Orange Juice",
-    "supplierId": "supplier128",
-    "manufacturer": "JuiceExpress",
-    "price": 6,
-    "currentStock": 80,
-    "image": "https://images.unsplash.com/photo-1559679908-31c952ce1407",
-    "weight": 1,
-    "weightUnit": "l",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "snacks",
-    "name": "Potato Chips",
-    "supplierId": "supplier129",
-    "manufacturer": "SnackTime",
-    "price": 3,
-    "currentStock": 120,
-    "image": "https://images.unsplash.com/photo-1584036561584-b03c19da874c",
-    "weight": 200,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "seafood",
-    "name": "Salmon Fillet",
-    "supplierId": "supplier130",
-    "manufacturer": "SeaFresh",
-    "price": 15,
-    "currentStock": 60,
-    "image": "https://images.unsplash.com/photo-1514517192744-df84dffea9a3",
-    "weight": 400,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "canned goods",
-    "name": "Canned Tomatoes",
-    "supplierId": "supplier131",
-    "manufacturer": "TomatoLovers",
-    "price": 2,
-    "currentStock": 200,
-    "image": "https://images.unsplash.com/photo-1562967913-c7d391e141ec",
-    "weight": 400,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "grains",
-    "name": "Basmati Rice",
-    "supplierId": "supplier132",
-    "manufacturer": "GrainFields",
-    "price": 10,
-    "currentStock": 90,
-    "image": "https://images.unsplash.com/photo-1617957747492-1b1b9a5fcce0",
-    "weight": 1,
-    "weightUnit": "kg",
-    "__v": 0
-  }
-];
-
-
     const cart = [];
     const productList = document.getElementById('product-list');
     const cartItems = document.getElementById('cart-items');
     const totalSum = document.getElementById('total-sum');
 
-    function renderProducts() {
+    async function fetchProducts() {
+      try {
+        const token = localStorage.getItem('token'); // Retrieve the token from local storage
+        const response = await fetch('http://localhost:8080/products/', {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}` // Include the token in the Authorization header
+          }
+        });
+        const products = await response.json();
+        renderProducts(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    function renderProducts(products) {
+      productList.innerHTML = '';
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
@@ -311,7 +194,7 @@
       renderCart();
     }
 
-    renderProducts();
+    fetchProducts();
   </script>
 </body>
 </html>
