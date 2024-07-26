@@ -3,39 +3,55 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{productName}}</title>
+    <title>Product Page</title>
     <link rel="stylesheet" href="itempage.css">
 </head>
 <body>
     <div class="top-bar">
-        <img src="path/to/your/icon.png" alt="Icon" class="icon"> <!-- Replace with your image path -->
+        <img src="../Pictures/logo.jpg" alt="Icon" class="icon">
     </div>
     <div class="container">
         <nav>
             <a href="#">Home</a> > 
-            <a href="#">{{productCategory}}</a> > 
-            <a href="#">{{productName}}</a>
+            <a href="#" id="category-link"></a> > 
+            <a href="#" id="product-link"></a>
         </nav>
-        <h1>{{productName}}</h1>
+        <h1 id="product-name"></h1>
         <div class="content">
             <div class="image-container">
                 <div class="image-background">
-                    <img src="{{imageSrc}}" alt="{{productName}}">
+                    <img id="product-image" alt="Product Image">
                 </div>
             </div>
             <div class="details">
                 <div class="price">
-                    <span class="current-price">₪{{productPrice}}</span>
-                    <span class="unit-price">{{productUnitPrice}}₪/100g.</span>
+                    <span class="current-price" id="product-price"></span>
                 </div>
                 <button>Add to cart</button>
                 <div class="about">
                     <h2>ABOUT ITEM</h2>
-                    <p><strong>Brand, manufacturer:</strong> {{productManufacturer}}</p>
-                    <p><strong>Ingredients:</strong> {{productIngredients}}</p>
+                    <p><strong>Brand, manufacturer:</strong> <span id="product-manufacturer"></span></p>
+                    <p><strong>Weight:</strong> <span id="product-weight"></span></p>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const productData = JSON.parse(localStorage.getItem('productData'));
+
+            if (productData) {
+                document.getElementById('product-name').textContent = productData.name;
+                document.getElementById('category-link').textContent = productData.category;
+                document.getElementById('product-link').textContent = productData.name;
+                document.getElementById('product-image').src = productData.image;
+                document.getElementById('product-price').textContent = `₪${productData.price}`;
+                document.getElementById('product-manufacturer').textContent = productData.manufacturer;
+                document.getElementById('product-weight').textContent = `${productData.weight} ${productData.weightUnit}`;
+            } else {
+                alert('No product data found');
+            }
+        });
+    </script>
 </body>
 </html>
