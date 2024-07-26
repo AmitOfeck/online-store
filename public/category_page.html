@@ -62,7 +62,7 @@
           <!-- Cart items will go here -->
           <div id="cart-items"></div>
           <p class="reg-text">Total Sum: <span id="total-sum">0</span></p>
-          <button class="btn btn-primary btn-block purchase-button">Pay Now <i class="bi bi-cart"></i></button>
+          <button class="btn btn-primary btn-block purchase-button" onclick="payNow()">Pay Now <i class="bi bi-cart"></i></button>
         </div>
       </div>
     </div>
@@ -70,146 +70,62 @@
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
-  const products = [
-  {
-    "category": "grocery",
-    "subCategory": "fruits",
-    "name": "Apple",
-    "supplierId": "supplier123",
-    "manufacturer": "FreshFarms",
-    "price": 3,
-    "currentStock": 150,
-    "image": "https://www.collinsdictionary.com/images/full/apple_158989157.jpg",
-    "weight": 200,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "vegetables",
-    "name": "Carrot",
-    "supplierId": "supplier124",
-    "manufacturer": "VeggieDelight",
-    "price": 2,
-    "currentStock": 200,
-    "image": "https://images.unsplash.com/photo-1589923188900-6806cc5cda5e",
-    "weight": 100,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "dairy",
-    "name": "Milk",
-    "supplierId": "supplier125",
-    "manufacturer": "DairyBest",
-    "price": 4,
-    "currentStock": 100,
-    "image": "https://images.unsplash.com/photo-1576158113213-56d37382368d",
-    "weight": 1,
-    "weightUnit": "l",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "meat",
-    "name": "Chicken Breast",
-    "supplierId": "supplier126",
-    "manufacturer": "MeatKing",
-    "price": 12,
-    "currentStock": 75,
-    "image": "https://images.unsplash.com/photo-1562967914-58b8d6e74261",
-    "weight": 500,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "bakery",
-    "name": "Whole Wheat Bread",
-    "supplierId": "supplier127",
-    "manufacturer": "BreadMasters",
-    "price": 5,
-    "currentStock": 50,
-    "image": "https://images.unsplash.com/photo-1571193045395-503a14fc4ef0",
-    "weight": 750,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "beverages",
-    "name": "Orange Juice",
-    "supplierId": "supplier128",
-    "manufacturer": "JuiceExpress",
-    "price": 6,
-    "currentStock": 80,
-    "image": "https://images.unsplash.com/photo-1559679908-31c952ce1407",
-    "weight": 1,
-    "weightUnit": "l",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "snacks",
-    "name": "Potato Chips",
-    "supplierId": "supplier129",
-    "manufacturer": "SnackTime",
-    "price": 3,
-    "currentStock": 120,
-    "image": "https://images.unsplash.com/photo-1584036561584-b03c19da874c",
-    "weight": 200,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "seafood",
-    "name": "Salmon Fillet",
-    "supplierId": "supplier130",
-    "manufacturer": "SeaFresh",
-    "price": 15,
-    "currentStock": 60,
-    "image": "https://images.unsplash.com/photo-1514517192744-df84dffea9a3",
-    "weight": 400,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "canned goods",
-    "name": "Canned Tomatoes",
-    "supplierId": "supplier131",
-    "manufacturer": "TomatoLovers",
-    "price": 2,
-    "currentStock": 200,
-    "image": "https://images.unsplash.com/photo-1562967913-c7d391e141ec",
-    "weight": 400,
-    "weightUnit": "g",
-    "__v": 0
-  },
-  {
-    "category": "grocery",
-    "subCategory": "grains",
-    "name": "Basmati Rice",
-    "supplierId": "supplier132",
-    "manufacturer": "GrainFields",
-    "price": 10,
-    "currentStock": 90,
-    "image": "https://images.unsplash.com/photo-1617957747492-1b1b9a5fcce0",
-    "weight": 1,
-    "weightUnit": "kg",
-    "__v": 0
-  }
-];
-
-
-    const cart = [];
+    let products = [];
+    let cart = [];
     const productList = document.getElementById('product-list');
     const cartItems = document.getElementById('cart-items');
     const totalSum = document.getElementById('total-sum');
 
-    function renderProducts() {
+    async function fetchProducts() {
+      try {
+        const token = localStorage.getItem('token'); 
+        const response = await fetch('http://localhost:8080/products/', {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}` 
+          }
+        });
+
+        if (!response.ok) {
+          console.log('Response Status:', response.status);
+          console.log('Response Status Text:', response.statusText);
+          throw new Error('Failed to fetch products');
+        }
+
+        products = await response.json();
+        renderProducts(products);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    }
+
+    async function fetchCart() {
+      try {
+        const token = localStorage.getItem('token');
+        const response = await fetch('http://localhost:8080/orders/get-my-cart', {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`
+          }
+        });
+
+        if (!response.ok) {
+          console.log('Response Status:', response.status);
+          console.log('Response Status Text:', response.statusText);
+          throw new Error('Failed to fetch cart');
+        }
+
+        const order = await response.json();
+        localStorage.setItem('orderId' , order._id)
+        cart = order.items;
+        renderCart();
+      } catch (error) {
+        console.error('Error fetching cart:', error);
+      }
+    }
+
+    function renderProducts(products) {
+      productList.innerHTML = '';
       products.forEach(product => {
         const productCard = document.createElement('div');
         productCard.className = 'product-card';
@@ -219,7 +135,7 @@
           <h5>${product.name}</h5>
           <p>${product.weight} ${product.weightUnit}</p>
           <p>$${product.price}</p>
-          <button class="btn btn-add-to-cart" onclick="addToCart('${product.name}')">Add to Cart</button>
+          <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
         `;
 
         productList.appendChild(productCard);
@@ -227,91 +143,188 @@
     }
 
     function renderCart() {
-      cartItems.innerHTML = '';
-      let sum = 0;
+  cartItems.innerHTML = '';
+  let sum = 0;
 
-      cart.forEach(item => {
-        const cartItem = document.createElement('div');
-        cartItem.className = 'cart-item';
 
-        cartItem.innerHTML = `
-          <div class="input-group small-input-group">
-            <div class="input-group-prepend">
-              <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.name}')">-</button>
-            </div>
-            <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
-            <div class="input-group-append">
-              <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.name}')">+</button>
-            </div>
-          </div>
-          <div class="ml-3 cart-prod-info">
-            <span class="cart-prod-text">${item.name}</span>
-            <span class="cart-prod-text">$${item.price}</span>
-          </div>
-          <div class="ml-auto">
-            <img src="${item.image}" alt="${item.name}">
-          </div>
-        `;
+  cart.forEach(item => {
+    const product = products.find(p => p._id === item.id)
 
-        cartItems.appendChild(cartItem);
-        sum += item.price * item.quantity;
-      });
-
-      totalSum.innerText = sum.toFixed(2);
+    if (!product) {
+      console.warn(`Product with ID ${item.productId} not found`);
+      return; 
     }
 
-    function addToCart(productName) {
-      const product = products.find(p => p.name === productName);
-      const cartItem = cart.find(item => item.name === productName);
+    const cartItem = document.createElement('div');
+    cartItem.className = 'cart-item';
 
-      if (product.currentStock === 0) {
-        alert('Out of stock');
-        return;
+    cartItem.innerHTML = `
+      <div class="input-group small-input-group">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.id}')">-</button>
+        </div>
+        <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.id}')">+</button>
+        </div>
+      </div>
+      <div class="ml-3 cart-prod-info">
+        <span class="cart-prod-text">${product.name}</span>
+        <span class="cart-prod-text">$${product.price}</span>
+      </div>
+      <div class="ml-auto">
+        <img src="${product.image}" alt="${product.name}">
+      </div>
+    `;
+
+    cartItems.appendChild(cartItem);
+    sum += product.price * item.quantity;
+  });
+
+  totalSum.innerText = sum.toFixed(2);
+}
+
+async function addToCart(productId) {
+  try {
+    
+    // Retrieve the current order ID (you should store it in a variable or localStorage)
+    const orderId = localStorage.getItem('orderId'); // Adjust as necessary
+    
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
       }
+    });
 
-      if (cartItem) {
-        cartItem.quantity++;
-      } else {
-        cart.push({
-          ...product,
-          quantity: 1
+    if (!response.ok) {
+      throw new Error(`Error adding to cart: ${response.statusText}`);
+    }
+
+    const cartUpdate = await response.json();
+
+    // Assuming cartUpdate contains the updated cart info
+    cart = cartUpdate.items;
+    renderCart();
+  } catch (error) {
+    console.error('Error adding to cart:', error);
+  }
+}
+
+
+async function increaseQuantity(productId) {
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error increasing quantity: ${response.statusText}`);
+    }
+
+    const cartUpdate = await response.json();
+    cart = cartUpdate.items; // Update cart with the latest items
+    renderCart(); // Re-render the cart
+  } catch (error) {
+    console.error('Error increasing quantity:', error);
+  }
+}
+
+
+
+async function decreaseQuantity(productId) {
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+    const response = await fetch(`http://localhost:8080/orders/${orderId}/remove-from-cart/${productId}`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error decreasing quantity: ${response.statusText}`);
+    }
+
+    const cartUpdate = await response.json();
+    cart = cartUpdate.items; // Update cart with the latest items
+    renderCart(); // Re-render the cart
+  } catch (error) {
+    console.error('Error decreasing quantity:', error);
+  }
+}
+
+async function payNow() {
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+    const token = localStorage.getItem('token');
+
+
+    const res = await fetch('http://localhost:8080/orders/get-my-cart', {
+          method: 'GET',
+          headers: {
+            'Authorization': `${token}`
+          }
         });
-      }
 
-      product.currentStock--;
-      renderCart();
+        if (!res.ok) {
+          console.log('Response Status:', res.status);
+          console.log('Response Status Text:', res.statusText);
+          throw new Error('Failed to fetch cart');
+        }
+
+    const order = await res.json();
+    order.ordered = true;
+
+    const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
+      method: 'PATCH',
+      headers: {
+        'Authorization': `${token}`, // Include token for authentication
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(order) // Set the `ordered` status to true
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error completing the order: ${response.statusText}`);
     }
 
-    function increaseQuantity(productName) {
-      const product = products.find(p => p.name === productName);
-      const cartItem = cart.find(item => item.name === productName);
+    // Show success alert
+    alert('The order will be sent to your address');
 
-      if (product.currentStock === 0) {
-        alert('Out of stock');
-        return;
+    // Fetch the updated cart
+    await fetchCart();
+  } catch (error) {
+    console.error('Error processing payment:', error);
+  }
+}
+
+
+    async function updateCart() {
+      try {
+        const token = localStorage.getItem('token');
+        await fetch('http://localhost:8080/orders/get-my-cart', {
+          method: 'PATCH',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `${token}`
+          },
+          body: JSON.stringify({ items: cart })
+        });
+      } catch (error) {
+        console.error('Error updating cart:', error);
       }
-
-      cartItem.quantity++;
-      product.currentStock--;
-      renderCart();
     }
 
-    function decreaseQuantity(productName) {
-      const product = products.find(p => p.name === productName);
-      const cartItem = cart.find(item => item.name === productName);
-
-      if (cartItem.quantity > 1) {
-        cartItem.quantity--;
-        product.currentStock++;
-      } else {
-        cart.splice(cart.indexOf(cartItem), 1);
-        product.currentStock++;
-      }
-
-      renderCart();
-    }
-
-    renderProducts();
+    fetchProducts();
+    fetchCart();
   </script>
 </body>
 </html>
