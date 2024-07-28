@@ -97,7 +97,7 @@ async function fetchUserDetails() {
   try {
 
     const token = localStorage.getItem('token');
-    const decoded = jwt_decode(token);    
+    const decoded = jwt_decode(token);   
 
     const response = await fetch(`http://localhost:8080/users/${decoded.userId}`, {
       method: 'GET',
@@ -112,7 +112,6 @@ async function fetchUserDetails() {
     }
 
     userData = await response.json(); // Store user data
-    console.log(userData)
     userId = userData._id;
     document.getElementById('firstName').textContent = userData.firstName;
     document.getElementById('lastName').textContent = userData.lastName;
@@ -128,7 +127,7 @@ async function fetchUserDetails() {
 async function fetchUserOrders() {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:8080/orders`, {
+    const response = await fetch(`http://localhost:8080/orders/search?customerId=${userId}&ordered=true`, {
       method: 'GET',
       headers: {
         'Authorization': `${token}`,
@@ -141,7 +140,6 @@ async function fetchUserOrders() {
     }
 
     const orders = await response.json();
-    console.log(orders)
     renderOrders(orders);
   } catch (error) {
     console.error('Error fetching user orders:', error);
@@ -162,10 +160,10 @@ function renderOrders(orders) {
         <td>$${order.bill}</td>
       `;
       orderHistory.appendChild(row);
-      totalSpending += order.bill;
+      //totalSpending += order.bill;
     }
   });
-  document.getElementById('totalSpending').textContent = totalSpending;
+  //document.getElementById('totalSpending').textContent = totalSpending;
 }
 
 // Handle form submission
@@ -213,10 +211,35 @@ function changeCity() {
   }
 }
 
+async function fetchTotalSpending() {
+  try {
+    const token = localStorage.getItem('token');
+    const response = await fetch(`http://localhost:8080/orders/aggregate/total-bill-by-customer/${userId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error fetching total spending');
+    }
+
+
+    const result = await response.json();
+    const totalSpending = result.length > 0 ? result[0].totalBill : 0; // Check if result array has data
+    document.getElementById('totalSpending').textContent = totalSpending;
+  } catch (error) {
+    console.error('Error fetching total spending:', error);
+  }
+}
+
 // Initialize the portal
 async function initPortal() {
   await fetchUserDetails();
   await fetchUserOrders();
+  await fetchTotalSpending();
 }
 
 // Initial render

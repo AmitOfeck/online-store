@@ -5,6 +5,9 @@ document.getElementById('loginForm').addEventListener('submit', async (e) => {
     const email = document.getElementById('loginEmail').value;
     const password = document.getElementById('loginPassword').value;
 
+    console.log(email)
+    console.log(password)
+
     try {
         const response = await fetch('http://localhost:8080/auth/login', {
             method: 'POST',
