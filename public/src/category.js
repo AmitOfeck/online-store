@@ -1,3 +1,11 @@
+document.addEventListener('DOMContentLoaded', function() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
+  }
+});
+
+
 let products = [];
 let cart = [];
 const productList = document.getElementById('product-list');
