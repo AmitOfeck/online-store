@@ -17,7 +17,9 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
       <div class="container-fluid">
         <div class="navbar-brand">
+          <a href="homepage.html">
           <img src="Pictures/logo.jpg" alt="Logo" class="logo">
+        </a>
         </div>
         <div class="navbar-nav">
           <div class="nav-item">
@@ -83,71 +85,7 @@
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
     integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script>
-    // Sample data
-    const products = [
-      { productName: 'Milk', productId: '1', productPrice: 10 },
-      { productName: 'Cheese', productId: '2', productPrice: 20 },
-      { productName: 'Butter', productId: '3', productPrice: 30 },
-      { productName: 'Yogurt', productId: '4', productPrice: 40 },
-    ];
-
-    const productTable = document.getElementById('productTable');
-    const searchProduct = document.getElementById('searchProduct');
-    const addProductBtn = document.getElementById('addProductBtn');
-    const addProductModal = new bootstrap.Modal(document.getElementById('addProductModal'));
-    const addProductForm = document.getElementById('addProductForm');
-
-    function renderProducts(products) {
-      productTable.innerHTML = '';
-      products.forEach(product => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${product.productName}</td>
-          <td>${product.productId}</td>
-          <td><input type="number" class="form-control" value="${product.productPrice}" onchange="updateProductPrice('${product.productId}', this.value)"></td>
-          <td><button class="btn btn-danger btn-sm" onclick="deleteProduct('${product.productId}')"><i class="bi bi-x"></i></button></td>
-        `;
-        productTable.appendChild(row);
-      });
-    }
-
-    function updateProductPrice(productId, newPrice) {
-      const product = products.find(p => p.productId === productId);
-      if (product) {
-        product.productPrice = newPrice;
-      }
-    }
-
-    function deleteProduct(productId) {
-      const filteredProducts = products.filter(product => product.productId !== productId);
-      renderProducts(filteredProducts);
-    }
-
-    searchProduct.addEventListener('input', () => {
-      const searchText = searchProduct.value.toLowerCase();
-      const filteredProducts = products.filter(product => 
-        product.productName.toLowerCase().includes(searchText) ||
-        product.productId.toLowerCase().includes(searchText)
-      );
-      renderProducts(filteredProducts);
-    });
-
-    addProductBtn.addEventListener('click', () => {
-      addProductModal.show();
-    });
-
-    addProductForm.addEventListener('submit', (event) => {
-      event.preventDefault();
-      const productName = document.getElementById('productName').value;
-      const productPrice = document.getElementById('productPrice').value;
-      const productId = products.length ? (parseInt(products[products.length - 1].productId) + 1).toString() : '1';
-      products.push({ productName, productId, productPrice });
-      renderProducts(products);
-      addProductModal.hide();
-    });
-
-    // Initial render
-    renderProducts(products);
+    src="./src/prod_mgmt.js"
   </script>
 </body>
 
