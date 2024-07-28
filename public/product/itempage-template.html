@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="itempage.css">
 </head>
 <body>
@@ -27,7 +29,7 @@
                 <div class="price">
                     <span class="current-price" id="product-price"></span>
                 </div>
-                <button>Add to cart</button>
+                <button id="add-to-cart-button">Add to cart</button>
                 <div class="about">
                     <h2>ABOUT ITEM</h2>
                     <p><strong>Brand, manufacturer:</strong> <span id="product-manufacturer"></span></p>
@@ -48,10 +50,26 @@
                 document.getElementById('product-price').textContent = `₪${productData.price}`;
                 document.getElementById('product-manufacturer').textContent = productData.manufacturer;
                 document.getElementById('product-weight').textContent = `${productData.weight} ${productData.weightUnit}`;
+
+                // Add event listener for "Add to cart" button
+                document.getElementById('add-to-cart-button').addEventListener('click', function() {
+                    addToCart(productData._id);
+                });
             } else {
                 alert('No product data found');
             }
         });
     </script>
+    <div class="col-md-3 cart-section">
+        <h4>Shopping Cart</h4>
+        <div class="cart-content">
+            <!-- Cart items will go here -->
+            <div id="cart-items"></div>
+            <p class="reg-text">Total Sum: <span id="total-sum">0</span></p>
+            <button class="btn btn-primary btn-block purchase-button" onclick="payNow()">Pay Now <i class="bi bi-cart"></i></button>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="../src/cart.js"></script>
 </body>
 </html>
