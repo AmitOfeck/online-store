@@ -52,7 +52,13 @@ const updateUser = async (req, res) => {
 
     if (!hasAllFields(req, res, requiredFields)) return;
 
-    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    const userInDb = await userService.getUserById(req.params.id);
+
+    let hashedPassword = req.body.password;
+    
+    if(userInDb.password != req.body.password){
+      hashedPassword = await bcrypt.hash(req.body.password, 10);
+    }
 
     const user = await userService.updateUser(
       req.params.id,
