@@ -1,9 +1,12 @@
+//const jwt = require('jsonwebtoken');
+
 let map;
 let marker;
 let autocomplete;
 let mapInitialized = false;
 let selectedPlace = null;
 let userId;
+let userData; 
 
 // Initialize the map
 function initMap() {
@@ -78,7 +81,7 @@ document.getElementById('saveLocation').addEventListener('click', () => {
   const lng = document.getElementById('longitude').value;
   const locationName = selectedPlace ? selectedPlace.formatted_address : 'Unknown location';
   document.getElementById('location-name').value = locationName;
-  document.getElementById('address').value = locationName;
+  document.getElementById('streetAddress').value = locationName; 
   alert(`Selected location: ${locationName}`);
 });
 
@@ -92,11 +95,14 @@ $('#addressModal').on('shown.bs.modal', function () {
 // Fetch user details and populate the form
 async function fetchUserDetails() {
   try {
+
     const token = localStorage.getItem('token');
-    const response = await fetch('http://localhost:8080/users/me', {
+    const decoded = jwt_decode(token);    
+
+    const response = await fetch(`http://localhost:8080/users/${decoded.userId}`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -105,13 +111,14 @@ async function fetchUserDetails() {
       throw new Error('Error fetching user details');
     }
 
-    const user = await response.json();
-    userId = user._id;
-    document.getElementById('firstName').textContent = user.firstName;
-    document.getElementById('lastName').textContent = user.lastName;
-    document.getElementById('email').textContent = user.email;
-    document.getElementById('address').value = user.address || '';
-    document.getElementById('city').value = user.city || '';
+    userData = await response.json(); // Store user data
+    console.log(userData)
+    userId = userData._id;
+    document.getElementById('firstName').textContent = userData.firstName;
+    document.getElementById('lastName').textContent = userData.lastName;
+    document.getElementById('email').textContent = userData.email;
+    document.getElementById('address').value = userData.streetAddress || '';
+    document.getElementById('city').value = userData.city || '';
   } catch (error) {
     console.error('Error fetching user details:', error);
   }
@@ -121,10 +128,10 @@ async function fetchUserDetails() {
 async function fetchUserOrders() {
   try {
     const token = localStorage.getItem('token');
-    const response = await fetch(`http://localhost:8080/orders/user/${userId}`, {
+    const response = await fetch(`http://localhost:8080/orders`, {
       method: 'GET',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `${token}`,
         'Content-Type': 'application/json'
       }
     });
@@ -134,6 +141,7 @@ async function fetchUserOrders() {
     }
 
     const orders = await response.json();
+    console.log(orders)
     renderOrders(orders);
   } catch (error) {
     console.error('Error fetching user orders:', error);
@@ -151,10 +159,10 @@ function renderOrders(orders) {
       row.innerHTML = `
         <td>${order._id}</td>
         <td>${order.items.map(item => `${item.name} (${item.quantity})`).join(', ')}</td>
-        <td>$${order.totalPrice}</td>
+        <td>$${order.bill}</td>
       `;
       orderHistory.appendChild(row);
-      totalSpending += order.totalPrice;
+      totalSpending += order.bill;
     }
   });
   document.getElementById('totalSpending').textContent = totalSpending;
@@ -164,23 +172,26 @@ function renderOrders(orders) {
 document.getElementById('customer-form').addEventListener('submit', async function (event) {
   event.preventDefault();
   const password = document.getElementById('password').value;
-  const address = document.getElementById('address').value;
+  const address = document.getElementById('streetAddress').value;
   const city = document.getElementById('city').value;
   const token = localStorage.getItem('token');
-  const updates = {};
 
-  if (password) updates.password = password;
-  if (address) updates.address = address;
-  if (city) updates.city = city;
+
+  // Update userData with new values
+  if (password) userData.password = password;
+  if (address) userData.streetAddress = address;
+  if (city) userData.city = city;
+
+  console.log(userData)
 
   try {
     const response = await fetch(`http://localhost:8080/users/${userId}`, {
       method: 'PATCH',
       headers: {
-        'Authorization': `Bearer ${token}`,
+        'Authorization': `${token}`,
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(updates)
+      body: JSON.stringify(userData)
     });
 
     if (!response.ok) {
@@ -210,3 +221,4 @@ async function initPortal() {
 
 // Initial render
 initPortal();
+
