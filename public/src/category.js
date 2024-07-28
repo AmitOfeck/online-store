@@ -258,11 +258,12 @@ document.getElementById('logout-button').addEventListener('click', function() {
   async function clearCart() {
     try {
       const token = localStorage.getItem('token');
+      const orderId = localStorage.getItem('orderId');
 
       // Loop through each item in the cart and send a DELETE request
       for (const item of cart) {
-        const response = await fetch(`http://localhost:8080/products/${item.id}`, {
-          method: 'DELETE',
+        const response = await fetch(`http://localhost:8080/orders/${orderId}/clean-cart`, {
+          method: 'POST',
           headers: {
             'Authorization': `${token}`, // Include token for authentication
             'Content-Type': 'application/json'
@@ -282,5 +283,6 @@ document.getElementById('logout-button').addEventListener('click', function() {
     }
   }
 
-fetchProducts();
-fetchCart();
+
+  fetchProducts();
+  fetchCart();  
