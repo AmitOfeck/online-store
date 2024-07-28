@@ -172,6 +172,35 @@ const getMyCart = async (req, res) => {
     }
 };
 
+const searchOrders = async (req, res) => {
+    try {
+        const { customerId, minBill, maxBill, ordered } = req.query;
+        const query = {};
+
+        if (customerId) {
+            query.customerId = customerId;
+        }
+
+        if (ordered !== undefined) {
+            query.ordered = ordered === 'true';
+        }
+
+        if (minBill) {
+            query.bill = { ...query.bill, $gte: parseFloat(minBill) };
+        }
+
+        if (maxBill) {
+            query.bill = { ...query.bill, $lte: parseFloat(maxBill) };
+        }
+
+        const orders = await orderService.searchOrders(query);
+        res.json(orders);
+    } catch (error) {
+        console.error('Error searching orders:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
 
 
 module.exports = {
@@ -184,5 +213,6 @@ module.exports = {
     removeFromCart,
     cleanCart,
     aggregateTotalBillByCustomer,
-    getMyCart
+    getMyCart,
+    searchOrders
 };
