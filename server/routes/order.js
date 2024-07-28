@@ -8,7 +8,10 @@ router.route('/')
     .get(verifyToken, validateType(['admin']), ordersController.getOrders)
     .post(verifyToken, validateType(['admin', 'customer']), ordersController.createOrder);
 
-router.get('/get-my-cart', verifyToken, validateType(['customer']), ordersController.getMyCart);
+router.route('/search')
+    .get(verifyToken, validateType(['admin', 'customer', 'supplier']), ordersController.searchOrders);
+
+router.get('/get-my-cart', verifyToken, validateType(['admin', 'customer']), ordersController.getMyCart);
 
 router.route('/:id')
     .get(verifyToken, validateType(['admin', 'customer']), ordersController.getOrderById)

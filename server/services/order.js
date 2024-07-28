@@ -172,6 +172,10 @@ const findOrCreateCart = async (customerId) => {
     return order;
 };
 
+const searchOrders = async (query) => {
+    return await Order.find(query);
+};
+
 
 
 
@@ -186,5 +190,6 @@ module.exports = {
     removeFromCart,
     cleanCart,
     aggregateTotalBillByCustomer,
-    findOrCreateCart
+    findOrCreateCart,
+    searchOrders
 };
