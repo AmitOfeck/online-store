@@ -175,7 +175,7 @@ function updateNavbar(userType) {
       break;
   }
 
-  console.log("Navbar Content:", navbarContent); // Debug log
+  //console.log("Navbar Content:", navbarContent); // Debug log
   document.getElementById('navbar').innerHTML = navbarContent;
 
   // Add event listener for logout button

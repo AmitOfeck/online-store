@@ -176,11 +176,16 @@ document.getElementById('customer-form').addEventListener('submit', async functi
 
 
   // Update userData with new values
-  if (password) userData.password = password;
-  if (address) userData.streetAddress = address;
-  if (city) userData.city = city;
+  if(password !== ""){
+    userData.password = password;
+  }
+  if(address !== ""){
+    userData.streetAddress = address;
+  } 
+  if(city !== "") {
+    userData.city = city;
+  }
 
-  console.log(userData)
 
   try {
     const response = await fetch(`http://localhost:8080/users/${userId}`, {
@@ -200,6 +205,7 @@ document.getElementById('customer-form').addEventListener('submit', async functi
   } catch (error) {
     console.error('Error updating user details:', error);
   }
+  
 });
 
 // Change city handler
