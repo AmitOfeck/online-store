@@ -52,7 +52,7 @@ router.post('/register', async (req, res) => {
     return res.status(401).json({ error: 'Authentication failed' });
     }
     const token = jwt.sign({ userId: user._id, type: user.type }, 'your-secret-key', {
-    expiresIn: '1h',
+    expiresIn: '3h',
     });
     res.status(200).json({ token });
     } catch (error) {

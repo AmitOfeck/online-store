@@ -17,6 +17,10 @@ const orderSchema = new Schema({
       type: Number,
       required: true,
       min: 0
+    },
+    name: {
+      type: String,
+      required: true
     }
   }],
   ordered: {

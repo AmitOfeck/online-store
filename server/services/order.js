@@ -70,6 +70,8 @@ const addToCart = async (id, productId) => {
     if (!product) {
         throw new Error('Product not found');
     }
+    //console.log(product)
+
 
     const item = order.items.find(item => item.id.equals(productId));
     if (item) {
@@ -81,7 +83,7 @@ const addToCart = async (id, productId) => {
         if (product.currentStock < 1) {
             throw new Error('Not enough stock');
         }
-        order.items.push({ id: productId, quantity: 1 });
+        order.items.push({ id: productId, quantity: 1, name: product.name });
     }
     product.currentStock -= 1;
     await product.save();
@@ -172,6 +174,10 @@ const findOrCreateCart = async (customerId) => {
     return order;
 };
 
+const searchOrders = async (query) => {
+    return await Order.find(query);
+};
+
 
 
 
@@ -186,5 +192,6 @@ module.exports = {
     removeFromCart,
     cleanCart,
     aggregateTotalBillByCustomer,
-    findOrCreateCart
+    findOrCreateCart,
+    searchOrders
 };
