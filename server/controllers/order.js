@@ -202,6 +202,17 @@ const searchOrders = async (req, res) => {
 };
 
 
+const getMostPopularProducts = async (req, res) => {
+    try {
+        const mostPopularProducts = await orderService.getMostPopularProducts();
+        res.json(mostPopularProducts);
+    } catch (error) {
+        console.error('Error fetching most popular products:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
 
 module.exports = {
     createOrder,
@@ -214,5 +225,6 @@ module.exports = {
     cleanCart,
     aggregateTotalBillByCustomer,
     getMyCart,
-    searchOrders
+    searchOrders,
+    getMostPopularProducts
 };

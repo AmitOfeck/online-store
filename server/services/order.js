@@ -179,6 +179,22 @@ const searchOrders = async (query) => {
 };
 
 
+const getMostPopularProducts = async () => {
+    return await Order.aggregate([
+        { $match: { ordered: true } }, // Only consider orders that have been placed
+        { $unwind: "$items" }, // Deconstruct the items array to process each item individually
+        {
+            $group: {
+                _id: "$items.id", // Group by product ID
+                name: { $first: "$items.name" }, // Get the product name
+                totalQuantity: { $sum: "$items.quantity" } // Sum the quantities
+            }
+        },
+        { $sort: { totalQuantity: -1 } }, // Sort by total quantity in descending order
+        { $limit: 10 } // Limit to top 10 products
+    ]);
+};
+
 
 
 
@@ -193,5 +209,6 @@ module.exports = {
     cleanCart,
     aggregateTotalBillByCustomer,
     findOrCreateCart,
-    searchOrders
+    searchOrders,
+    getMostPopularProducts
 };
