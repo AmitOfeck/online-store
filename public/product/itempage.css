@@ -169,31 +169,41 @@ button:hover {
     overflow-y: auto;
 }
 
+
 .cart-item {
     display: flex;
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-}
+  }
 
-.cart-prod-info {
+  .cart-item img {
+    max-width: 50px;
+  }
+
+  .cart-prod-info {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
     margin-left: 15px;
-}
+  }
 
-.cart-prod-text {
+  .cart-prod-text {
     font-size: medium;
     font-family: Courier, monospace;
     font-weight: bold;
-}
+  }
 
-.cart-item img {
-    max-width: 50px;
-    margin-left: 15px;
-}
+  .small-input-group {
+    width: 120px;
+  }
+
+  .small-input-group .form-control {
+    width: 50px;
+    padding: 5px;
+    text-align: center;
+  }
 
 button.purchase-button {
     margin-top: 20px;
