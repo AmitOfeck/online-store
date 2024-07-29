@@ -11,7 +11,7 @@ router.route('/')
 router.route('/search')
     .get(verifyToken, validateType(['admin', 'customer', 'supplier']), ordersController.searchOrders);
 
-router.get('/get-my-cart', verifyToken, validateType(['admin', 'customer','supplier']), ordersController.getMyCart);
+router.get('/get-my-cart', verifyToken, validateType(['admin', 'customer']), ordersController.getMyCart);
 
 router.route('/:id')
     .get(verifyToken, validateType(['admin', 'customer','supplier']), ordersController.getOrderById)
