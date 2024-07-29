@@ -1,3 +1,25 @@
+function checkAdminAccess() {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    alert('Access denied. No token found.');
+    window.location.href = 'homepage.html';
+    return;
+  }
+
+  try {
+    const decodedToken = jwt_decode(token);
+    console.log(decodedToken);
+    if (decodedToken.type !== 'admin') {
+      alert('Access denied. Only admins can access this page.');
+      window.location.href = 'homepage.html';
+    }
+  } catch (error) {
+    console.error('Error decoding token:', error);
+    alert('Access denied. Invalid token.');
+    window.location.href = 'homepage.html';
+  }
+}
+
 const userTable = document.getElementById('userTable');
     const searchUser = document.getElementById('searchUser');
     let users = [];
@@ -28,11 +50,11 @@ const userTable = document.getElementById('userTable');
       users.forEach(user => {
         const row = document.createElement('tr');
         row.innerHTML = `
-          <td>${user.firstName}</td>
-          <td>${user.lastName}</td>
-          <td>${user.userId}</td>
-          <td>${user.email}</td>
-          <td><button class="btn btn-danger btn-sm" onclick="deleteUser('${user.userId}')"><i class="bi bi-x"></i></button></td>
+          <td class="mt-4">${user.firstName}</td>
+          <td class="mt-4">${user.lastName}</td>
+          <td class="mt-4">${user._id}</td>
+          <td class="mt-4">${user.email}</td>
+          <td class="mt-4"><button class="btn btn-danger btn-sm" onclick="deleteUser('${user._id}')"><i class="bi bi-x"></i></button></td>
         `;
         userTable.appendChild(row);
       });
@@ -53,7 +75,7 @@ const userTable = document.getElementById('userTable');
         }
 
         // Remove the user from the local list and re-render the table
-        users = users.filter(user => user.userId !== userId);
+        users = users.filter(user => user._id !== userId);
         renderUsers(users);
       } catch (error) {
         console.error('Error deleting user:', error);
