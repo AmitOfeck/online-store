@@ -71,46 +71,46 @@ function renderProducts(products) {
 }
 
 function renderCart() {
-cartItems.innerHTML = '';
-let sum = 0;
+  cartItems.innerHTML = '';
+  let sum = 0;
 
+  cart.forEach(item => {
+    const product = products.find(p => p._id === item.id);
 
-cart.forEach(item => {
-const product = products.find(p => p._id === item.id)
+    if (!product) {
+      console.warn(`Product with ID ${item.productId} not found`);
+      return; 
+    }
 
-if (!product) {
-  console.warn(`Product with ID ${item.productId} not found`);
-  return; 
+    const cartItem = document.createElement('div');
+    cartItem.className = 'cart-item';
+
+    cartItem.innerHTML = `
+      <div class="input-group small-input-group">
+        <div class="input-group-prepend">
+          <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.id}')">-</button>
+        </div>
+        <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
+        <div class="input-group-append">
+          <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.id}')">+</button>
+        </div>
+      </div>
+      <div class="ml-3 cart-prod-info">
+        <span class="cart-prod-text">${product.name}</span>
+        <span class="cart-prod-text">$${product.price}</span>
+      </div>
+      <div class="ml-auto">
+        <img src="${product.image}" alt="${product.name}">
+      </div>
+    `;
+
+    cartItems.appendChild(cartItem);
+    sum += product.price * item.quantity;
+  });
+
+  totalSum.innerText = sum.toFixed(2);
 }
 
-const cartItem = document.createElement('div');
-cartItem.className = 'cart-item';
-
-cartItem.innerHTML = `
-  <div class="input-group small-input-group">
-    <div class="input-group-prepend">
-      <button class="btn btn-outline-secondary" type="button" onclick="decreaseQuantity('${item.id}')">-</button>
-    </div>
-    <input type="text" class="form-control text-center" value="${item.quantity}" readonly>
-    <div class="input-group-append">
-      <button class="btn btn-outline-secondary" type="button" onclick="increaseQuantity('${item.id}')">+</button>
-    </div>
-  </div>
-  <div class="ml-3 cart-prod-info">
-    <span class="cart-prod-text">${product.name}</span>
-    <span class="cart-prod-text">$${product.price}</span>
-  </div>
-  <div class="ml-auto">
-    <img src="${product.image}" alt="${product.name}">
-  </div>
-`;
-
-cartItems.appendChild(cartItem);
-sum += product.price * item.quantity;
-});
-
-totalSum.innerText = sum.toFixed(2);
-}
 
 async function addToCart(productId) {
 try {
@@ -248,6 +248,34 @@ async function updateCart() {
     });
   } catch (error) {
     console.error('Error updating cart:', error);
+  }
+}
+
+async function clearCart() {
+  try {
+    const token = localStorage.getItem('token');
+    const orderId = localStorage.getItem('orderId');
+
+    // Loop through each item in the cart and send a DELETE request
+    for (const item of cart) {
+      const response = await fetch(`http://localhost:8080/orders/${orderId}/clean-cart`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `${token}`, // Include token for authentication
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error deleting product ${item.id}: ${response.statusText}`);
+      }
+    }
+
+    // Clear the cart locally and re-render
+    cart = [];
+    renderCart();
+  } catch (error) {
+    console.error('Error clearing the cart:', error);
   }
 }
 
