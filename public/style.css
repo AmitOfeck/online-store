@@ -91,6 +91,8 @@
   right: 0;
   width: 400px;
   height: calc(100% - 80px); /* Adjust height based on the header height */
+  overflow-y: auto; /* Enable vertical scrolling */
+  height: calc(100vh - 200px); /* Adjust height for the fixed header and footer */
 }
 
 .cart-section h4 {

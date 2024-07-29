@@ -47,6 +47,8 @@
   .main-content {
     padding: 20px;
     padding-top: 100px;
+    overflow-y: auto;
+    height: calc(100vh - 200px); /* Adjust height for the fixed header and footer */
   }
   
   .login_btn {
@@ -67,3 +69,22 @@
     z-index: 1000;
   }
   
+  .price {
+    width: auto; /* Allow it to adjust based on container */
+  }
+  
+  .input-group .form-control,
+  .input-group .btn {
+    display: inline-block;
+  }
+  .mt-4{
+    font-size: large;
+  font-family: Courier, monospace;
+  font-weight: bold;
+  }
+  .mt-4-header
+  {
+    font-size: xx-large;
+    font-family: Courier, monospace;
+    font-weight: bold;
+  }

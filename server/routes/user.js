@@ -9,8 +9,8 @@ router.route('/')
     .post(verifyToken, validateType(['admin' , 'customer']), usersController.createUser);
 
 router.route('/:id')
-    .get(verifyToken, validateType(['admin' , 'customer']), usersController.getUser)
-    .patch(verifyToken, validateType(['admin' , 'customer']), usersController.updateUser)
+    .get(verifyToken, validateType(['admin' , 'customer','supplier']), usersController.getUser)
+    .patch(verifyToken, validateType(['admin' , 'customer','supplier']), usersController.updateUser)
     .delete(verifyToken, validateType(['admin']), usersController.deleteUser);
 
 module.exports = router;
