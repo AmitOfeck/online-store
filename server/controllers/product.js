@@ -101,8 +101,8 @@ const updateProduct = async (req, res) => {
 
   const searchProducts = async (req, res) => {
     try {
-        const { category, subCategory ,price, manufacturer, name, currentStock } = req.query;
-        const query = {};
+      const { category, subCategory, price, manufacturer, name, currentStock, supplierId } = req.query;
+      const query = {};
 
         if (category) {
             query.category = category;
@@ -163,6 +163,10 @@ const updateProduct = async (req, res) => {
                 query.currentStock = parseInt(currentStock, 10);
             }
         }
+
+        if (supplierId) {
+          query.supplierId = supplierId;
+      }
 
         const products = await productService.searchProducts(query);
         res.json(products);
