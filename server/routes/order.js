@@ -11,6 +11,10 @@ router.route('/')
 router.route('/search')
     .get(verifyToken, validateType(['admin', 'customer', 'supplier']), ordersController.searchOrders);
 
+    
+router.get('/most-popular-products', verifyToken, validateType(['admin', 'customer', 'supplier']), ordersController.getMostPopularProducts);
+
+
 router.get('/get-my-cart', verifyToken, validateType(['admin', 'customer']), ordersController.getMyCart);
 
 router.route('/:id')
