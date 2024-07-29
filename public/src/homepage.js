@@ -31,7 +31,6 @@ function updateNavbar(userType) {
           <div class="navbar-brand">
             <button class="btn btn-filter" id="logoutButton">Log Out</button>
             <button class="btn btn-filter"><a href="Personal_Portal.html" class="login_btn">Personal Portal</a></button>
-            <button class="btn btn-address" data-bs-toggle="modal" data-bs-target="#addressModal">Address <i class="bi bi-geo-alt"></i></button>
           </div>
           <div class="navbar-nav">
             <div class="nav-item">
@@ -70,7 +69,6 @@ function updateNavbar(userType) {
             <button class="btn btn-filter"><a href="Personal_Portal.html" class="login_btn">Personal Portal</a></button>
             <button class="btn btn-filter"><a href="user-managment.html" class="login_btn">User Management</a></button>
             <button class="btn btn-filter"><a href="orders_Managment.html" class="login_btn">Order Management</a></button>
-            <button class="btn btn-address">Address <i class="bi bi-geo-alt"></i></button>
           </div>
           <div class="navbar-nav">
             <div class="nav-item">
@@ -108,7 +106,6 @@ function updateNavbar(userType) {
             <button class="btn btn-filter" id="logoutButton">Log Out</button>
             <button class="btn btn-filter"><a href="Personal_Portal.html" class="login_btn">Personal Portal</a></button>
             <button class="btn btn-filter"><a href="Product-mangment.html" class="login_btn">Manage Products</a></button>
-            <button class="btn btn-address" data-bs-toggle="modal" data-bs-target="#addressModal">Address <i class="bi bi-geo-alt"></i></button>
           </div>
           <div class="navbar-nav">
             <div class="nav-item">
@@ -144,7 +141,6 @@ function updateNavbar(userType) {
         <div class="container-fluid">
           <div class="navbar-brand">
             <button class="btn btn-filter"><a href="reglog.html" class="login_btn">Log In</a></button>
-            <button class="btn btn-address" data-bs-toggle="modal" data-bs-target="#addressModal">Address <i class="bi bi-geo-alt"></i></button>
           </div>
           <div class="navbar-nav">
             <div class="nav-item">
