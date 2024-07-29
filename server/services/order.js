@@ -181,17 +181,17 @@ const searchOrders = async (query) => {
 
 const getMostPopularProducts = async () => {
     return await Order.aggregate([
-        { $match: { ordered: true } }, // Only consider orders that have been placed
-        { $unwind: "$items" }, // Deconstruct the items array to process each item individually
+        { $match: { ordered: true } }, 
+        { $unwind: "$items" }, 
         {
             $group: {
-                _id: "$items.id", // Group by product ID
-                name: { $first: "$items.name" }, // Get the product name
-                totalQuantity: { $sum: "$items.quantity" } // Sum the quantities
+                _id: "$items.id", 
+                name: { $first: "$items.name" }, 
+                totalQuantity: { $sum: "$items.quantity" } 
             }
         },
-        { $sort: { totalQuantity: -1 } }, // Sort by total quantity in descending order
-        { $limit: 10 } // Limit to top 10 products
+        { $sort: { totalQuantity: -1 } }, 
+        { $limit: 10 } 
     ]);
 };
 
