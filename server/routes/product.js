@@ -15,6 +15,6 @@ router.route('/search')
 router.route('/:id')
     .get(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.getProduct)
     .patch(verifyToken, validateType(['admin' , 'customer' , 'supplier']), productsController.updateProduct)
-    .delete(verifyToken, validateType(['admin']), productsController.deleteProduct);
+    .delete(verifyToken, validateType(['admin' , 'supplier']), productsController.deleteProduct);
 
 module.exports = router;
