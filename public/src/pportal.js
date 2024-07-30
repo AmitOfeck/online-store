@@ -115,7 +115,7 @@ async function fetchUserDetails() {
     document.getElementById('firstName').textContent = userData.firstName;
     document.getElementById('lastName').textContent = userData.lastName;
     document.getElementById('email').textContent = userData.email;
-    document.getElementById('address').value = userData.streetAddress || '';
+    document.getElementById('streetAddress').value = userData.streetAddress || '';
     document.getElementById('city').value = userData.city || '';
   } catch (error) {
     console.error('Error fetching user details:', error);
@@ -246,6 +246,10 @@ async function initPortal() {
   await fetchUserOrders();
   await fetchTotalSpending();
 }
+
+var myModal = new bootstrap.Modal(document.getElementById('addressModal'), {
+  backdrop: false
+});
 
 // Initial render
 initPortal();
