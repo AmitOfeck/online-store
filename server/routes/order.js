@@ -13,6 +13,8 @@ router.route('/search')
 
     
 router.get('/most-popular-products', verifyToken, validateType(['admin', 'customer', 'supplier']), ordersController.getMostPopularProducts);
+router.get('/income-per-supplier', verifyToken, validateType(['admin']), ordersController.getIncomePerSupplier);
+
 
 
 router.get('/get-my-cart', verifyToken, validateType(['admin', 'customer','supplier']), ordersController.getMyCart);
