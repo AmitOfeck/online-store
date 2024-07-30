@@ -88,41 +88,27 @@ function checkAdminAccess() {
     });
   }
   
-  async function filterByCustomerId() {
-    
+  async function filterOrders() {
     const userId = searchOrder.value.toLowerCase();
-    if (!userId) {
-      renderOrders(orders);
-      return;
-    }
-  
-    try {
-      const response = await fetch(`http://localhost:8080/orders/search?customerId=${userId}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error fetching filtered orders: ${response.statusText}`);
-      }
-  
-      const filteredOrders = await response.json();
-      renderOrders(filteredOrders);
-    } catch (error) {
-      console.error('Error fetching filtered orders:', error);
-    }
-  }
-  
-  async function filterByStatus() {
     const statusFilter = filterStatus.value;
+    const maxBillAmount = parseInt(maxBill.value) || 1000000;
   
     let query = 'http://localhost:8080/orders/search?';
-    if (statusFilter !== 'all') {
-      query += `ordered=${statusFilter === 'ordered'}`;
+  
+    if (userId) {
+      query += `customerId=${userId}&`;
     }
+  
+    if (statusFilter !== 'all') {
+      query += `ordered=${statusFilter === 'ordered'}&`;
+    }
+  
+    if (maxBillAmount !== 1000000) {
+      query += `maxBill=${maxBillAmount}&`;
+    }
+  
+    // Remove trailing '&' or '?' if no parameters are present
+    query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
   
     try {
       const response = await fetch(query, {
@@ -144,36 +130,15 @@ function checkAdminAccess() {
     }
   }
   
-  async function filterByMaxBill() {
-    const maxBillAmount = parseInt(maxBill.value) || 1000000;
-  
-    try {
-      const response = await fetch(`http://localhost:8080/orders/search?maxBill=${maxBillAmount}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json'
-        }
-      });
-  
-      if (!response.ok) {
-        throw new Error(`Error fetching filtered orders: ${response.statusText}`);
-      }
-  
-      const filteredOrders = await response.json();
-      renderOrders(filteredOrders);
-    } catch (error) {
-      console.error('Error fetching filtered orders:', error);
-    }
-  }
-  
+  // Event listeners for the filter inputs
   maxBill.addEventListener('input', () => {
     maxBillValue.textContent = maxBill.value;
-    filterByMaxBill();
+    filterOrders();
   });
   
-  searchOrder.addEventListener('input', filterByCustomerId);
-  filterStatus.addEventListener('change', filterByStatus);
+  searchOrder.addEventListener('input', filterOrders);
+  filterStatus.addEventListener('change', filterOrders);
+  
   
   // Initial check for admin access
   checkAdminAccess();
