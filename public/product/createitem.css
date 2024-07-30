@@ -39,6 +39,7 @@ body {
     font-family: Courier, monospace ;
     margin: 0 auto; /* Center the container */
     margin-top: 50px; 
+    margin-bottom: 50px; 
 }
 
 
@@ -114,3 +115,41 @@ button:hover {
     background-color: #3f9970;
 }
 
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    font-size: 1em;
+    background-color: #ffffff;
+    appearance: none; /* Removes default styling in some browsers */
+    position: relative;
+}
+
+select:focus {
+    border-color: #46ad7f;
+    outline: none;
+    box-shadow: 0 0 3px rgba(0, 173, 136, 0.5);
+}
+
+.select-container {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.select-container::after {
+    content: '▼';
+    font-size: 0.8em;
+    color: #333;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none; /* Allows clicking through the arrow */
+}
+
+select {
+    padding-right: 30px; /* Adjust based on the size of the arrow */
+}
