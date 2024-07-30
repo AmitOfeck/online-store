@@ -190,16 +190,12 @@ console.error('Error decreasing quantity:', error);
 }
 
 async function payNow() {
-  if (cart.length === 0) {
-    alert('Your cart is empty. Please add items to proceed.');
-    return;
-  }
+try {
+const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+const token = localStorage.getItem('token');
 
-  try {
-    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
-    const token = localStorage.getItem('token');
 
-    const res = await fetch('http://localhost:8080/orders/get-my-cart', {
+const res = await fetch('http://localhost:8080/orders/get-my-cart', {
       method: 'GET',
       headers: {
         'Authorization': `${token}`
@@ -212,78 +208,47 @@ async function payNow() {
       throw new Error('Failed to fetch cart');
     }
 
-    const order = await res.json();
-    order.ordered = true;
+const order = await res.json();
+order.ordered = true;
 
-    openSignatureModal();
+const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
+  method: 'PATCH',
+  headers: {
+    'Authorization': `${token}`, // Include token for authentication
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(order) // Set the `ordered` status to true
+});
 
-    document.getElementById('saveSignature').addEventListener('click', async function() {
-      closeSignatureModal();
+if (!response.ok) {
+  throw new Error(`Error completing the order: ${response.statusText}`);
+}
 
-      alert('Your payment was successful! The order will be with you soon.');
+// Show success alert
+alert('The order will be sent to your address');
 
-      const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
-        method: 'PATCH',
-        headers: {
-          'Authorization': `${token}`, // Include token for authentication
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(order) // Set the `ordered` status to true
-      });
+// Fetch the updated cart
+await fetchCart();
+} catch (error) {
+console.error('Error processing payment:', error);
+}
+}
 
-      if (!response.ok) {
-        throw new Error(`Error completing the order: ${response.statusText}`);
-      }
 
-      // Fetch the updated cart
-      await fetchCart();
+async function updateCart() {
+  try {
+    const token = localStorage.getItem('token');
+    await fetch('http://localhost:8080/orders/get-my-cart', {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `${token}`
+      },
+      body: JSON.stringify({ items: cart })
     });
   } catch (error) {
-    console.error('Error processing payment:', error);
+    console.error('Error updating cart:', error);
   }
-}
-
-function openSignatureModal() {
-  document.getElementById('signatureModal').style.display = 'block';
-
-  const canvas = document.getElementById('signatureCanvas');
-  const ctx = canvas.getContext('2d');
-
-  let drawing = false;
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-  canvas.addEventListener('mousedown', startDrawing);
-  canvas.addEventListener('mousemove', draw);
-  canvas.addEventListener('mouseup', stopDrawing);
-  canvas.addEventListener('mouseout', stopDrawing);
-
-  function startDrawing(e) {
-    drawing = true;
-    ctx.beginPath();
-    ctx.moveTo(e.offsetX, e.offsetY);
-  }
-
-  function draw(e) {
-    if (!drawing) return;
-    ctx.lineTo(e.offsetX, e.offsetY);
-    ctx.stroke();
-  }
-
-  function stopDrawing() {
-    drawing = false;
-  }
-}
-
-function closeSignatureModal() {
-  document.getElementById('signatureModal').style.display = 'none';
-  clearCanvas();
-}
-
-function clearCanvas() {
-  const canvas = document.getElementById('signatureCanvas');
-  const ctx = canvas.getContext('2d');
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 fetchProducts();
