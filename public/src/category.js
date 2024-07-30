@@ -290,7 +290,101 @@ document.getElementById('logout-button').addEventListener('click', function() {
       console.error('Error clearing the cart:', error);
     }
   }
+async function payNow() {
+  if (cart.length === 0) {
+    alert('Your cart is empty. Please add items to proceed.');
+    return;
+  }
 
+  try {
+    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+    const token = localStorage.getItem('token');
 
+    const res = await fetch('http://localhost:8080/orders/get-my-cart', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}`
+      }
+    });
+
+    if (!res.ok) {
+      console.log('Response Status:', res.status);
+      console.log('Response Status Text:', res.statusText);
+      throw new Error('Failed to fetch cart');
+    }
+
+    const order = await res.json();
+    order.ordered = true;
+
+    openSignatureModal();
+
+    document.getElementById('saveSignature').addEventListener('click', async function() {
+      closeSignatureModal();
+
+      alert('Your payment was successful! The order will be with you soon.');
+
+      const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
+        method: 'PATCH',
+        headers: {
+          'Authorization': `${token}`, // Include token for authentication
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(order) // Set the `ordered` status to true
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error completing the order: ${response.statusText}`);
+      }
+
+      // Fetch the updated cart
+      await fetchCart();
+    });
+  } catch (error) {
+    console.error('Error processing payment:', error);
+  }
+}
+
+function openSignatureModal() {
+  document.getElementById('signatureModal').style.display = 'block';
+
+  const canvas = document.getElementById('signatureCanvas');
+  const ctx = canvas.getContext('2d');
+
+  let drawing = false;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+  canvas.addEventListener('mousedown', startDrawing);
+  canvas.addEventListener('mousemove', draw);
+  canvas.addEventListener('mouseup', stopDrawing);
+  canvas.addEventListener('mouseout', stopDrawing);
+
+  function startDrawing(e) {
+    drawing = true;
+    ctx.beginPath();
+    ctx.moveTo(e.offsetX, e.offsetY);
+  }
+
+  function draw(e) {
+    if (!drawing) return;
+    ctx.lineTo(e.offsetX, e.offsetY);
+    ctx.stroke();
+  }
+
+  function stopDrawing() {
+    drawing = false;
+  }
+}
+
+function closeSignatureModal() {
+  document.getElementById('signatureModal').style.display = 'none';
+  clearCanvas();
+}
+
+function clearCanvas() {
+  const canvas = document.getElementById('signatureCanvas');
+  const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+}
   fetchProducts();
   fetchCart();  
