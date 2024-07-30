@@ -229,6 +229,15 @@ header {
   font-size: larger;
   font-family: Courier, monospace;
   font-weight: bold;
+  transition: background-color 0.3s ease; /* Added transition */
+
+}
+.purchase-button:hover{
+
+  background-color: #46ad7f93;
+  transition: background-color 0.3s ease; /* Added transition */
+
+
 }
 
 .cart-item {
@@ -324,6 +333,8 @@ header {
   width:150px;
   font-family: Courier, monospace;
   font-weight: bold;
+  transition: background-color 0.3s ease; /* Added transition */
+
 }
 .modal {
   display: none; /* Hidden by default */
@@ -367,3 +378,36 @@ header {
   margin-top: 10px;
   float: right;
 }
+.category-item {
+  background-color: #eaf6ff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease; /* Added transition */
+}
+
+.category-item:hover {
+  transform: scale(1.05); /* Scale up on hover */
+}
+
+.navbar-custom .btn-filter,
+.navbar-custom .btn-address {
+  background-color: #f8f9fa;
+  border: none;
+  font-size: 16px;
+  padding: 8px 20px;
+  border-radius: 25px;
+  transition: background-color 0.3s ease; /* Added transition */
+}
+
+.navbar-custom .btn-filter:hover,
+.navbar-custom .btn-address:hover {
+  background-color: #e2e6ea; /* Change to a darker shade on hover */
+}
+
+
+

@@ -96,7 +96,8 @@ const userTable = document.getElementById('userTable');
     // Initial fetch and render
     fetchUsers();
 
-    async function fetchIncomeData() {
+ // Fetch and render income data using D3.js
+async function fetchIncomeData() {
   try {
     const response = await fetch('http://localhost:8080/orders/income-per-supplier', {
       method: 'GET',
@@ -118,42 +119,68 @@ const userTable = document.getElementById('userTable');
 }
 
 function renderIncomeChart(incomeData) {
-  const ctx = document.getElementById('incomeChart').getContext('2d');
+  // Set up dimensions and margins for the chart
+  const margin = { top: 20, right: 30, bottom: 100, left: 50 };
+  const width = 960 - margin.left - margin.right;
+  const height = 500 - margin.top - margin.bottom;
 
-  const labels = incomeData.map(data => data.supplierName); // Get supplier names
-  const data = incomeData.map(data => data.totalIncome); // Get total incomes
+  // Append the SVG object to the body of the page
+  const svg = d3.select("#incomeChart")
+    .append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+    .append("g")
+    .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: labels,
-      datasets: [{
-        label: 'Income',
-        data: data,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        borderColor: 'rgba(75, 192, 192, 1)',
-        borderWidth: 1
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: 'Income ($)'
-          }
-        },
-        x: {
-          title: {
-            display: true,
-            text: 'Supplier'
-          }
-        }
-      }
-    }
-  });
+  // X scale
+  const x = d3.scaleBand()
+    .domain(incomeData.map(d => d.supplierName))
+    .range([0, width])
+    .padding(0.2);
+
+  // Y scale
+  const y = d3.scaleLinear()
+    .domain([0, d3.max(incomeData, d => d.totalIncome)])
+    .nice() // Round up domain to nice round numbers
+    .range([height, 0]);
+
+  // Add X axis
+  svg.append("g")
+    .attr("transform", `translate(0, ${height})`)
+    .call(d3.axisBottom(x))
+    .selectAll("text")
+    .attr("transform", "translate(-10,0)rotate(-45)")
+    .style("text-anchor", "end");
+
+  // Add Y axis
+  svg.append("g")
+    .call(d3.axisLeft(y));
+
+  // Add bars
+  svg.selectAll("rect")
+    .data(incomeData)
+    .enter()
+    .append("rect")
+    .attr("x", d => x(d.supplierName))
+    .attr("y", d => y(d.totalIncome))
+    .attr("width", x.bandwidth())
+    .attr("height", d => height - y(d.totalIncome))
+    .attr("fill", "rgba(75, 192, 192, 0.6)");
+
+  // Add Y axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("y", -margin.left + 20)
+    .attr("x", -margin.top)
+    .attr("transform", "rotate(-90)")
+    .text("Income ($)");
+
+  // Add X axis label
+  svg.append("text")
+    .attr("text-anchor", "end")
+    .attr("x", width)
+    .attr("y", height + margin.top + 20)
+    .text("Supplier");
 }
 
 // Fetch income data and render the chart on page load
