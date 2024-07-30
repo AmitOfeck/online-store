@@ -213,6 +213,20 @@ const getMostPopularProducts = async (req, res) => {
 };
 
 
+const getIncomePerSupplier = async (req, res) => {
+    try {
+        const incomeData = await orderService.calculateIncomePerSupplier();
+        if (incomeData.length === 0) {
+            return res.status(404).json({ message: 'No income data found' });
+        }
+        res.json(incomeData);
+    } catch (error) {
+        console.error('Error calculating income per supplier:', error);
+        res.status(500).json({ message: 'Internal server error' });
+    }
+};
+
+
 
 module.exports = {
     createOrder,
@@ -226,5 +240,6 @@ module.exports = {
     aggregateTotalBillByCustomer,
     getMyCart,
     searchOrders,
-    getMostPopularProducts
+    getMostPopularProducts,
+    getIncomePerSupplier
 };
