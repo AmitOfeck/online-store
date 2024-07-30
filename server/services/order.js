@@ -1,5 +1,6 @@
 const Order = require('../models/order');
-const Product = require('../models/product'); 
+const Product = require('../models/product');
+const User = require('../models/user'); 
 const calculateBill = require('../middleware/calculateBill'); 
 
 
@@ -196,6 +197,64 @@ const getMostPopularProducts = async () => {
 };
 
 
+const calculateIncomePerSupplier = async () => {
+    try {
+        const orders = await Order.find({ ordered: true }).populate('items.id');
+
+        const supplierIncomeMap = {};
+
+        for (const order of orders) {
+            for (const item of order.items) {
+                const product = item.id;  
+                if (product) {
+                    const totalIncomeForItem = product.price * item.quantity;
+                    const supplierId = product.supplierId;
+
+                    if (supplierIncomeMap[supplierId]) {
+                        supplierIncomeMap[supplierId].totalIncome += totalIncomeForItem;
+                    } else {
+                        supplierIncomeMap[supplierId] = {
+                            supplierId: supplierId,
+                            totalIncome: totalIncomeForItem
+                        };
+                    }
+                }
+            }
+        }
+
+        const incomeData = [];
+        for (const [supplierId, incomeInfo] of Object.entries(supplierIncomeMap)) {
+            const supplierName = await getSupplierName(supplierId);  // Retrieve the supplier name
+            incomeData.push({
+                supplierId: supplierId,
+                supplierName: supplierName,
+                totalIncome: incomeInfo.totalIncome
+            });
+        }
+
+        return incomeData;
+    } catch (error) {
+        console.error('Error calculating income per supplier:', error);
+        throw error;
+    }
+};
+
+const getSupplierName = async (supplierId) => {
+    try {
+      const supplier = await User.findById(supplierId);
+  
+      if (supplier && supplier.type === 'supplier') {
+        return `${supplier.firstName} ${supplier.lastName}`;
+      } else {
+        return 'Unknown Supplier';
+      }
+    } catch (error) {
+      console.error(`Error fetching supplier name for ID ${supplierId}:`, error);
+      return 'Unknown Supplier';
+    }
+  };
+
+
 
 
 module.exports = {
@@ -210,5 +269,6 @@ module.exports = {
     aggregateTotalBillByCustomer,
     findOrCreateCart,
     searchOrders,
-    getMostPopularProducts
+    getMostPopularProducts,
+    calculateIncomePerSupplier
 };
