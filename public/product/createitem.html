@@ -9,7 +9,9 @@
 </head>
 <body>
     <div class="top-bar">
-        <img src="../Pictures/logo.jpg" alt="Icon" class="icon">
+        <a href="../homepage.html">
+            <img src="../Pictures/logo.jpg" alt="Icon" class="icon">
+        </a>
     </div>
     <div class="container">
         <h1>Create New Product</h1>
@@ -23,11 +25,24 @@
                         </div>
                         <div class="form-group">
                             <label for="product-category">Category</label>
-                            <input type="text" id="product-category" name="category" required>
+                            <div class="select-container">
+                                <select id="product-category" name="category" required>
+                                    <option value="Dairy and Eggs">Dairy and Eggs</option>
+                                    <option value="Fruit and Vegetables">Fruit and Vegetables</option>
+                                    <option value="Meat and Fish">Meat and Fish</option>
+                                    <option value="Sweet & Salty">Sweet & Salty</option>
+                                    <option value="Beverages">Beverages</option>
+                                    <option value="Frozen Produce">Frozen Produce</option>
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="product-subCategory">Sub Category</label>
-                            <input type="text" id="product-subCategory" name="subCategory" required>
+                            <div class="select-container">
+                                <select id="product-subCategory" name="subCategory" required>
+                                    <!-- Subcategory options will be populated dynamically -->
+                                </select>
+                            </div>
                         </div>
                         <div class="form-group">
                             <label for="product-image">Item Photo(URL)</label>
@@ -39,10 +54,6 @@
                     <div class="form-group">
                         <label for="product-manufacturer">Manufacturer</label>
                         <input type="text" id="product-manufacturer" name="manufacturer" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="product-supplierId">Supplier ID</label>
-                        <input type="text" id="product-supplierId" name="supplierId" required>
                     </div>
                     <div class="form-group">
                         <label for="product-price">Price (₪)</label>
@@ -58,12 +69,14 @@
                     </div>
                     <div class="form-group">
                         <label for="product-weightUnit">Weight Unit</label>
-                        <select id="product-weightUnit" name="weightUnit" class="form-control">
-                            <option value="kg">KG</option>
-                            <option value="g">G</option>
-                            <option value="ml">ML</option>
-                            <option value="l">L</option>
-                        </select>
+                        <div class="select-container">
+                            <select id="product-weightUnit" name="weightUnit" class="form-control">
+                                <option value="kg">KG</option>
+                                <option value="g">G</option>
+                                <option value="ml">ML</option>
+                                <option value="l">L</option>
+                            </select>
+                        </div>
                     </div>
                     <button type="submit">Create Product</button>
                 </div>
