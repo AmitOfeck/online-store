@@ -291,14 +291,21 @@ header {
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 30px; /* Increase bottom margin for more space */
   background-color: #f9f9f9;
-  width:200px;
-  cursor: pointer;
+  width: 250px; /* Adjust width as needed */
+  height: 400px; /* Increase height to accommodate more content */
+  box-sizing: border-box; /* Ensure padding and border are included in the height */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Distribute space between items */
+  overflow: hidden; /* Hide any overflowing content */
 }
 
 .product-card img {
-  max-width: 100px;
+  max-width: 100%;
+  max-height: 180px; /* Increase height of the image container */
+  object-fit: contain; /* Ensure the image fits within its container */
   margin-bottom: 10px;
 }
 
@@ -311,13 +318,22 @@ header {
 
 .product-card p {
   margin: 5px 0;
+  flex: 1; /* Allow the paragraph to expand and fill available space */
 }
 
 .product-card .btn {
   background-color: #46ad7f;
   border: none;
   color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 5px;
+  margin-top: 10px; /* Add margin to create space above the button */
 }
+
+
+
+
 
 #product-list {
   display: grid;
