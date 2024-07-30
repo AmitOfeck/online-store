@@ -15,9 +15,8 @@
     </div>
     <div class="container">
         <nav>
-            <a href="#">Home</a> > 
             <a href="#" id="category-link"></a> > 
-            <a href="#" id="product-link"></a>
+            <a href="#" id="sub-category-link" class="sub-category-link"></a>
         </nav>
         <h1 id="product-name"></h1>
         <div class="content">
@@ -55,9 +54,9 @@
             const productData = JSON.parse(localStorage.getItem('productData'));
 
             if (productData) {
-                document.getElementById('product-name').textContent = productData.name;
                 document.getElementById('category-link').textContent = productData.category;
-                document.getElementById('product-link').textContent = productData.name;
+                document.getElementById('sub-category-link').textContent = productData.subCategory;
+                document.getElementById('product-name').textContent = productData.name;
                 document.getElementById('product-image').src = productData.image;
                 document.getElementById('product-price').textContent = `₪${productData.price}`;
                 document.getElementById('product-manufacturer').textContent = productData.manufacturer;
