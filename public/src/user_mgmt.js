@@ -95,3 +95,66 @@ const userTable = document.getElementById('userTable');
 
     // Initial fetch and render
     fetchUsers();
+
+    async function fetchIncomeData() {
+  try {
+    const response = await fetch('http://localhost:8080/orders/income-per-supplier', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching income data: ${response.statusText}`);
+    }
+
+    const incomeData = await response.json();
+    renderIncomeChart(incomeData);
+  } catch (error) {
+    console.error('Error fetching income data:', error);
+  }
+}
+
+function renderIncomeChart(incomeData) {
+  const ctx = document.getElementById('incomeChart').getContext('2d');
+
+  const labels = incomeData.map(data => data.supplierName); // Get supplier names
+  const data = incomeData.map(data => data.totalIncome); // Get total incomes
+
+  new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Income',
+        data: data,
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        borderColor: 'rgba(75, 192, 192, 1)',
+        borderWidth: 1
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: {
+          beginAtZero: true,
+          title: {
+            display: true,
+            text: 'Income ($)'
+          }
+        },
+        x: {
+          title: {
+            display: true,
+            text: 'Supplier'
+          }
+        }
+      }
+    }
+  });
+}
+
+// Fetch income data and render the chart on page load
+fetchIncomeData();
