@@ -23,7 +23,7 @@ function checkAdminAccess() {
 const productTable = document.getElementById('productTable');
 const searchProduct = document.getElementById('searchProduct');
 const addProductBtn = document.getElementById('addProductBtn');
-const addProductModal = new bootstrap.Modal(document.getElementById('addProductModal'));
+
 const addProductForm = document.getElementById('addProductForm');
 let products = [];
 let UserId = null;
@@ -152,7 +152,7 @@ searchProduct.addEventListener('input', () => {
 });
 
 addProductBtn.addEventListener('click', () => {
-  addProductModal.show();
+  window.location.href = './product/createitem.html';
 });
 
 addProductForm.addEventListener('submit', async (event) => {
@@ -180,7 +180,6 @@ addProductForm.addEventListener('submit', async (event) => {
     const newProduct = await response.json();
     products.push(newProduct);
     renderProducts(products);
-    addProductModal.hide();
   } catch (error) {
     console.error('Error adding product:', error);
   }
