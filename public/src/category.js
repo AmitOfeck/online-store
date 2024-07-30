@@ -3,6 +3,27 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!token) {
     window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
   }
+
+  fetchProducts(); // Fetch products on page load
+  fetchCart(); // Fetch cart on page load
+
+  // Add event listener for dropdown menu items
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
+      filterProductsByCategory(category);
+    });
+  });
+  document.getElementById('apply-price-filter').addEventListener('click', function() {
+    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+    const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
+    filterProductsByPrice(minPrice, maxPrice);
+  });
+  document.getElementById('search-input').addEventListener('input', function() {
+    const query = this.value.toLowerCase();
+    searchProductsByName(query);
+  });
 });
 
 
@@ -35,6 +56,8 @@ async function fetchProducts() {
   }
 }
 
+
+
 async function fetchCart() {
   try {
     const token = localStorage.getItem('token');
@@ -60,6 +83,21 @@ async function fetchCart() {
   }
 }
 
+function filterProductsByCategory(category) {
+  const filteredProducts = products.filter(product => product.category === category);
+  renderProducts(filteredProducts); 
+}
+
+function filterProductsByPrice(minPrice, maxPrice) {
+  const filteredProducts = products.filter(product => product.price >= minPrice && product.price <= maxPrice);
+  renderProducts(filteredProducts);
+}
+
+function searchProductsByName(query) {
+  const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
+  renderProducts(filteredProducts);
+}
+
 function renderProducts(products) {
   productList.innerHTML = '';
   products.forEach(product => {
@@ -74,6 +112,9 @@ function renderProducts(products) {
       <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
     `;
 
+    productCard.addEventListener('click', () => {
+      window.location.href = `http://localhost:8080/products/${product._id}`;
+    });
     productList.appendChild(productCard);
   });
 }

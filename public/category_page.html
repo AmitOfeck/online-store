@@ -19,7 +19,7 @@
         <div class="navbar-nav">
           <div class="nav-item">
             <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search in Super Eats">
+              <input type="text" class="form-control"  id="search-input" placeholder="Search for products...">
             </div>
           </div>
         </div>
@@ -30,12 +30,12 @@
             </button>
             <ul class="dropdown-menu dropdown-menu-end">
               <a class="Cat">Menu</a>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon"> Dairy and Eggs</a></li>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon"> Fruit and Vegetables</a></li>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon"> Meat and Fish</a></li>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon"> Sweet & Salty</a></li>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon"> Beverages</a></li>
-              <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon"> Frozen Produce</a></li>
+              <li><a class="dropdown-item" data-category="Dairy and Eggs"><img src="Pictures/milk-dairy-icon.jpg" class="icon"> Dairy and Eggs</a></li>
+              <li><a class="dropdown-item" data-category="Fruit and Vegetables"><img src="Pictures/fruit-icon.jpg" class="icon"> Fruit and Vegetables</a></li>
+              <li><a class="dropdown-item" data-category="Meat and Fish"><img src="Pictures/fish-meat-icon.jpg" class="icon"> Meat and Fish</a></li>
+              <li><a class="dropdown-item" data-category="Sweet & Salty"><img src="Pictures/sweetandsalty-icon.jpg" class="icon"> Sweet & Salty</a></li>
+              <li><a class="dropdown-item" data-category="Beverages"><img src="Pictures/drink-icon.jpg" class="icon"> Beverages</a></li>
+              <li><a class="dropdown-item" data-category="Frozen Produce"><img src="Pictures/frozen-icon.jpg" class="icon"> Frozen Produce</a></li>
             </ul>
           </div>
           <a class="navbar-brand"  href="homepage.html">
@@ -46,9 +46,20 @@
     </nav>
   </header>
 
+  
   <div class="container-fluid main-content">
     <div class="row">
       <div class="col-md-9">
+        <div class="price-filter">
+          <h4>Filter by Price</h4>
+          <div class="input-group">
+            <span class="input-group-text">$</span>
+            <input type="number" id="min-price" class="form-control" placeholder="Min Price">
+            <span class="input-group-text">to</span>
+            <input type="number" id="max-price" class="form-control" placeholder="Max Price">
+            <button class="btn btn-primary" id="apply-price-filter">Apply</button>
+          </div>
+        </div>
         <div id="product-list">
           <!-- Products will be injected here by JavaScript -->
         </div>
@@ -78,6 +89,8 @@
     <button class="btn btn-success" id="saveSignature">Save</button>
   </div>
 </div>
+
+
 
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
   <script src="./src/category.js"></script>

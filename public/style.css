@@ -294,7 +294,7 @@ header {
   margin-bottom: 20px;
   background-color: #f9f9f9;
   width:200px;
-  
+  cursor: pointer;
 }
 
 .product-card img {
@@ -393,6 +393,39 @@ header {
 .category-item:hover {
   transform: scale(1.05); /* Scale up on hover */
 }
+
+.price-filter {
+  background-color: #f8f9fa; 
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+  margin-bottom: 20px; 
+}
+
+.price-filter h4 {
+  margin-bottom: 10px; 
+  font-size: 18px; 
+  font-weight: bold;
+}
+
+.price-filter .input-group {
+  gap: 10px; 
+}
+
+.price-filter .form-control {
+  border-radius: 25px; 
+  height: 40px; 
+  font-size: 14px; 
+}
+
+.price-filter .btn-primary {
+  border-radius: 25px; 
+  padding: 4px 12px; 
+  font-size: 12px; 
+  background-color: #46ad7f;
+  border: none;
+}
+
 
 .navbar-custom .btn-filter,
 .navbar-custom .btn-address {

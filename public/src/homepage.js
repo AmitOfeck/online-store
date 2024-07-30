@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
   } else {
     updateNavbar(null); // Handle no token case
   }
+  
 });
 
 

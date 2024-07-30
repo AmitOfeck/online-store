@@ -35,6 +35,11 @@ body {
     margin-left: 170px;
 }
 
+nav {
+    margin-bottom: 10px;
+    margin-top: 20px;
+}
+
 nav a {
     color: #888;
     text-decoration: none;
