@@ -247,6 +247,10 @@ async function initPortal() {
   await fetchTotalSpending();
 }
 
+var myModal = new bootstrap.Modal(document.getElementById('addressModal'), {
+  backdrop: false
+});
+
 // Initial render
 initPortal();
 
