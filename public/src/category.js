@@ -11,18 +11,20 @@ document.addEventListener('DOMContentLoaded', function() {
   const dropdownItems = document.querySelectorAll('.dropdown-item');
   dropdownItems.forEach(item => {
     item.addEventListener('click', function() {
-      const category = this.getAttribute('data-category');
-      filterProductsByCategory(category);
+      dropdownItems.forEach(i => i.classList.remove('active')); // Remove active class from all items
+      this.classList.add('active'); // Add active class to the selected item
+      filterProducts();
     });
   });
+
+  // Add event listener for price filter button
   document.getElementById('apply-price-filter').addEventListener('click', function() {
-    const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
-    const maxPrice = parseFloat(document.getElementById('max-price').value) || Infinity;
-    filterProductsByPrice(minPrice, maxPrice);
+    filterProducts();
   });
+
+  // Add event listener for search input
   document.getElementById('search-input').addEventListener('input', function() {
-    const query = this.value.toLowerCase();
-    searchProductsByName(query);
+    filterProducts();
   });
 });
 
@@ -50,9 +52,70 @@ async function fetchProducts() {
     }
 
     products = await response.json();
+    //console.log(products)
     renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
+  }
+}
+
+
+async function filterProducts() {
+  // Get selected category from the active dropdown item
+  const categoryDropdown = document.getElementById('categoryDropdownMenu');
+  const selectedCategoryElement = categoryDropdown.querySelector('a.active');
+  const category = selectedCategoryElement ? selectedCategoryElement.getAttribute('data-category') : '';
+
+  // Get price range
+  const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
+  const maxPrice = parseFloat(document.getElementById('max-price').value) ;
+
+  //console.log(maxPrice)
+
+  // Get search query
+  const searchName = document.getElementById('search-input').value.toLowerCase();
+
+  let query = 'http://localhost:8080/products/search?';
+
+  if (category) {
+    query += `category=${category}&`;
+  }
+
+  if (minPrice !== 0) {
+    query += `price=>${minPrice}&`;
+  }
+
+  if (maxPrice) {
+    query += `price=<${maxPrice}&`;
+  }
+
+  if (searchName) {
+    query += `name=${searchName}&`;
+  }
+
+  // Remove trailing '&' or '?' if no parameters are present
+  query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+  //console.log(query)
+
+  try {
+    const response = await fetch(query, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching filtered products: ${response.statusText}`);
+    }
+
+    const filteredProducts = await response.json();
+    //console.log(filteredProducts)
+    renderProducts(filteredProducts);
+  } catch (error) {
+    console.error('Error fetching filtered products:', error);
   }
 }
 
@@ -85,6 +148,7 @@ async function fetchCart() {
 
 function filterProductsByCategory(category) {
   const filteredProducts = products.filter(product => product.category === category);
+  console.log(filteredProducts)
   renderProducts(filteredProducts); 
 }
 
