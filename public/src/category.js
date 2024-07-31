@@ -67,7 +67,6 @@ async function filterProducts() {
   const category = selectedCategoryElement ? selectedCategoryElement.getAttribute('data-category') : '';
 
   // Get price range
-  const minPrice = parseFloat(document.getElementById('min-price').value) || 0;
   const maxPrice = parseFloat(document.getElementById('max-price').value) ;
 
   //console.log(maxPrice)
@@ -81,10 +80,6 @@ async function filterProducts() {
     query += `category=${category}&`;
   }
 
-  if (minPrice !== 0) {
-    query += `price=>${minPrice}&`;
-  }
-
   if (maxPrice) {
     query += `price=<${maxPrice}&`;
   }
@@ -96,7 +91,7 @@ async function filterProducts() {
   // Remove trailing '&' or '?' if no parameters are present
   query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
 
-  //console.log(query)
+  console.log(query)
 
   try {
     const response = await fetch(query, {
@@ -147,21 +142,6 @@ async function fetchCart() {
   }
 }
 
-function filterProductsByCategory(category) {
-  const filteredProducts = products.filter(product => product.category === category);
-  console.log(filteredProducts)
-  renderProducts(filteredProducts); 
-}
-
-function filterProductsByPrice(minPrice, maxPrice) {
-  const filteredProducts = products.filter(product => product.price >= minPrice && product.price <= maxPrice);
-  renderProducts(filteredProducts);
-}
-
-function searchProductsByName(query) {
-  const filteredProducts = products.filter(product => product.name.toLowerCase().includes(query));
-  renderProducts(filteredProducts);
-}
 
 function renderProducts(products) {
   productList.innerHTML = '';
