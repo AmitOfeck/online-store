@@ -91,8 +91,6 @@ async function filterProducts() {
   // Remove trailing '&' or '?' if no parameters are present
   query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
 
-  console.log(query)
-
   try {
     const response = await fetch(query, {
       method: 'GET',
@@ -107,8 +105,6 @@ async function filterProducts() {
     }
 
     const filteredProducts = await response.json();
-    console.log(filteredProducts)
-    //console.log(filteredProducts)
     renderProducts(filteredProducts);
   } catch (error) {
     console.error('Error fetching filtered products:', error);
@@ -156,11 +152,14 @@ function renderProducts(products) {
       <p>$${product.price}</p>
       <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
     `;
-    /*
-    productCard.addEventListener('click', () => {
-      window.location.href = `http://localhost:8080/products/${product._id}`;
-    });
-    */
+
+    const imgElement = productCard.querySelector('img');
+
+   // Add an event listener to the img element
+   imgElement.addEventListener('click', () => {
+      window.location.href = `product/itempage-template.html?id=${product._id}`;
+   });
+
     productList.appendChild(productCard);
   });
 }
