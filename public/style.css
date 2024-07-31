@@ -1,3 +1,7 @@
+body{
+  font-family: 'MyCustomFont', sans-serif; /* Fall back to a system font if the custom font fails to load */
+
+}
 .navbar-custom {
   background-color: #46ad7f;
   padding: 10px 20px;
@@ -26,6 +30,12 @@
   flex-grow: 1;
   max-width: 600px; /* Set a maximum width for the search bar */
   height: 50px;
+}
+.video-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 20px 0;
 }
 
 .navbar-custom .navbar-nav {
@@ -108,11 +118,7 @@
   max-width: 100px;
 }
 
-.reg-text {
-  font-size: larger;
-  font-family: Courier, monospace;
-  font-weight: bold;
-}
+
 
 .main-content {
   padding-right:50px;
@@ -455,8 +461,33 @@ header {
 
 .navbar-custom .btn-filter:hover,
 .navbar-custom .btn-address:hover {
-  background-color: #e2e6ea; /* Change to a darker shade on hover */
+  background-color: #e2e6ea; 
 }
 
+.video-container {
+  display: flex;
+  align-items: center;
+  padding-top: 120px;
+  margin-right: 400px;
+}
+.reg-text {
+  font-family: 'MyCustomFont', Courier, monospace; 
+  font-size: larger;
+  font-weight: bold;
+}
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./fonts/my-custom-font.woff2') format('woff2');
+  ffont-size: medium;
+  font-family: Courier, monospace;
+}
 
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./fonts/my-custom-font-bold.woff2') format('woff2');
+       
+       font-size: larger;
+       font-family: Courier, monospace;
+       font-weight: bold;
+}
 
