@@ -307,6 +307,7 @@ async function clearCart() {
       }
     }
 
+    
     // Clear the cart locally and re-render
     cart = [];
     renderCart();
