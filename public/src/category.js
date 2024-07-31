@@ -112,6 +112,7 @@ async function filterProducts() {
     }
 
     const filteredProducts = await response.json();
+    console.log(filteredProducts)
     //console.log(filteredProducts)
     renderProducts(filteredProducts);
   } catch (error) {
@@ -175,10 +176,11 @@ function renderProducts(products) {
       <p>$${product.price}</p>
       <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
     `;
-
+    /*
     productCard.addEventListener('click', () => {
       window.location.href = `http://localhost:8080/products/${product._id}`;
     });
+    */
     productList.appendChild(productCard);
   });
 }
