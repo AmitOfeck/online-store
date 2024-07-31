@@ -184,6 +184,29 @@ function updateNavbar(userType) {
   }
 }
 
+document.addEventListener('DOMContentLoaded', function () {
+  const cartSection = document.querySelector('.cart-section');
+  const footer = document.querySelector('footer');
+  const originalCartTop = cartSection.offsetTop;
+  const cartHeight = cartSection.offsetHeight;
+
+  window.addEventListener('scroll', function () {
+    const footerTop = footer.offsetTop;
+    const scrollTop = window.scrollY;
+
+    if (scrollTop + cartHeight >= footerTop) {
+      cartSection.classList.add('sticky');
+      cartSection.style.top = `${footerTop - cartHeight}px`;
+    } else if (scrollTop > originalCartTop) {
+      cartSection.classList.remove('sticky');
+      cartSection.style.top = '150px';
+    } else {
+      cartSection.classList.remove('sticky');
+      cartSection.style.top = `${originalCartTop}px`;
+    }
+  });
+});
+
 
 
 
