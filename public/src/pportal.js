@@ -8,71 +8,57 @@ let userId;
 let userData; 
 
 
+// Initialize the map
 async function initMap() {
   try {
-    // Fetch user details including address
     await fetchUserDetails();
-
-    // Get the user's address and geocode it
     const userAddress = userData.streetAddress;
     const { lat, lng } = await geocodeAddress(userAddress);
 
-    // Initialize the map centered on the user's address
     map = new google.maps.Map(document.getElementById('map'), {
       center: { lat, lng },
       zoom: 12
     });
 
-    // Place a marker on the user's address
+    // Initial marker
     marker = new google.maps.Marker({
       position: { lat, lng },
       map: map
     });
 
-    // Setup search box
+    // Search Box
     const input = document.getElementById('pac-input');
     const searchBox = new google.maps.places.SearchBox(input);
-
     map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
     map.addListener('bounds_changed', () => {
       searchBox.setBounds(map.getBounds());
     });
 
+    // Listen for places_changed event on the search box
     searchBox.addListener('places_changed', () => {
       const places = searchBox.getPlaces();
 
-      if (places.length === 0) {
-        return;
-      }
+      if (places.length === 0) return;
 
-      const bounds = new google.maps.LatLngBounds();
-      places.forEach(place => {
-        if (!place.geometry || !place.geometry.location) {
-          console.log("Returned place contains no geometry");
-          return;
-        }
+      const place = places[0];
+      if (!place.geometry || !place.geometry.location) return;
 
-        if (marker) {
-          marker.setMap(null);
-        }
+      // Clear previous marker
+      if (marker) marker.setMap(null);
 
-        marker = new google.maps.Marker({
-          map: map,
-          position: place.geometry.location
-        });
-
-        selectedPlace = place;
-
-        if (place.geometry.viewport) {
-          bounds.union(place.geometry.viewport);
-        } else {
-          bounds.extend(place.geometry.location);
-        }
+      // Place new marker and center map
+      marker = new google.maps.Marker({
+        map: map,
+        position: place.geometry.location
       });
-      map.fitBounds(bounds);
+
+      map.setCenter(place.geometry.location);
+      selectedPlace = place;
+      updateLocationFields(place.geometry.location, place.formatted_address);
     });
 
+    // Listen for clicks on the map
     map.addListener('click', (event) => {
       placeMarker(event.latLng);
     });
@@ -90,16 +76,57 @@ function placeMarker(location) {
       map: map
     });
   }
+
+  // Reverse geocode to get the address
+  geocodeLatLng(location).then(address => {
+    updateLocationFields(location, address);
+  }).catch(error => {
+    console.error('Error getting address:', error);
+    updateLocationFields(location, 'Unknown location');
+  });
+}
+
+// Update hidden fields and visible address
+function updateLocationFields(location, address) {
   document.getElementById('latitude').value = location.lat();
   document.getElementById('longitude').value = location.lng();
+  document.getElementById('location-name').value = address;
+  document.getElementById('streetAddress').value = address;
+}
+
+// Geocode address to lat/lng
+async function geocodeAddress(address) {
+  const geocoder = new google.maps.Geocoder();
+  return new Promise((resolve, reject) => {
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        resolve({ lat: location.lat(), lng: location.lng() });
+      } else {
+        reject('Geocode was not successful: ' + status);
+      }
+    });
+  });
+}
+
+// Reverse geocode lat/lng to address
+async function geocodeLatLng(location) {
+  const geocoder = new google.maps.Geocoder();
+  return new Promise((resolve, reject) => {
+    geocoder.geocode({ location: location }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        resolve(results[0].formatted_address);
+      } else {
+        reject('Geocode was not successful: ' + status);
+      }
+    });
+  });
 }
 
 document.getElementById('saveLocation').addEventListener('click', () => {
   const lat = document.getElementById('latitude').value;
   const lng = document.getElementById('longitude').value;
-  const locationName = selectedPlace ? selectedPlace.formatted_address : 'Unknown location';
-  document.getElementById('location-name').value = locationName;
-  document.getElementById('streetAddress').value = locationName;
+  const locationName = document.getElementById('location-name').value;
   alert(`Selected location: ${locationName}`);
 });
 
@@ -109,50 +136,6 @@ $('#addressModal').on('shown.bs.modal', function () {
     mapInitialized = true;
   }
 });
-
-async function geocodeAddress(address) {
-  const geocoder = new google.maps.Geocoder();
-  return new Promise((resolve, reject) => {
-    geocoder.geocode({ address: address }, (results, status) => {
-      if (status === 'OK' && results[0]) {
-        const location = results[0].geometry.location;
-        resolve({ lat: location.lat(), lng: location.lng() });
-      } else {
-        reject('Geocode was not successful for the following reason: ' + status);
-      }
-    });
-  });
-}
-
-// Fetch user details and populate the form
-async function fetchUserDetails() {
-  try {
-    const token = localStorage.getItem('token');
-    const decoded = jwt_decode(token);
-
-    const response = await fetch(`http://localhost:8080/users/${decoded.userId}`, {
-      method: 'GET',
-      headers: {
-        'Authorization': `${token}`,
-        'Content-Type': 'application/json'
-      }
-    });
-
-    if (!response.ok) {
-      throw new Error('Error fetching user details');
-    }
-
-    userData = await response.json(); // Store user data
-    userId = userData._id;
-    document.getElementById('firstName').textContent = userData.firstName;
-    document.getElementById('lastName').textContent = userData.lastName;
-    document.getElementById('email').textContent = userData.email;
-    document.getElementById('streetAddress').value = userData.streetAddress || '';
-    document.getElementById('city').value = userData.city || '';
-  } catch (error) {
-    console.error('Error fetching user details:', error);
-  }
-}
 
 
 // Fetch user details and populate the form
