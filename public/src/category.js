@@ -520,3 +520,83 @@ function clearCanvas() {
 }
   fetchProducts();
   fetchCart();  
+
+  async function fetchIncomeData() {
+    try {
+      const response = await fetch('http://localhost:8080/orders/most-popular-products', {
+        method: 'GET',
+        headers: {
+          'Authorization': `${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error fetching income data: ${response.statusText}`);
+      }
+  
+      const incomeData = await response.json();
+      renderIncomeChart(incomeData);
+    } catch (error) {
+      console.error('Error fetching income data:', error);
+    }
+  }
+  
+  function renderIncomeChart(incomeData) {
+    const margin = { top: 20, right: 30, bottom: 100, left: 50 };
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+  
+    const svg = d3.select("#incomeChart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+    const x = d3.scaleBand()
+      .domain(incomeData.map(d => d.name || 'Unnamed'))
+      .range([0, width])
+      .padding(0.2);
+  
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(incomeData, d => d.totalQuantity)])
+      .nice()
+      .range([height, 0]);
+  
+    svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+  
+    svg.append("g")
+      .call(d3.axisLeft(y));
+  
+    svg.selectAll("rect")
+      .data(incomeData)
+      .enter()
+      .append("rect")
+      .attr("x", d => x(d.name || 'Unnamed'))
+      .attr("y", d => y(d.totalQuantity))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.totalQuantity))
+      .attr("fill", "rgba(75, 192, 192, 0.6)");
+  
+    svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("y", -margin.left + 20)
+      .attr("x", -margin.top)
+      .attr("transform", "rotate(-90)")
+      .text("Quantity");
+  
+    svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width)
+      .attr("y", height + margin.top + 20)
+      .text("Product");
+  }
+  
+  // Fetch income data and render the chart on page load
+  fetchIncomeData();
