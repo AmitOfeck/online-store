@@ -15,8 +15,8 @@ document.addEventListener('DOMContentLoaded', function() {
             addToCart(productData._id);
         });
     } else {
-        alert('No product data found');
-    } 
+      /*  alert('No product data found');
+    } */
 
 });
 
@@ -57,8 +57,8 @@ document.addEventListener('DOMContentLoaded', async function() {
         alert('Error fetching product data');
         console.error(error);
       }
-    } /*else {
-      alert('No product ID found in URL');
+    } else {
+    /*  alert('No product ID found in URL');
     }*/
   });
 
