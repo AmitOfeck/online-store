@@ -38,7 +38,28 @@ const totalSum = document.getElementById('total-sum');
 async function fetchProducts() {
   try {
     const token = localStorage.getItem('token'); 
-    const response = await fetch('http://localhost:8080/products/', {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const subCategory = urlParams.get('subCategory');
+    console.log(category)
+    console.log(subCategory)
+
+    let query = 'http://localhost:8080/products/search?';
+
+    if (category) {
+      query += `category=${category}&`;
+    }
+  
+    if (subCategory) {
+      query += `subCategory=${subCategory}&`;
+    }
+
+    query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+    console.log(query)
+
+    const response = await fetch(query, {
       method: 'GET',
       headers: {
         'Authorization': `${token}` 

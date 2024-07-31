@@ -186,6 +186,23 @@ function updateNavbar(userType) {
 }
 
 
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all category items
+  const categoryItems = document.querySelectorAll('.category-item');
+
+  // Add click event listener to each category item
+  categoryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Get the subcategory name from the data attribute
+      const subcategory = item.getAttribute('data-subcategory');
+
+      // Redirect to the category page with the subcategory in the URL parameters
+      window.location.href = `category_page.html?subCategory=${encodeURIComponent(subcategory)}`;
+    });
+  });
+});
+
+
 
 
 
