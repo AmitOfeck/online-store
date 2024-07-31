@@ -7,59 +7,78 @@ let selectedPlace = null;
 let userId;
 let userData; 
 
-// Initialize the map
-function initMap() {
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: { lat: -34.397, lng: 150.644 },
-    zoom: 8
-  });
 
-  const input = document.getElementById('pac-input');
-  const searchBox = new google.maps.places.SearchBox(input);
+async function initMap() {
+  try {
+    // Fetch user details including address
+    await fetchUserDetails();
 
-  map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+    // Get the user's address and geocode it
+    const userAddress = userData.streetAddress;
+    const { lat, lng } = await geocodeAddress(userAddress);
 
-  map.addListener('bounds_changed', () => {
-    searchBox.setBounds(map.getBounds());
-  });
+    // Initialize the map centered on the user's address
+    map = new google.maps.Map(document.getElementById('map'), {
+      center: { lat, lng },
+      zoom: 12
+    });
 
-  searchBox.addListener('places_changed', () => {
-    const places = searchBox.getPlaces();
+    // Place a marker on the user's address
+    marker = new google.maps.Marker({
+      position: { lat, lng },
+      map: map
+    });
 
-    if (places.length === 0) {
-      return;
-    }
+    // Setup search box
+    const input = document.getElementById('pac-input');
+    const searchBox = new google.maps.places.SearchBox(input);
 
-    const bounds = new google.maps.LatLngBounds();
-    places.forEach(place => {
-      if (!place.geometry || !place.geometry.location) {
-        console.log("Returned place contains no geometry");
+    map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+    map.addListener('bounds_changed', () => {
+      searchBox.setBounds(map.getBounds());
+    });
+
+    searchBox.addListener('places_changed', () => {
+      const places = searchBox.getPlaces();
+
+      if (places.length === 0) {
         return;
       }
 
-      if (marker) {
-        marker.setMap(null);
-      }
+      const bounds = new google.maps.LatLngBounds();
+      places.forEach(place => {
+        if (!place.geometry || !place.geometry.location) {
+          console.log("Returned place contains no geometry");
+          return;
+        }
 
-      marker = new google.maps.Marker({
-        map: map,
-        position: place.geometry.location
+        if (marker) {
+          marker.setMap(null);
+        }
+
+        marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        selectedPlace = place;
+
+        if (place.geometry.viewport) {
+          bounds.union(place.geometry.viewport);
+        } else {
+          bounds.extend(place.geometry.location);
+        }
       });
-
-      selectedPlace = place;
-
-      if (place.geometry.viewport) {
-        bounds.union(place.geometry.viewport);
-      } else {
-        bounds.extend(place.geometry.location);
-      }
+      map.fitBounds(bounds);
     });
-    map.fitBounds(bounds);
-  });
 
-  map.addListener('click', (event) => {
-    placeMarker(event.latLng);
-  });
+    map.addListener('click', (event) => {
+      placeMarker(event.latLng);
+    });
+  } catch (error) {
+    console.error('Error initializing map:', error);
+  }
 }
 
 function placeMarker(location) {
@@ -80,7 +99,7 @@ document.getElementById('saveLocation').addEventListener('click', () => {
   const lng = document.getElementById('longitude').value;
   const locationName = selectedPlace ? selectedPlace.formatted_address : 'Unknown location';
   document.getElementById('location-name').value = locationName;
-  document.getElementById('streetAddress').value = locationName; 
+  document.getElementById('streetAddress').value = locationName;
   alert(`Selected location: ${locationName}`);
 });
 
@@ -90,6 +109,51 @@ $('#addressModal').on('shown.bs.modal', function () {
     mapInitialized = true;
   }
 });
+
+async function geocodeAddress(address) {
+  const geocoder = new google.maps.Geocoder();
+  return new Promise((resolve, reject) => {
+    geocoder.geocode({ address: address }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        resolve({ lat: location.lat(), lng: location.lng() });
+      } else {
+        reject('Geocode was not successful for the following reason: ' + status);
+      }
+    });
+  });
+}
+
+// Fetch user details and populate the form
+async function fetchUserDetails() {
+  try {
+    const token = localStorage.getItem('token');
+    const decoded = jwt_decode(token);
+
+    const response = await fetch(`http://localhost:8080/users/${decoded.userId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Error fetching user details');
+    }
+
+    userData = await response.json(); // Store user data
+    userId = userData._id;
+    document.getElementById('firstName').textContent = userData.firstName;
+    document.getElementById('lastName').textContent = userData.lastName;
+    document.getElementById('email').textContent = userData.email;
+    document.getElementById('streetAddress').value = userData.streetAddress || '';
+    document.getElementById('city').value = userData.city || '';
+  } catch (error) {
+    console.error('Error fetching user details:', error);
+  }
+}
+
 
 // Fetch user details and populate the form
 async function fetchUserDetails() {
