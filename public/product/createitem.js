@@ -57,7 +57,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const responseData = await response.json();
             if (response.ok) {
+                localStorage.setItem('productId', responseData._id);
                 localStorage.setItem('productData', JSON.stringify(responseData));
+                localStorage.setItem(`product-${responseData._id}`, JSON.stringify(responseData));
                 window.open('itempage-template.html', '_blank');
             } else {
                 alert(`Error: ${responseData.message}`);

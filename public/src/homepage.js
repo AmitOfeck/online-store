@@ -17,6 +17,7 @@ document.addEventListener("DOMContentLoaded", function() {
   } else {
     updateNavbar(null); // Handle no token case
   }
+  
 });
 
 
@@ -84,12 +85,12 @@ function updateNavbar(userType) {
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <a class="Cat">Menu</a>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon"> Dairy and Eggs</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon"> Fruit and Vegetables</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon"> Meat and Fish</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon"> Sweet & Salty</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon"> Beverages</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon"> Frozen Produce</a></li>
+                 <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon" data-category="Dairy and Eggs"> Dairy and Eggs</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon" data-category="Fruit and Vegetables"> Fruit and Vegetables</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon" data-category="Meat and Fish"> Meat and Fish</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon" data-category="Sweet & Salty"> Sweet & Salty</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon" data-category="Beverages"> Beverages</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon" data-category="Frozen Produce"> Frozen Produce</a></li>
               </ul>
             </div>
             <a class="navbar-brand" href="#">
@@ -121,12 +122,12 @@ function updateNavbar(userType) {
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <a class="Cat">Menu</a>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon"> Dairy and Eggs</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon"> Fruit and Vegetables</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon"> Meat and Fish</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon"> Sweet & Salty</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon"> Beverages</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon"> Frozen Produce</a></li>
+                 <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon" data-category="Dairy and Eggs"> Dairy and Eggs</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon" data-category="Fruit and Vegetables"> Fruit and Vegetables</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon" data-category="Meat and Fish"> Meat and Fish</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon" data-category="Sweet & Salty"> Sweet & Salty</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon" data-category="Beverages"> Beverages</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon" data-category="Frozen Produce"> Frozen Produce</a></li>
               </ul>
             </div>
             <a class="navbar-brand" href="#">
@@ -156,12 +157,12 @@ function updateNavbar(userType) {
               </button>
               <ul class="dropdown-menu dropdown-menu-end">
                 <a class="Cat">Menu</a>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon"> Dairy and Eggs</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon"> Fruit and Vegetables</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon"> Meat and Fish</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon"> Sweet & Salty</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon"> Beverages</a></li>
-                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon"> Frozen Produce</a></li>
+                 <li><a class="dropdown-item" href="#"><img src="Pictures/milk-dairy-icon.jpg" class="icon" data-category="Dairy and Eggs"> Dairy and Eggs</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fruit-icon.jpg" class="icon" data-category="Fruit and Vegetables"> Fruit and Vegetables</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/fish-meat-icon.jpg" class="icon" data-category="Meat and Fish"> Meat and Fish</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/sweetandsalty-icon.jpg" class="icon" data-category="Sweet and Salty"> Sweet & Salty</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/drink-icon.jpg" class="icon" data-category="Beverages"> Beverages</a></li>
+                <li><a class="dropdown-item" href="#"><img src="Pictures/frozen-icon.jpg" class="icon" data-category="Frozen Produce"> Frozen Produce</a></li>
               </ul>
             </div>
             <a class="navbar-brand" href="#">
@@ -204,6 +205,39 @@ document.addEventListener('DOMContentLoaded', function () {
       cartSection.classList.remove('sticky');
       cartSection.style.top = `${originalCartTop}px`;
     }
+  });
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all category items
+  const categoryItems = document.querySelectorAll('.category-item');
+
+  // Add click event listener to each category item
+  categoryItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Get the subcategory name from the data attribute
+      const subcategory = item.getAttribute('data-subcategory');
+
+      // Redirect to the category page with the subcategory in the URL parameters
+      window.location.href = `category_page.html?subCategory=${encodeURIComponent(subcategory)}`;
+    });
+  });
+});
+
+document.addEventListener('DOMContentLoaded', () => {
+  // Select all category items
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+
+  // Add click event listener to each category item
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', () => {
+      // Get the subcategory name from the data attribute
+      const category = item.querySelector('.icon').getAttribute('data-category');
+
+      // Redirect to the category page with the subcategory in the URL parameters
+      window.location.href = `category_page.html?category=${encodeURIComponent(category)}`;
+    });
   });
 });
 

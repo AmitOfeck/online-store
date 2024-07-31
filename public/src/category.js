@@ -3,9 +3,33 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!token) {
     window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
   }
+
+  fetchAllProducts()
+  fetchProducts(); // Fetch products on page load
+  fetchCart(); // Fetch cart on page load
+
+  // Add event listener for dropdown menu items
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', function() {
+      dropdownItems.forEach(i => i.classList.remove('active')); // Remove active class from all items
+      this.classList.add('active'); // Add active class to the selected item
+      filterProducts();
+    });
+  });
+
+  // Add event listener for price filter button
+  document.getElementById('apply-price-filter').addEventListener('click', function() {
+    filterProducts();
+  });
+
+  // Add event listener for search input
+  document.getElementById('search-input').addEventListener('input', function() {
+    filterProducts();
+  });
 });
 
-
+let allProducts = [];
 let products = [];
 let cart = [];
 const productList = document.getElementById('product-list');
@@ -15,7 +39,28 @@ const totalSum = document.getElementById('total-sum');
 async function fetchProducts() {
   try {
     const token = localStorage.getItem('token'); 
-    const response = await fetch('http://localhost:8080/products/', {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const subCategory = urlParams.get('subCategory');
+    console.log(category)
+    console.log(subCategory)
+
+    let query = 'http://localhost:8080/products/search?';
+
+    if (category) {
+      query += `category=${category}&`;
+    }
+  
+    if (subCategory) {
+      query += `subCategory=${subCategory}&`;
+    }
+
+    query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+    console.log(query)
+
+    const response = await fetch(query, {
       method: 'GET',
       headers: {
         'Authorization': `${token}` 
@@ -29,11 +74,90 @@ async function fetchProducts() {
     }
 
     products = await response.json();
+    //console.log(products)
     renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
 }
+
+
+async function fetchAllProducts() {
+  try {
+    const token = localStorage.getItem('token'); 
+
+    const response = await fetch('http://localhost:8080/products/', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}` 
+      }
+    });
+
+    if (!response.ok) {
+      console.log('Response Status:', response.status);
+      console.log('Response Status Text:', response.statusText);
+      throw new Error('Failed to fetch products');
+    }
+
+    allProducts = await response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
+
+
+async function filterProducts() {
+  // Get selected category from the active dropdown item
+  const categoryDropdown = document.getElementById('categoryDropdownMenu');
+  const selectedCategoryElement = categoryDropdown.querySelector('a.active');
+  const category = selectedCategoryElement ? selectedCategoryElement.getAttribute('data-category') : '';
+
+  // Get price range
+  const maxPrice = parseFloat(document.getElementById('max-price').value) ;
+
+  //console.log(maxPrice)
+
+  // Get search query
+  const searchName = document.getElementById('search-input').value.toLowerCase();
+
+  let query = 'http://localhost:8080/products/search?';
+
+  if (category) {
+    query += `category=${category}&`;
+  }
+
+  if (maxPrice) {
+    query += `price=<${maxPrice}&`;
+  }
+
+  if (searchName) {
+    query += `name=${searchName}&`;
+  }
+
+  // Remove trailing '&' or '?' if no parameters are present
+  query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+  try {
+    const response = await fetch(query, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching filtered products: ${response.statusText}`);
+    }
+
+    const filteredProducts = await response.json();
+    renderProducts(filteredProducts);
+  } catch (error) {
+    console.error('Error fetching filtered products:', error);
+  }
+}
+
+
 
 async function fetchCart() {
   try {
@@ -60,6 +184,7 @@ async function fetchCart() {
   }
 }
 
+
 function renderProducts(products) {
   productList.innerHTML = '';
   products.forEach(product => {
@@ -74,6 +199,13 @@ function renderProducts(products) {
       <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
     `;
 
+    const imgElement = productCard.querySelector('img');
+
+   // Add an event listener to the img element
+   imgElement.addEventListener('click', () => {
+      window.location.href = `product/itempage-template.html?id=${product._id}`;
+   });
+
     productList.appendChild(productCard);
   });
 }
@@ -84,7 +216,7 @@ let sum = 0;
 
 
 cart.forEach(item => {
-const product = products.find(p => p._id === item.id)
+const product = allProducts.find(p => p._id === item.id)
 
 if (!product) {
   console.warn(`Product with ID ${item.productId} not found`);
