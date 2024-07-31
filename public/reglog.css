@@ -64,4 +64,15 @@ body {
     display: grid;
     justify-content: center;
   }
+  #map{
+    height: 500px; 
+    width: 100%;
+  }
   
+  
+  #pac-input {
+    z-index: 1051; /* Ensures the input is above the modal backdrop */
+  }
+  .pac-container {
+    z-index: 2052 !important; /* Ensures the suggestions are above the modal */
+  }
