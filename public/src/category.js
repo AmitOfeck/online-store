@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
   }
 
+  fetchAllProducts()
   fetchProducts(); // Fetch products on page load
   fetchCart(); // Fetch cart on page load
 
@@ -28,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
-
+let allProducts = [];
 let products = [];
 let cart = [];
 const productList = document.getElementById('product-list');
@@ -75,6 +76,30 @@ async function fetchProducts() {
     products = await response.json();
     //console.log(products)
     renderProducts(products);
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
+
+
+async function fetchAllProducts() {
+  try {
+    const token = localStorage.getItem('token'); 
+
+    const response = await fetch('http://localhost:8080/products/', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}` 
+      }
+    });
+
+    if (!response.ok) {
+      console.log('Response Status:', response.status);
+      console.log('Response Status Text:', response.statusText);
+      throw new Error('Failed to fetch products');
+    }
+
+    allProducts = await response.json();
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -191,7 +216,7 @@ let sum = 0;
 
 
 cart.forEach(item => {
-const product = products.find(p => p._id === item.id)
+const product = allProducts.find(p => p._id === item.id)
 
 if (!product) {
   console.warn(`Product with ID ${item.productId} not found`);

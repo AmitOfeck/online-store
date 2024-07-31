@@ -313,6 +313,7 @@ header {
   max-height: 180px; /* Increase height of the image container */
   object-fit: contain; /* Ensure the image fits within its container */
   margin-bottom: 10px;
+  cursor: pointer;
 }
 
 .product-card h5 {

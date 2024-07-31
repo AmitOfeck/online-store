@@ -1,4 +1,4 @@
-/*
+
 document.addEventListener('DOMContentLoaded', function() {
     const productData = JSON.parse(localStorage.getItem('productData'));
 
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', function() {
     } 
 
 });
-*/
+
 
 
 
@@ -57,9 +57,9 @@ document.addEventListener('DOMContentLoaded', async function() {
         alert('Error fetching product data');
         console.error(error);
       }
-    } else {
+    } /*else {
       alert('No product ID found in URL');
-    }
+    }*/
   });
 
 

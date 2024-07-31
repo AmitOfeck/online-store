@@ -10,6 +10,7 @@
     .product-card img {
       max-width: 100px;
       margin-bottom: 10px;
+      cursor: pointer;
     }
 
     .product-card h5 {
