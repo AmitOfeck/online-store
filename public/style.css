@@ -35,7 +35,6 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  margin: 20px 0;
 }
 
 .navbar-custom .navbar-nav {
@@ -416,10 +415,10 @@ header {
 }
 
 .video-container {
+  background-color: #46ad7f;
   display: flex;
   align-items: center;
-  padding-top: 120px;
-  margin-right: 400px;
+  align-self: center;
 }
 .reg-text {
   font-family: 'MyCustomFont', Courier, monospace; 
@@ -442,3 +441,75 @@ header {
        font-weight: bold;
 }
 
+.custom-footer {
+  background-color: #46ad7f;
+  color: white;
+  margin-top: 30px;
+}
+
+.custom-footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  padding: 0 50px;
+}
+
+.custom-footer .footer-section {
+  flex: 1;
+  padding: 20px;
+}
+
+.custom-footer .footer-section h5 {
+  font-size: larger;
+  font-family: 'MyCustomFont', Courier, monospace;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.custom-footer .footer-section p,
+.custom-footer .footer-section ul {
+  font-size: medium;
+  font-family: 'MyCustomFont', Courier, monospace;
+  margin-bottom: 10px;
+}
+
+.custom-footer .footer-section ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.custom-footer .footer-section ul li {
+  margin-bottom: 5px;
+}
+
+.custom-footer .footer-section ul li a {
+  color: white;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.custom-footer .footer-section ul li a:hover {
+  color: #e9ecef;
+}
+
+.custom-footer .footer-bottom {
+  text-align: center;
+  padding: 10px 0;
+  font-size: small;
+  font-family: 'MyCustomFont', Courier, monospace;
+  border-top: 1px solid #e9ecef;
+}
+
+.footer-section p i {
+  margin-right: 10px;
+}
+.cart-section.sticky {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+}
+.footer-bottom{
+  background-color: #FFFDD0  ;
+  color: #46ad7f;
+}
