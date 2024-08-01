@@ -120,7 +120,7 @@ async function fetchData(productId) {
     const loader = document.getElementById('loader');
 
     button.disabled = true;
-    loader.style.display = '';
+    loader.style.display = 'inline-block';
 
     try {
         // Step 1: Create the post with the photo URL directly
