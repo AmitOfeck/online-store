@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const tokenPayload = JSON.parse(atob(token.split('.')[1]));
             formData.supplierId = tokenPayload.userId;
-            console.log('Supplier ID:', formData.supplierId);
 
             const response = await fetch('http://localhost:8080/products/', {
                 method: 'POST',
@@ -67,25 +66,23 @@ document.addEventListener('DOMContentLoaded', function() {
             alert('Failed to create item');
         }
     });
-
-    // Initialize subcategory options based on the default category
     updateSubCategoryOptions();
 });
 
-const accessKey = 'veGw7_mw41_tRfZhmHkgu7DkJowR97hhy-gpUNNiN_E'; // החלף במפתח ה-API שלך
-let images = []; // רשימה לאחסון כל התמונות שהתקבלו
-let currentIndex = 0; // משתנה למעקב אחרי התמונה הנוכחית
+const accessKey = 'veGw7_mw41_tRfZhmHkgu7DkJowR97hhy-gpUNNiN_E'; 
+let images = [];
+let currentIndex = 0;
 
 function searchProductImage() {
     const productName = document.getElementById('product-name').value;
-    const searchQuery = `${productName}  grocery`; // שיפור החיפוש עם מילות מפתח מתאימות
+    const searchQuery = `${productName}  grocery`;
     fetch(`https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${accessKey}`)
         .then(response => response.json())
         .then(data => {
             if (data.results && data.results.length > 0) {
-                images = data.results; // שמירת כל התוצאות ברשימה
-                currentIndex = 0; // אתחול האינדקס
-                displayImage(); // הצגת התמונה הראשונה
+                images = data.results;
+                currentIndex = 0;
+                displayImage();
             } else {
                 alert('No images found');
                 document.getElementById('productImage').style.display = 'none';
@@ -100,16 +97,13 @@ function displayImage() {
         const productImage = document.getElementById('productImage');
         productImage.src = imageUrl;
         productImage.style.display = 'block';
-        document.getElementById('product-image').value = imageUrl; // עדכון שדה התמונה עם הקישור הנוכחי
+        document.getElementById('product-image').value = imageUrl;
     }
 }
 
 function nextImage() {
     if (images.length > 0) {
-        currentIndex = (currentIndex + 1) % images.length; // לעבור לתמונה הבאה
+        currentIndex = (currentIndex + 1) % images.length;
         displayImage();
     }
 }
-
-
-//filter:  packaged product container grocery

@@ -1,25 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
-  // Fetch and decode the token
   const token = localStorage.getItem('token');
-  console.log("Token:", token);
 
   if (token) {
     try {
       const decodedToken = jwt_decode(token);
       const userType = decodedToken.type;
-      console.log("Decoded Token:", decodedToken);
-      console.log("User Type:", userType);
       updateNavbar(userType);
-      fetchCart(); // Fetch the cart details (Assuming there's a function to handle cart fetching)
+      fetchCart();
     } catch (error) {
       console.error("Error decoding token:", error);
-      updateNavbar(null); // Handle token decoding error
+      updateNavbar(null);
     }
   } else {
-    updateNavbar(null); // Handle no token case
+    updateNavbar(null);
   }
 
-  // Function to update the navbar based on user type
   function updateNavbar(userType) {
     let navbarContent = '';
 
@@ -176,7 +171,6 @@ document.addEventListener("DOMContentLoaded", function() {
         break;
     }
 
-    // Update the navbar element
     const navbarElement = document.getElementById('navbar');
     if (navbarElement) {
       navbarElement.innerHTML = navbarContent;
@@ -206,8 +200,6 @@ async function fetchAllProducts() {
     });
 
     if (!response.ok) {
-      console.log('Response Status:', response.status);
-      console.log('Response Status Text:', response.statusText);
       throw new Error('Failed to fetch products');
     }
 
@@ -217,11 +209,8 @@ async function fetchAllProducts() {
   }
 }
 
-  // Fetch all products and store them
-
   fetchAllProducts();
 
-  // Add event listener to the search input
   const searchInput = document.getElementById('productSearch');
   const searchSuggestions = document.getElementById('searchSuggestions');
 
@@ -232,10 +221,8 @@ async function fetchAllProducts() {
         product.name.toLowerCase().includes(query)
       );
 
-      // Clear previous suggestions
       searchSuggestions.innerHTML = '';
 
-      // Display filtered products as suggestions
       filteredProducts.forEach(product => {
         const suggestionItem = document.createElement('a');
         suggestionItem.classList.add('dropdown-item');
@@ -251,7 +238,6 @@ async function fetchAllProducts() {
         searchSuggestions.appendChild(suggestionItem);
       });
 
-      // Show or hide the suggestions dropdown
       if (filteredProducts.length > 0) {
         searchSuggestions.style.display = 'block';
       } else {
@@ -259,7 +245,6 @@ async function fetchAllProducts() {
       }
     });
 
-    // Hide suggestions when clicking outside
     document.addEventListener('click', function(event) {
       if (!searchInput.contains(event.target) && !searchSuggestions.contains(event.target)) {
         searchSuggestions.style.display = 'none';
@@ -294,32 +279,23 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Select all category items
   const categoryItems = document.querySelectorAll('.category-item');
 
-  // Add click event listener to each category item
   categoryItems.forEach(item => {
     item.addEventListener('click', () => {
-      // Get the subcategory name from the data attribute
       const subcategory = item.getAttribute('data-subcategory');
-     
-      // Redirect to the category page with the subcategory in the URL parameters
+
       window.location.href = `category_page.html?subCategory=${encodeURIComponent(subcategory)}`;
     });
   });
 });
 
 document.addEventListener('DOMContentLoaded', () => {
-  // Select all category items
   const dropdownItems = document.querySelectorAll('.dropdown-item');
 
-  // Add click event listener to each category item
   dropdownItems.forEach(item => {
     item.addEventListener('click', () => {
-      // Get the subcategory name from the data attribute
       const category = item.querySelector('.icon').getAttribute('data-category');
-
-      // Redirect to the category page with the subcategory in the URL parameters
       window.location.href = `category_page.html?category=${encodeURIComponent(category)}`;
     });
   });

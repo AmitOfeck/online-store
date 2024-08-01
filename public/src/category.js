@@ -1,29 +1,26 @@
 document.addEventListener('DOMContentLoaded', function() {
   const token = localStorage.getItem('token');
   if (!token) {
-    window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
+    window.location.href = 'reglog.html';
   }
 
   fetchAllProducts()
-  fetchProducts(); // Fetch products on page load
-  fetchCart(); // Fetch cart on page load
+  fetchProducts();
+  fetchCart();
 
-  // Add event listener for dropdown menu items
   const dropdownItems = document.querySelectorAll('.dropdown-item');
   dropdownItems.forEach(item => {
     item.addEventListener('click', function() {
-      dropdownItems.forEach(i => i.classList.remove('active')); // Remove active class from all items
-      this.classList.add('active'); // Add active class to the selected item
+      dropdownItems.forEach(i => i.classList.remove('active'));
+      this.classList.add('active');
       filterProducts();
     });
   });
 
-  // Add event listener for price filter button
   document.getElementById('apply-price-filter').addEventListener('click', function() {
     filterProducts();
   });
 
-  // Add event listener for search input
   document.getElementById('search-input').addEventListener('input', function() {
     filterProducts();
   });
@@ -43,8 +40,6 @@ async function fetchProducts() {
     const urlParams = new URLSearchParams(window.location.search);
     const category = urlParams.get('category');
     const subCategory = urlParams.get('subCategory');
-    console.log(category)
-    console.log(subCategory)
 
     let query = 'http://localhost:8080/products/search?';
 
@@ -58,8 +53,6 @@ async function fetchProducts() {
 
     query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
 
-    console.log(query)
-
     const response = await fetch(query, {
       method: 'GET',
       headers: {
@@ -68,13 +61,10 @@ async function fetchProducts() {
     });
 
     if (!response.ok) {
-      console.log('Response Status:', response.status);
-      console.log('Response Status Text:', response.statusText);
       throw new Error('Failed to fetch products');
     }
 
     products = await response.json();
-    //console.log(products)
     renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
@@ -94,8 +84,6 @@ async function fetchAllProducts() {
     });
 
     if (!response.ok) {
-      console.log('Response Status:', response.status);
-      console.log('Response Status Text:', response.statusText);
       throw new Error('Failed to fetch products');
     }
 
@@ -107,17 +95,12 @@ async function fetchAllProducts() {
 
 
 async function filterProducts() {
-  // Get selected category from the active dropdown item
   const categoryDropdown = document.getElementById('categoryDropdownMenu');
   const selectedCategoryElement = categoryDropdown.querySelector('a.active');
   const category = selectedCategoryElement ? selectedCategoryElement.getAttribute('data-category') : '';
 
-  // Get price range
   const maxPrice = parseFloat(document.getElementById('max-price').value) ;
 
-  //console.log(maxPrice)
-
-  // Get search query
   const searchName = document.getElementById('search-input').value.toLowerCase();
 
   let query = 'http://localhost:8080/products/search?';
@@ -134,7 +117,6 @@ async function filterProducts() {
     query += `name=${searchName}&`;
   }
 
-  // Remove trailing '&' or '?' if no parameters are present
   query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
 
   try {
@@ -170,8 +152,6 @@ async function fetchCart() {
     });
 
     if (!response.ok) {
-      console.log('Response Status:', response.status);
-      console.log('Response Status Text:', response.statusText);
       throw new Error('Failed to fetch cart');
     }
 
@@ -201,7 +181,6 @@ function renderProducts(products) {
 
     const imgElement = productCard.querySelector('img');
 
-   // Add an event listener to the img element
    imgElement.addEventListener('click', () => {
       window.location.href = `product/itempage-template.html?id=${product._id}`;
    });
@@ -255,13 +234,12 @@ totalSum.innerText = sum.toFixed(2);
 async function addToCart(productId) {
 try {
 
-// Retrieve the current order ID (you should store it in a variable or localStorage)
-const orderId = localStorage.getItem('orderId'); // Adjust as necessary
+const orderId = localStorage.getItem('orderId'); 
 
 const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
@@ -272,7 +250,6 @@ if (!response.ok) {
 
 const cartUpdate = await response.json();
 
-// Assuming cartUpdate contains the updated cart info
 cart = cartUpdate.items;
 renderCart();
 } catch (error) {
@@ -283,11 +260,11 @@ console.error('Error adding to cart:', error);
 
 async function increaseQuantity(productId) {
 try {
-const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+const orderId = localStorage.getItem('orderId');
 const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
@@ -297,8 +274,8 @@ if (!response.ok) {
 }
 
 const cartUpdate = await response.json();
-cart = cartUpdate.items; // Update cart with the latest items
-renderCart(); // Re-render the cart
+cart = cartUpdate.items;
+renderCart();
 } catch (error) {
 console.error('Error increasing quantity:', error);
 }
@@ -308,11 +285,11 @@ console.error('Error increasing quantity:', error);
 
 async function decreaseQuantity(productId) {
 try {
-const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+const orderId = localStorage.getItem('orderId');
 const response = await fetch(`http://localhost:8080/orders/${orderId}/remove-from-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
@@ -322,8 +299,8 @@ if (!response.ok) {
 }
 
 const cartUpdate = await response.json();
-cart = cartUpdate.items; // Update cart with the latest items
-renderCart(); // Re-render the cart
+cart = cartUpdate.items;
+renderCart();
 } catch (error) {
 console.error('Error decreasing quantity:', error);
 }
@@ -331,7 +308,7 @@ console.error('Error decreasing quantity:', error);
 
 async function payNow() {
 try {
-const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+const orderId = localStorage.getItem('orderId');
 const token = localStorage.getItem('token');
 
 
@@ -343,8 +320,6 @@ const res = await fetch('http://localhost:8080/orders/get-my-cart', {
     });
 
     if (!res.ok) {
-      console.log('Response Status:', res.status);
-      console.log('Response Status Text:', res.statusText);
       throw new Error('Failed to fetch cart');
     }
 
@@ -354,20 +329,18 @@ order.ordered = true;
 const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
   method: 'PATCH',
   headers: {
-    'Authorization': `${token}`, // Include token for authentication
+    'Authorization': `${token}`,
     'Content-Type': 'application/json'
   },
-  body: JSON.stringify(order) // Set the `ordered` status to true
+  body: JSON.stringify(order)
 });
 
 if (!response.ok) {
   throw new Error(`Error completing the order: ${response.statusText}`);
 }
 
-// Show success alert
 alert('The order will be sent to your address');
 
-// Fetch the updated cart
 await fetchCart();
 } catch (error) {
 console.error('Error processing payment:', error);
@@ -400,12 +373,11 @@ document.getElementById('logout-button').addEventListener('click', function() {
       const token = localStorage.getItem('token');
       const orderId = localStorage.getItem('orderId');
 
-      // Loop through each item in the cart and send a DELETE request
       for (const item of cart) {
         const response = await fetch(`http://localhost:8080/orders/${orderId}/clean-cart`, {
           method: 'POST',
           headers: {
-            'Authorization': `${token}`, // Include token for authentication
+            'Authorization': `${token}`,
             'Content-Type': 'application/json'
           }
         });
@@ -415,7 +387,6 @@ document.getElementById('logout-button').addEventListener('click', function() {
         }
       }
 
-      // Clear the cart locally and re-render
       cart = [];
       renderCart();
     } catch (error) {
@@ -429,7 +400,7 @@ async function payNow() {
   }
 
   try {
-    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+    const orderId = localStorage.getItem('orderId'); 
     const token = localStorage.getItem('token');
 
     const res = await fetch('http://localhost:8080/orders/get-my-cart', {
@@ -440,8 +411,6 @@ async function payNow() {
     });
 
     if (!res.ok) {
-      console.log('Response Status:', res.status);
-      console.log('Response Status Text:', res.statusText);
       throw new Error('Failed to fetch cart');
     }
 
@@ -458,17 +427,16 @@ async function payNow() {
       const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `${token}`, // Include token for authentication
+          'Authorization': `${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(order) // Set the `ordered` status to true
+        body: JSON.stringify(order)
       });
 
       if (!response.ok) {
         throw new Error(`Error completing the order: ${response.statusText}`);
       }
 
-      // Fetch the updated cart
       await fetchCart();
     });
   } catch (error) {
@@ -597,6 +565,5 @@ function clearCanvas() {
       .attr("y", height + margin.top + 20)
       .text("Product");
   }
-  
-  // Fetch income data and render the chart on page load
+
   fetchIncomeData();

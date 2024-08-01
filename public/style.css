@@ -1,5 +1,5 @@
 body{
-  font-family: 'MyCustomFont', sans-serif; /* Fall back to a system font if the custom font fails to load */
+  font-family: 'MyCustomFont', sans-serif;
 
 }
 .navbar-custom {
@@ -8,13 +8,13 @@ body{
   display: flex;
   align-items: center;
   justify-content: space-between;
-  z-index: 1000; /* Ensure the header stays on top */
+  z-index: 1000;
 }
 
 .navbar-custom .navbar-brand {
   display: flex;
   align-items: center;
-  margin-left: auto; /* Move the logo to the right corner */
+  margin-left: auto; 
 }
 
 .navbar-custom .navbar-brand img {
@@ -28,7 +28,7 @@ body{
 
 .navbar-custom .input-group {
   flex-grow: 1;
-  max-width: 600px; /* Set a maximum width for the search bar */
+  max-width: 600px;
   height: 50px;
 }
 .video-container {
@@ -51,7 +51,7 @@ body{
 .navbar-custom .nav-right {
   display: flex;
   align-items: center;
-  justify-content: flex-end; /* Ensure the logo is at the end of the nav-right section */
+  justify-content: flex-end;
 }
 
 .navbar-custom .btn-filter, .navbar-custom .btn-address {
@@ -95,13 +95,13 @@ body{
   overflow-y: auto;
   display: flex;
   flex-direction: column;
-  position: fixed; /* Make the cart section fixed */
-  top: 150px; /* Adjust based on the header height */
+  position: fixed;
+  top: 150px; 
   right: 0;
   width: 400px;
-  height: calc(100% - 80px); /* Adjust height based on the header height */
-  overflow-y: auto; /* Enable vertical scrolling */
-  height: calc(100vh - 200px); /* Adjust height for the fixed header and footer */
+  height: calc(100% - 80px); 
+  overflow-y: auto; 
+  height: calc(100vh - 200px);
 }
 
 .cart-section h4 {
@@ -121,7 +121,7 @@ body{
 
 .main-content {
   padding-right:50px;
-  padding-top: 150px; /* Add padding to avoid content hiding under header */
+  padding-top: 150px; 
   width:1500px;
   padding-left:5px;
 }
@@ -147,12 +147,12 @@ body{
 
 .category-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* Create a grid with 3 equal columns */
+  grid-template-columns: repeat(2, 1fr); 
   gap: 10px;
 }
 
 .category-item {
-  background-color: #eaf6ff; /* Match the background color */
+  background-color: #eaf6ff;
   border-radius: 10px;
   padding: 20px;
   text-align: center;
@@ -164,11 +164,10 @@ body{
 
 .category-item img {
   width: 100%;
-  height: 200px; /* Adjust the height as needed */
-  object-fit:contain /* Ensure image covers the area while maintaining aspect ratio */
+  height: 200px;
+  object-fit:contain;
 }
 
-/* Styles for even number of items */
 .category-grid {
   counter-reset: category-items;
 }
@@ -179,33 +178,6 @@ body{
 
 .category-grid > .category-item:nth-last-child(1):nth-child(odd) {
   grid-column: span 2;
-}
-
-
-
-
-/* Responsive styles */
-@media (max-width: 767px) {
-  .category-grid {
-    grid-template-columns: repeat(2, 1fr); /* 2 columns for small screens */
-  }
-
-  .category-grid .category-item:nth-last-child(1) {
-    grid-column: span 2; /* Make the last item span 2 columns if it's alone in the row on small screens */
-  }
-
- 
-}
-
-@media (max-width: 575px) {
-  .category-grid {
-    grid-template-columns: 1fr; /* 1 column for extra small screens */
-  }
-
-  .category-grid .category-item:nth-last-child(1),
-  .category-grid .category-item:nth-last-child(2) {
-    grid-column: span 1; /* Make the last items span 1 column each on extra small screens */
-  }
 }
 
 .dropdown-toggle {
@@ -221,7 +193,7 @@ header {
   width: 100%;
   position: fixed;
   top: 0;
-  z-index: 1000; /* Ensure the header stays on top */
+  z-index: 1000;
 }
 
 .purchase-button {
@@ -234,13 +206,13 @@ header {
   font-size: larger;
   font-family: Courier, monospace;
   font-weight: bold;
-  transition: background-color 0.3s ease; /* Added transition */
+  transition: background-color 0.3s ease;
 
 }
 .purchase-button:hover{
 
   background-color: #46ad7f93;
-  transition: background-color 0.3s ease; /* Added transition */
+  transition: background-color 0.3s ease;
 
 
 }
@@ -266,13 +238,13 @@ header {
 }
 
 .small-input-group {
-  width: 120px; /* Adjust the width as needed */
+  width: 120px;
 }
 
 .small-input-group .form-control {
-  width: 50px; /* Adjust the width of the input field */
-  padding: 5px; /* Adjust padding for the input field */
-  text-align: center; /* Center text in the input field */
+  width: 50px;
+  padding: 5px;
+  text-align: center;
 }
 .login_btn {
   color:black;
@@ -285,10 +257,10 @@ header {
 
 
 #pac-input {
-  z-index: 1051; /* Ensures the input is above the modal backdrop */
+  z-index: 1051;
 }
 .pac-container {
-  z-index: 2052 !important; /* Ensures the suggestions are above the modal */
+  z-index: 2052 !important;
 }
 
 .product-card {
@@ -296,21 +268,21 @@ header {
   border-radius: 10px;
   padding: 20px;
   text-align: center;
-  margin-bottom: 30px; /* Increase bottom margin for more space */
+  margin-bottom: 30px;
   background-color: #f9f9f9;
-  width: 250px; /* Adjust width as needed */
-  height: 400px; /* Increase height to accommodate more content */
-  box-sizing: border-box; /* Ensure padding and border are included in the height */
+  width: 250px;
+  height: 400px;
+  box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Distribute space between items */
-  overflow: hidden; /* Hide any overflowing content */
+  justify-content: space-between;
+  overflow: hidden;
 }
 
 .product-card img {
   max-width: 100%;
-  max-height: 180px; /* Increase height of the image container */
-  object-fit: contain; /* Ensure the image fits within its container */
+  max-height: 180px;
+  object-fit: contain;
   margin-bottom: 10px;
   cursor: pointer;
 }
@@ -324,7 +296,7 @@ header {
 
 .product-card p {
   margin: 5px 0;
-  flex: 1; /* Allow the paragraph to expand and fill available space */
+  flex: 1;
 }
 
 .product-card .btn {
@@ -334,12 +306,8 @@ header {
   padding: 10px;
   text-align: center;
   border-radius: 5px;
-  margin-top: 10px; /* Add margin to create space above the button */
+  margin-top: 10px;
 }
-
-
-
-
 
 #product-list {
   display: grid;
@@ -351,24 +319,25 @@ header {
   max-width: 50px;
   margin-left: 15px;
 }
+
 #Clear-Cart{
   width:150px;
   font-family: Courier, monospace;
   font-weight: bold;
-  transition: background-color 0.3s ease; /* Added transition */
-
+  transition: background-color 0.3s ease;
 }
+
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1000;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
@@ -409,11 +378,11 @@ header {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  transition: transform 0.3s ease; /* Added transition */
+  transition: transform 0.3s ease;
 }
 
 .category-item:hover {
-  transform: scale(1.05); /* Scale up on hover */
+  transform: scale(1.05);
 }
 
 .price-filter {
@@ -456,7 +425,7 @@ header {
   font-size: 16px;
   padding: 8px 20px;
   border-radius: 25px;
-  transition: background-color 0.3s ease; /* Added transition */
+  transition: background-color 0.3s ease;
 }
 
 .navbar-custom .btn-filter:hover,
@@ -576,9 +545,8 @@ font-weight: bold;
   font-weight: bold;
 }
 .input-group {
-  position: relative; /* Make the container position relative */
+  position: relative;
 }
-
 
 .suggestion-item {
   display: flex;
@@ -590,8 +558,8 @@ font-weight: bold;
   width: 50px;
   height: 50px;
   margin-right: 10px;
-  object-fit: cover; /* Ensures the image covers the 50x50 space appropriately */
-  border-radius: 5px; /* Optional: add rounded corners */
+  object-fit: cover;
+  border-radius: 5px;
 }
 
 .suggestion-item span {
@@ -599,23 +567,46 @@ font-weight: bold;
 }
 
 #searchSuggestions {
-  position: absolute; /* Position the suggestions dropdown absolutely */
-  top: 100%; /* Position it just below the search bar */
+  position: absolute;
+  top: 100%;
   left: 0;
   width: 100%;
-  max-height: 300px; /* Set a maximum height with overflow scroll */
+  max-height: 300px;
   overflow-y: auto;
-  border: 1px solid #ccc; /* Optional: border styling */
-  background-color: #fff; /* Ensure the background is white */
-  z-index: 1000; /* Ensure it's above other content */
+  border: 1px solid #ccc;
+  background-color: #fff;
+  z-index: 1000;
 }
+
 #productSearch{
   flex-grow: 1;
 }
 
 .nav-item {
-  max-width:500px; /* Allow search bar to take available space */
+  max-width:500px;
 }
 .dropdown-toggle{
   color:#46ad7f;
+}
+
+@media (max-width: 767px) {
+  .category-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .category-grid .category-item:nth-last-child(1) {
+    grid-column: span 2;
+  }
+
+}
+
+@media (max-width: 575px) {
+  .category-grid {
+    grid-template-columns: 1fr; 
+  }
+
+  .category-grid .category-item:nth-last-child(1),
+  .category-grid .category-item:nth-last-child(2) {
+    grid-column: span 1;
+  }
 }

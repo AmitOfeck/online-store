@@ -21,7 +21,6 @@ async function fetchProducts() {
     }
 
     products = await response.json();
-    renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
@@ -115,13 +114,12 @@ function renderCart() {
 async function addToCart(productId) {
 try {
 
-// Retrieve the current order ID (you should store it in a variable or localStorage)
-const orderId = localStorage.getItem('orderId'); // Adjust as necessary
+const orderId = localStorage.getItem('orderId'); 
 
 const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`, 
     'Content-Type': 'application/json'
   }
 });
@@ -132,7 +130,6 @@ if (!response.ok) {
 
 const cartUpdate = await response.json();
 
-// Assuming cartUpdate contains the updated cart info
 cart = cartUpdate.items;
 renderCart();
 } catch (error) {
@@ -143,11 +140,11 @@ console.error('Error adding to cart:', error);
 
 async function increaseQuantity(productId) {
 try {
-const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+const orderId = localStorage.getItem('orderId'); 
 const response = await fetch(`http://localhost:8080/orders/${orderId}/add-to-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
@@ -157,8 +154,8 @@ if (!response.ok) {
 }
 
 const cartUpdate = await response.json();
-cart = cartUpdate.items; // Update cart with the latest items
-renderCart(); // Re-render the cart
+cart = cartUpdate.items;
+renderCart();
 } catch (error) {
 console.error('Error increasing quantity:', error);
 }
@@ -168,11 +165,11 @@ console.error('Error increasing quantity:', error);
 
 async function decreaseQuantity(productId) {
 try {
-const orderId = localStorage.getItem('orderId'); // Retrieve the order ID
+const orderId = localStorage.getItem('orderId');
 const response = await fetch(`http://localhost:8080/orders/${orderId}/remove-from-cart/${productId}`, {
   method: 'POST',
   headers: {
-    'Authorization': `${localStorage.getItem('token')}`, // Include token for authentication
+    'Authorization': `${localStorage.getItem('token')}`,
     'Content-Type': 'application/json'
   }
 });
@@ -182,8 +179,8 @@ if (!response.ok) {
 }
 
 const cartUpdate = await response.json();
-cart = cartUpdate.items; // Update cart with the latest items
-renderCart(); // Re-render the cart
+cart = cartUpdate.items;
+renderCart();
 } catch (error) {
 console.error('Error decreasing quantity:', error);
 }
@@ -196,7 +193,7 @@ async function payNow() {
   }
 
   try {
-    const orderId = localStorage.getItem('orderId'); // Retrieve the current order ID
+    const orderId = localStorage.getItem('orderId');
     const token = localStorage.getItem('token');
 
     const res = await fetch('http://localhost:8080/orders/get-my-cart', {
@@ -225,17 +222,16 @@ async function payNow() {
       const response = await fetch(`http://localhost:8080/orders/${orderId}`, {
         method: 'PATCH',
         headers: {
-          'Authorization': `${token}`, // Include token for authentication
+          'Authorization': `${token}`,
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(order) // Set the `ordered` status to true
+        body: JSON.stringify(order)
       });
 
       if (!response.ok) {
         throw new Error(`Error completing the order: ${response.statusText}`);
       }
 
-      // Fetch the updated cart
       await fetchCart();
     });
   } catch (error) {
@@ -292,12 +288,11 @@ async function clearCart() {
     const token = localStorage.getItem('token');
     const orderId = localStorage.getItem('orderId');
 
-    // Loop through each item in the cart and send a DELETE request
     for (const item of cart) {
       const response = await fetch(`http://localhost:8080/orders/${orderId}/clean-cart`, {
         method: 'POST',
         headers: {
-          'Authorization': `${token}`, // Include token for authentication
+          'Authorization': `${token}`,
           'Content-Type': 'application/json'
         }
       });
@@ -307,9 +302,7 @@ async function clearCart() {
       }
     }
 
-    
-    // Clear the cart locally and re-render
-    cart = [];
+        cart = [];
     renderCart();
   } catch (error) {
     console.error('Error clearing the cart:', error);

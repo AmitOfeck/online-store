@@ -1,4 +1,3 @@
-/* Top Bar */
 .top-bar {
     background-color: #46ad7f; 
     color: #fff;
@@ -115,7 +114,7 @@ button {
     font-size: 1em;
     cursor: pointer;
     margin: 20px 0;
-    transition: opacity 0.5s ease-out; /* For smooth fading effect */
+    transition: opacity 0.5s ease-out;
 }
 
 #facebook-post-button {
@@ -170,19 +169,18 @@ button:hover {
     font-family: Courier, monospace;
 }
 
-/* Cart Section */
 .cart-section {
     background-color: whitesmoke;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15); /* Adjusted box shadow for depth */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
     padding: 20px;
-    border-radius: 10px; /* Added border-radius for rounded corners */
+    border-radius: 10px;
     overflow-y: auto;
     display: flex;
     flex-direction: column;
     position: fixed;
     top: 150px;
     right: 0;
-    width: 400px; /* Adjusted width */
+    width: 400px;
     font-family: Courier, monospace;
 }
 
@@ -206,11 +204,10 @@ button:hover {
 }
 
 .cart-item img {
-    max-width: 50px; /* Set a fixed width for product images */
-    margin-left: 10px; /* Add some space between image and text */
-    border-radius: 5px; /* Optional: Add rounded corners to images */
+    max-width: 50px;
+    margin-left: 10px;
+    border-radius: 5px;
 }
-
 
 .reg-text {
     font-size: 1.2em;
@@ -218,8 +215,6 @@ button:hover {
     font-family: Courier, monospace;
     font-weight: bold;
 }
-
-
 
 .purchase-button {
     margin-top: 20px;
@@ -245,9 +240,9 @@ button:hover {
 }
 
 .small-input-group .form-control {
-    width: 5px; /* Adjusted width */
+    width: 5px;
     text-align: center;
-    height: 40px; /* Adjusted height */
+    height: 40px;
 }
 
 .clear-button {
@@ -262,6 +257,6 @@ button:hover {
     background-color: #dc3545;
     border: none;
     color: white;
-    width: 200px; /* Same width as purchase button for alignment */
-    margin-top: 1px; /* Closer to the purchase button */
+    width: 200px;
+    margin-top: 1px;
 }

@@ -14,30 +14,19 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('add-to-cart-button').addEventListener('click', function() {
             addToCart(productData._id);
         });
-    }/* else {
-        alert('No product data found');
-    } */
-
+    }
 });
 
 
-
-
-
 document.addEventListener('DOMContentLoaded', async function() {
-    // Get the product ID from the URL
     const urlParams = new URLSearchParams(window.location.search);
     const productId = urlParams.get('id');
-    console.log(productId)
   
     if (productId) {
       try {
-        // Fetch product data from the server
         const productData = await fetchData(productId);
-        console.log(productData)
   
         if (productData) {
-          // Display product details
           document.getElementById('category-link').textContent = productData.category;
           document.getElementById('sub-category-link').textContent = productData.subCategory;
           document.getElementById('product-name').textContent = productData.name;
@@ -45,8 +34,6 @@ document.addEventListener('DOMContentLoaded', async function() {
           document.getElementById('product-price').textContent = `₪${productData.price}`;
           document.getElementById('product-manufacturer').textContent = productData.manufacturer;
           document.getElementById('product-weight').textContent = `${productData.weight} ${productData.weightUnit}`;
-  
-          // Add event listener to the "Add to Cart" button
           document.getElementById('add-to-cart-button').addEventListener('click', function() {
             addToCart(productData._id);
           });
@@ -57,9 +44,7 @@ document.addEventListener('DOMContentLoaded', async function() {
         alert('Error fetching product data');
         console.error(error);
       }
-    } /*else {
-      alert('No product ID found in URL');
-    }*/
+    } 
   });
 
 
@@ -85,15 +70,11 @@ async function fetchData(productId) {
   }
 
   const token = localStorage.getItem('token');
-  // console.log("Token:", token);
 
   if (token) {
     try {
       const decodedToken = jwt_decode(token);
       const userType = decodedToken.type;
-      //console.log("Decoded Token:", decodedToken);
-      // const lastPageUrl = document.referrer;
-      // console.log(lastPageUrl);
       if (userType == "supplier") {
         const facebookPostButton = document.getElementById('facebook-post-button');
         facebookPostButton.style.display = 'inline-block';
@@ -106,8 +87,6 @@ async function fetchData(productId) {
   }
 
   function postOnFacebook() {
-
-    // Retrieve and parse the JSON string from localStorage
     const content = localStorage.getItem('productData');
     const productData = JSON.parse(content);
 
@@ -119,8 +98,6 @@ async function fetchData(productId) {
         return;
     }
 
-     // Generate the message from the product data
-     // maybe replace _id with manufacturer
      const message = `
      🌟 New Arrival Alert! 🌟
      
@@ -137,12 +114,8 @@ async function fetchData(productId) {
      #NewProduct #${productData.category.replace(/ /g, '')} #${productData.subCategory.replace(/ /g, '')} #${productData.manufacturer.replace(/ /g, '')}
  `;
 
-    // Build the request URL dynamically
     const url = new URL("https://graph.facebook.com/v17.0/401296996394006/feed");
     url.searchParams.append("message", message);
-    // if (link) {
-    //     url.searchParams.append("link", link);
-    // }
     url.searchParams.append("access_token", accessToken);
 
     const requestOptions = {
@@ -153,26 +126,23 @@ async function fetchData(productId) {
     const button = document.getElementById('facebook-post-button');
     const loader = document.getElementById('loader');
 
-    // Disable the button and show the loader
     button.disabled = true;
     loader.style.display = '';
-    
-    // Make the fetch call
+
     fetch(url, requestOptions)
         .then(response => response.json())
         .then(result => {
             console.log(result);
 
-            // Update button content and fade out on success
             if (result.id) {
-                loader.style.display = 'none'; // Hide the loader before updating button text
+                loader.style.display = 'none';
                 button.textContent = 'Posted!';
                 setTimeout(() => {
                     button.style.opacity = '0';
                     setTimeout(() => {
                         button.style.display = 'none';
-                        loader.style.display = 'none'; // Hide loader after button fades out
-                    }, 1000); // Delay to match the fade out transition
+                        loader.style.display = 'none'; 
+                    }, 1000); 
                 }, 1000);
             }
         })
@@ -180,9 +150,9 @@ async function fetchData(productId) {
             console.error('Error:', error);
             setTimeout(() => {
                 button.disabled = false;
-                loader.style.display = 'none'; // Hide loader if there's an error
+                loader.style.display = 'none'; 
                 button.classList.remove('fade');
-                button.style.opacity = '1'; // Reset opacity
+                button.style.opacity = '1'; 
             }, 2000);
         });
 }
