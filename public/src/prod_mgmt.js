@@ -8,7 +8,7 @@ function checkAdminAccess() {
 
   try {
     const decodedToken = jwt_decode(token);
-    console.log(decodedToken);
+    //console.log(decodedToken);
     if (decodedToken.type !== 'supplier') {
       alert('Access denied. Only suppliers can access this page.');
       window.location.href = 'homepage.html';
@@ -37,7 +37,7 @@ function getUserId() {
 
 async function fetchProducts() {
   UserId = getUserId();
-  console.log(UserId);
+  //console.log(UserId);
   
   try {
     const response = await fetch(`http://localhost:8080/products/search?supplierId=${UserId}`, {
@@ -62,7 +62,7 @@ async function fetchProducts() {
 function renderProducts(products) {
   productTable.innerHTML = '';
   products.forEach(product => {
-    console.log(product.supplierId);
+    //console.log(product.supplierId);
     const row = document.createElement('tr');
     row.innerHTML = `
       <td class="mt-4">${product.name}</td>
