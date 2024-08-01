@@ -19,7 +19,7 @@ Super Eats is an online supermarket application that offers a seamless shopping 
 - **Database:** MongoDB
 
 ## Documentation
-For detailed information on the application, please refer to the [onlineStore Documentation]([#](https://docs.google.com/spreadsheets/d/1EHbOetD1Ualc7OqEdwGieFMYqEX6HsMAtCaLUDdFzKc/edit?gid=0#gid=0)).
+For detailed information on the application, please refer to the [onlineStore Documentation](https://docs.google.com/spreadsheets/d/1EHbOetD1Ualc7OqEdwGieFMYqEX6HsMAtCaLUDdFzKc/edit?gid=0#gid=0).
 
 ## Getting Started
 
