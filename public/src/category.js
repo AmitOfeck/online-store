@@ -3,9 +3,33 @@ document.addEventListener('DOMContentLoaded', function() {
   if (!token) {
     window.location.href = 'reglog.html'; // Redirect to the login page if not authenticated
   }
+
+  fetchAllProducts()
+  fetchProducts(); // Fetch products on page load
+  fetchCart(); // Fetch cart on page load
+
+  // Add event listener for dropdown menu items
+  const dropdownItems = document.querySelectorAll('.dropdown-item');
+  dropdownItems.forEach(item => {
+    item.addEventListener('click', function() {
+      dropdownItems.forEach(i => i.classList.remove('active')); // Remove active class from all items
+      this.classList.add('active'); // Add active class to the selected item
+      filterProducts();
+    });
+  });
+
+  // Add event listener for price filter button
+  document.getElementById('apply-price-filter').addEventListener('click', function() {
+    filterProducts();
+  });
+
+  // Add event listener for search input
+  document.getElementById('search-input').addEventListener('input', function() {
+    filterProducts();
+  });
 });
 
-
+let allProducts = [];
 let products = [];
 let cart = [];
 const productList = document.getElementById('product-list');
@@ -15,7 +39,28 @@ const totalSum = document.getElementById('total-sum');
 async function fetchProducts() {
   try {
     const token = localStorage.getItem('token'); 
-    const response = await fetch('http://localhost:8080/products/', {
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+    const subCategory = urlParams.get('subCategory');
+    console.log(category)
+    console.log(subCategory)
+
+    let query = 'http://localhost:8080/products/search?';
+
+    if (category) {
+      query += `category=${category}&`;
+    }
+  
+    if (subCategory) {
+      query += `subCategory=${subCategory}&`;
+    }
+
+    query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+    console.log(query)
+
+    const response = await fetch(query, {
       method: 'GET',
       headers: {
         'Authorization': `${token}` 
@@ -29,11 +74,90 @@ async function fetchProducts() {
     }
 
     products = await response.json();
+    //console.log(products)
     renderProducts(products);
   } catch (error) {
     console.error('Error fetching products:', error);
   }
 }
+
+
+async function fetchAllProducts() {
+  try {
+    const token = localStorage.getItem('token'); 
+
+    const response = await fetch('http://localhost:8080/products/', {
+      method: 'GET',
+      headers: {
+        'Authorization': `${token}` 
+      }
+    });
+
+    if (!response.ok) {
+      console.log('Response Status:', response.status);
+      console.log('Response Status Text:', response.statusText);
+      throw new Error('Failed to fetch products');
+    }
+
+    allProducts = await response.json();
+  } catch (error) {
+    console.error('Error fetching products:', error);
+  }
+}
+
+
+async function filterProducts() {
+  // Get selected category from the active dropdown item
+  const categoryDropdown = document.getElementById('categoryDropdownMenu');
+  const selectedCategoryElement = categoryDropdown.querySelector('a.active');
+  const category = selectedCategoryElement ? selectedCategoryElement.getAttribute('data-category') : '';
+
+  // Get price range
+  const maxPrice = parseFloat(document.getElementById('max-price').value) ;
+
+  //console.log(maxPrice)
+
+  // Get search query
+  const searchName = document.getElementById('search-input').value.toLowerCase();
+
+  let query = 'http://localhost:8080/products/search?';
+
+  if (category) {
+    query += `category=${category}&`;
+  }
+
+  if (maxPrice) {
+    query += `price=<${maxPrice}&`;
+  }
+
+  if (searchName) {
+    query += `name=${searchName}&`;
+  }
+
+  // Remove trailing '&' or '?' if no parameters are present
+  query = query.slice(-1) === '&' || query.slice(-1) === '?' ? query.slice(0, -1) : query;
+
+  try {
+    const response = await fetch(query, {
+      method: 'GET',
+      headers: {
+        'Authorization': `${localStorage.getItem('token')}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching filtered products: ${response.statusText}`);
+    }
+
+    const filteredProducts = await response.json();
+    renderProducts(filteredProducts);
+  } catch (error) {
+    console.error('Error fetching filtered products:', error);
+  }
+}
+
+
 
 async function fetchCart() {
   try {
@@ -60,6 +184,7 @@ async function fetchCart() {
   }
 }
 
+
 function renderProducts(products) {
   productList.innerHTML = '';
   products.forEach(product => {
@@ -74,6 +199,13 @@ function renderProducts(products) {
       <button class="btn btn-add-to-cart" onclick="addToCart('${product._id}')">Add to Cart</button>
     `;
 
+    const imgElement = productCard.querySelector('img');
+
+   // Add an event listener to the img element
+   imgElement.addEventListener('click', () => {
+      window.location.href = `product/itempage-template.html?id=${product._id}`;
+   });
+
     productList.appendChild(productCard);
   });
 }
@@ -84,7 +216,7 @@ let sum = 0;
 
 
 cart.forEach(item => {
-const product = products.find(p => p._id === item.id)
+const product = allProducts.find(p => p._id === item.id)
 
 if (!product) {
   console.warn(`Product with ID ${item.productId} not found`);
@@ -388,3 +520,83 @@ function clearCanvas() {
 }
   fetchProducts();
   fetchCart();  
+
+  async function fetchIncomeData() {
+    try {
+      const response = await fetch('http://localhost:8080/orders/most-popular-products', {
+        method: 'GET',
+        headers: {
+          'Authorization': `${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error fetching income data: ${response.statusText}`);
+      }
+  
+      const incomeData = await response.json();
+      renderIncomeChart(incomeData);
+    } catch (error) {
+      console.error('Error fetching income data:', error);
+    }
+  }
+  
+  function renderIncomeChart(incomeData) {
+    const margin = { top: 20, right: 30, bottom: 100, left: 50 };
+    const width = 960 - margin.left - margin.right;
+    const height = 500 - margin.top - margin.bottom;
+  
+    const svg = d3.select("#incomeChart")
+      .append("svg")
+      .attr("width", width + margin.left + margin.right)
+      .attr("height", height + margin.top + margin.bottom)
+      .append("g")
+      .attr("transform", `translate(${margin.left},${margin.top})`);
+  
+    const x = d3.scaleBand()
+      .domain(incomeData.map(d => d.name || 'Unnamed'))
+      .range([0, width])
+      .padding(0.2);
+  
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(incomeData, d => d.totalQuantity)])
+      .nice()
+      .range([height, 0]);
+  
+    svg.append("g")
+      .attr("transform", `translate(0, ${height})`)
+      .call(d3.axisBottom(x))
+      .selectAll("text")
+      .attr("transform", "translate(-10,0)rotate(-45)")
+      .style("text-anchor", "end");
+  
+    svg.append("g")
+      .call(d3.axisLeft(y));
+  
+    svg.selectAll("rect")
+      .data(incomeData)
+      .enter()
+      .append("rect")
+      .attr("x", d => x(d.name || 'Unnamed'))
+      .attr("y", d => y(d.totalQuantity))
+      .attr("width", x.bandwidth())
+      .attr("height", d => height - y(d.totalQuantity))
+      .attr("fill", "rgba(75, 192, 192, 0.6)");
+  
+    svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("y", -margin.left + 20)
+      .attr("x", -margin.top)
+      .attr("transform", "rotate(-90)")
+      .text("Quantity");
+  
+    svg.append("text")
+      .attr("text-anchor", "end")
+      .attr("x", width)
+      .attr("y", height + margin.top + 20)
+      .text("Product");
+  }
+  
+  // Fetch income data and render the chart on page load
+  fetchIncomeData();
