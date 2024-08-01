@@ -616,3 +616,6 @@ font-weight: bold;
 .nav-item {
   flex: 1; /* Allow search bar to take available space */
 }
+.dropdown-toggle{
+  color:#46ad7f;
+}
