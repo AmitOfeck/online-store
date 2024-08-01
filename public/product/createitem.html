@@ -22,6 +22,14 @@
                         <div class="form-group">
                             <label for="product-name">Product Name</label>
                             <input type="text" id="product-name" name="name" required>
+                            <button type="button" onclick="searchProductImage()">Search Image</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="product-image">Item Photo(URL)</label>
+                            <input type="text" id="product-image" name="image">
+                        </div>
+                        <div id="imageContainer">
+                            <img id="productImage" alt="Product Image" style="display: none;" onclick="nextImage()">
                         </div>
                         <div class="form-group">
                             <label for="product-category">Category</label>
@@ -30,7 +38,7 @@
                                     <option value="Dairy and Eggs">Dairy and Eggs</option>
                                     <option value="Fruit and Vegetables">Fruit and Vegetables</option>
                                     <option value="Meat and Fish">Meat and Fish</option>
-                                    <option value="Sweet & Salty">Sweet and Salty</option>
+                                    <option value="Sweet & Salty">Sweet & Salty</option>
                                     <option value="Beverages">Beverages</option>
                                     <option value="Frozen Produce">Frozen Produce</option>
                                 </select>
@@ -43,10 +51,6 @@
                                     <!-- Subcategory options will be populated dynamically -->
                                 </select>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="product-image">Item Photo(URL)</label>
-                            <input type="text" id="product-image" name="image">
                         </div>
                     </div>
                 </div>
