@@ -84,6 +84,27 @@ async function fetchData(productId) {
     }
   }
 
+  const token = localStorage.getItem('token');
+  // console.log("Token:", token);
+
+  if (token) {
+    try {
+      const decodedToken = jwt_decode(token);
+      const userType = decodedToken.type;
+      //console.log("Decoded Token:", decodedToken);
+      // const lastPageUrl = document.referrer;
+      // console.log(lastPageUrl);
+      if (userType == "supplier") {
+        const facebookPostButton = document.getElementById('facebook-post-button');
+        facebookPostButton.style.display = 'inline-block';
+      }
+    } catch (error) {
+      console.error("Error decoding token:", error);
+    }
+  } else {
+    console.log("no token");
+  }
+
   function postOnFacebook() {
 
     // Retrieve and parse the JSON string from localStorage
