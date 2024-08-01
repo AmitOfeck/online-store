@@ -76,7 +76,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <div class="nav-right">
               <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                 Catalouge <i class="bi bi-list"></i>
+                 Catalogue <i class="bi bi-list"></i>
                 </button>
                 <ul class="dropdown-menu dropdown-menu-end">
                   <a class="Cat">Menu</a>
