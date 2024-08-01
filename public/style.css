@@ -610,3 +610,36 @@ font-weight: bold;
     grid-column: span 1;
   }
 }
+
+/* Final Adjustments */
+
+.navbar-custom .input-group {
+  flex-grow: 1;
+  max-width: 600px;
+  height: 50px;
+  overflow: hidden;
+}
+
+.navbar-custom .form-control {
+  border-radius: 25px;
+  width: 100%; 
+}
+
+
+.navbar-nav {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-item {
+  width: 100%;
+  max-width: 600px;
+}
+
+.navbar-custom .input-group {
+  border-radius: 25px;
+  overflow: hidden; 
+}
+
