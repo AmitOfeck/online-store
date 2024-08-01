@@ -78,7 +78,7 @@ let currentIndex = 0; // משתנה למעקב אחרי התמונה הנוכח�
 
 function searchProductImage() {
     const productName = document.getElementById('product-name').value;
-    const searchQuery = `${productName}  packaged product`; // שיפור החיפוש עם מילות מפתח מתאימות
+    const searchQuery = `${productName}  grocery`; // שיפור החיפוש עם מילות מפתח מתאימות
     fetch(`https://api.unsplash.com/search/photos?query=${searchQuery}&client_id=${accessKey}`)
         .then(response => response.json())
         .then(data => {
