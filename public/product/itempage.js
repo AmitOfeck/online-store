@@ -70,12 +70,13 @@ async function fetchData(productId) {
   }
 
   const token = localStorage.getItem('token');
+  const lastPage = localStorage.getItem('lastPage').slice(-23);
 
   if (token) {
     try {
       const decodedToken = jwt_decode(token);
       const userType = decodedToken.type;
-      if (userType == "supplier") {
+      if (userType == "supplier" && lastPage == 'product/createitem.html') {
         const facebookPostButton = document.getElementById('facebook-post-button');
         facebookPostButton.style.display = 'inline-block';
       }
@@ -86,42 +87,34 @@ async function fetchData(productId) {
     console.log("no token");
   }
 
-  function postOnFacebook() {
+  
+// 'Post On Facebook' function
+
+  async function postOnFacebook() {
     const content = localStorage.getItem('productData');
     const productData = JSON.parse(content);
 
-    const link = localStorage.getItem('link');
-    const accessToken = "EAANiSIMXHsgBO2wpKLteaiQJbDHQsyZBi1w7fTE8oZABEQtaRYf9UPajN6VlrcrOEqp1311xKuIn34y2CKpqqTTCFRUunxpmJj7Xzq6aUK0t2OdkHZCRdrr6ZCT99uZAmslXPwTI296jZBe4GzuBZC6pKvnGdO0WvEeWoZBQuRLiWNCZAtteskNCMI39sWNprjpSrowW8wzZAS";
+    const timestamp = new Date().toISOString(); // Add timestamp to ensure uniqueness
+    const message = `
+    🌟 New Arrival Alert! 🌟
+    
+    We are excited to introduce our latest product: ${productData.name}!
+    
+    This product is now available in our store. 
+    
+    🏷️ Price: $${productData.price}
+    📦 Current Stock: ${productData.currentStock} units
+    ⚖️ Weight: ${productData.weight} ${productData.weightUnit}
+    
+    Don't miss out! Visit us today and get your hands on this fantastic new item.
+    
+    #NewProduct #${productData.category.replace(/ /g, '')} #${productData.subCategory.replace(/ /g, '')} #${productData.manufacturer.replace(/ /g, '')}
+    \nPosted at: ${timestamp}
+    `;
 
-    if (!accessToken) {
-        console.error('Message and access token are required.');
-        return;
-    }
-
-     const message = `
-     🌟 New Arrival Alert! 🌟
-     
-     We are excited to introduce our latest product: ${productData.name}!
-     
-     this product is now available in our store. 
-     
-     🏷️ Price: $${productData.price}
-     📦 Current Stock: ${productData.currentStock} units
-     ⚖️ Weight: ${productData.weight} ${productData.weightUnit}
-     
-     Don't miss out! Visit us today and get your hands on this fantastic new item.
-     
-     #NewProduct #${productData.category.replace(/ /g, '')} #${productData.subCategory.replace(/ /g, '')} #${productData.manufacturer.replace(/ /g, '')}
- `;
-
-    const url = new URL("https://graph.facebook.com/v17.0/401296996394006/feed");
-    url.searchParams.append("message", message);
-    url.searchParams.append("access_token", accessToken);
-
-    const requestOptions = {
-        method: "POST",
-        redirect: "follow"
-    };
+    const imageUrl = productData.image;
+    const accessToken = "EAANiSIMXHsgBO2wpKLteaiQJbDHQsyZBi1w7fTE8oZABEQtaRYf9UPajN6VlrcrOEqp1311xKuIn34y2CKpqqTTCFRUunxpmJj7Xzq6aUK0t2OdkHZCRdrr6ZCT99uZAmslXPwTI296jZBe4GzuBZC6pKvnGdO0WvEeWoZBQuRLiWNCZAtteskNCMI39sWNprjpSrowW8wzZAS"; // Replace with your actual access token
+    const pageId = "401296996394006";
 
     const button = document.getElementById('facebook-post-button');
     const loader = document.getElementById('loader');
@@ -129,30 +122,48 @@ async function fetchData(productId) {
     button.disabled = true;
     loader.style.display = '';
 
-    fetch(url, requestOptions)
-        .then(response => response.json())
-        .then(result => {
-            console.log(result);
+    try {
+        // Step 1: Create the post with the photo URL directly
+        const postData = {
+            message: message,
+            link: imageUrl, // Using link to the image instead of uploading it
+            access_token: accessToken
+        };
 
-            if (result.id) {
-                loader.style.display = 'none';
-                button.textContent = 'Posted!';
-                setTimeout(() => {
-                    button.style.opacity = '0';
-                    setTimeout(() => {
-                        button.style.display = 'none';
-                        loader.style.display = 'none'; 
-                    }, 1000); 
-                }, 1000);
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            setTimeout(() => {
-                button.disabled = false;
-                loader.style.display = 'none'; 
-                button.classList.remove('fade');
-                button.style.opacity = '1'; 
-            }, 2000);
+        console.log('Post Data:', postData); // Log the post data for debugging
+
+        // Step 2: Create the post with the photo
+        const createPostResponse = await fetch(`https://graph.facebook.com/v17.0/${pageId}/feed`, {
+            method: "POST",
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(postData)
         });
+        const createPostResult = await createPostResponse.json();
+
+        if (createPostResult.error) {
+            throw new Error(createPostResult.error.message);
+        }
+
+        // Handle the result of the post creation
+        if (createPostResult.id) {
+            loader.style.display = 'none';
+            button.textContent = 'Posted!';
+            setTimeout(() => {
+                button.style.opacity = '0';
+                setTimeout(() => {
+                    button.style.display = 'none';
+                    loader.style.display = 'none';
+                }, 1000);
+            }, 1000);
+        } else {
+            throw new Error('Post creation failed');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        button.disabled = false;
+        loader.style.display = 'none';
+        button.textContent = 'Post on Facebook'; // Reset the button text
+        alert(`Failed to post on Facebook. Please try again.\nError: ${error.message}`);
+    }
+    localStorage.setItem('lastPage', null);
 }

@@ -107,3 +107,6 @@ function nextImage() {
         displayImage();
     }
 }
+
+// saving the URL
+localStorage.setItem('lastPage', window.location.href);
