@@ -115,11 +115,34 @@ button {
     font-size: 1em;
     cursor: pointer;
     margin: 20px 0;
+    transition: opacity 0.5s ease-out; /* For smooth fading effect */
+}
+
+#facebook-post-button {
+    background-color: blue;
 }
 
 button:hover {
     background-color: #3f9970;
 }
+
+#loader {
+    margin-left: 10px;
+    font-size: 1.5em;
+}
+
+.fade {
+    transition: opacity 1s ease-out;
+}
+
+.fade-in {
+    opacity: 0;
+}
+
+.fade-out {
+    opacity: 1;
+}
+
 
 .about {
     border: 1px solid #dee2e6;
