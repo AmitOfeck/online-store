@@ -4,5 +4,5 @@ node_modules/
 server/node_modules/
 clinet/node_modules/
 jspm_packages/
-
+server/config/.env.test
 
